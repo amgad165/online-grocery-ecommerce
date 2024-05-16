@@ -1,0 +1,53 @@
+<div class="my-orders animate__animated animate__fadeIn">
+    <h2 class="text-center">Meine Bestellungen</h2>
+
+    {% if orders_true %}
+
+
+
+    {% for order in orders_true %}
+
+
+
+    <div class="billing-details">
+      
+      <div class="billing-details-content">
+        <h4 style="color: #0e8e92;" >Order date : {{order.ordered_date}} </h4>
+        {% for item in order.items.all  %}
+        <div class="bil-title">{{item}}</div>
+         <table>
+          {% for product_ingredient in item.ingredients_customized.all %}
+          <tr>
+            <td><i class="fa-solid fa-basket-shopping"></i> {{product_ingredient.ingredient}}</td>
+             
+             <td class="right-t">{{product_ingredient.quantity}} KG</td>
+           </tr>
+           {% endfor %}
+
+
+
+         </table>
+
+         {% endfor %}
+         <table class="mt-3">
+         <tr class="br-top">
+          <td>Amount Paid</td>
+          <td class="right-t">€ {{order.get_total}} EUR</td>
+        </tr>
+      </table>
+      </div>
+    </div>
+
+   
+
+    
+    
+    {% endfor %}
+    
+    {% else %}
+    <h3 class="text-center mt-5">Keine Bestellungen vorhanden!</h3>
+    {% endif %}
+
+      
+
+</div>

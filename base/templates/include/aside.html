@@ -1,0 +1,73 @@
+    {% load static %}
+    <!-- sidebar -->
+    <aside class="open" id="sidebar">
+        <div class="position-relative">
+    
+        
+        <div class="icon-close">
+    
+          <i class="fa-solid fa-x d-block " id="toggle-sideBar"></i>
+        </div>
+        <div class="container ">
+         
+         
+          {% for item in order.items.all %}
+          <div class="row p-4 bottom-border row-item">
+            <div class="col-lg-4">
+              <div>
+                <img src="{% static 'Bilder/box.JPG' %}" class="w-100" alt="">
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div>
+                <h3>{{ item.product.name }}</h3>
+                <!-- <span id="product_price_{{ item.id }}">{{ item.get_total_item_price }} €</span> -->
+                <p>{{ item.product.description }}</p>
+                <span><span id="product_price_{{ item.id }}">{{ item.get_total_item_price }} € </span>/<span id="item_weight_{{ item.id }}"> {{item.get_total_order_quantity}} kg</span></span>
+              </div>
+            </div>
+            <div class="row m-0">
+              <div class="d-flex gap-4 p-3 item-buttons-cart">
+                <div class="minus circled" onclick="updateQuantity('{{ item.id }}', 'decrement')">
+                  <i class="fa-solid fa-minus"></i>
+                </div>
+                <div class="quantity circled d-flex justify-content-center align-items-center" id="quantity_{{ item.id }}">
+                  {{ item.quantity }}
+                </div>
+                <div class="plus circled" onclick="updateQuantity('{{ item.id }}', 'increment')">
+                  <i class="fa-solid fa-plus"></i>
+                </div>
+                <div class="remove-btn">
+                  <button data-product-id="{{ item.product.id }}" class="btn text-danger remove">Entfernen</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+  
+  
+  
+  
+          
+    
+        </div>
+  
+        <div class="bg-gray px-5 py-4  add-to-cart ">
+          <div class="d-flex  justify-content-between sidebarFooter">
+            <span class="fs-2">Zwischensumme</span>
+            <span id="order_total" class="fs-2"> € {{order.get_total}} EUR</span>
+          </div>
+            <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.</p>
+  
+            <!-- <a id="checkout-button" class="btn btn-black w-100" href="{% url 'confirm_order' %}">ZUR KASSE</a> -->
+            
+            <a id="checkout-button" class="btn btn-black w-100" data-bs-toggle="modal" data-bs-target="#stripeModal">ZUR KASSE</a>
+  
+  
+  
+        </div>
+  
+  
+        
+      </div>
+      </aside>

@@ -1,0 +1,295 @@
+<style>
+  .modal-backdrop {
+    z-index: -1;
+}
+</style>
+<div class="personal-data animate__animated animate__fadeIn">
+  <div class="container">
+    <div class="row p-3 border-bottom">
+      <div
+        class="modal fade"
+        id="userDetails"
+        tabindex="-1"
+        aria-labelledby="userDetailsLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1
+                class="modal-title fs-5"
+                id="exampleModalLabel"
+              >
+                User details
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" > 
+                    <label for="" class="form-label ">first name  : </label>
+                    <input type="text" class="form-control" id="userDetailsName" value="{{ user.first_name }}">
+                    <label for="" class="form-label">last name  : </label>
+                    <input type="text" class="form-control" id="userDetailsLastName" value="{{ user.last_name }}">
+                    <label for="" class="form-label">Tel : </label>
+                    <input type="tel" class="form-control" id="userDetailsTel" value="{{ user.atu_number }}">
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary " id="saveChangesBtn" onclick="validateAllUserDetailsInputs()">
+                Save changes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div
+          class="d-flex justify-content-center align-items-center h-100"
+        >
+          <i class="fa-solid fa-user p-3"></i>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div>
+          <div class="row ">
+            <div class="col ">
+              <div class="row">
+                <div class="col-lg-6">
+                  <div class="data-group mb-2">
+                    <span class="h5 d-block mb-0">Name</span>
+                    <span class="text-light text-black">{{user.first_name}}</span>
+                  </div>
+                  
+                </div>
+              <div class="col-lg-6">
+                <div>
+                  <div class="data-group mb-2">
+                    <span class="h5 d-block mb-0">Nachname</span>
+                    <span class="text-light text-black">{{user.last_name}}</span>
+                  </div>
+                  
+                </div>
+  
+              </div>
+              <div class="col-lg-6 ">
+                <div>
+                  <div class="data-group mb-2">
+                    <span class="h5 d-block mb-0">Telefon</span>
+                    <span class="text-light text-black">{{user.atu_number}}</span>
+                  </div>
+                </div>
+              </div>
+              </div>
+            
+          
+          </div>
+        </div>
+      </div>
+     
+    </div>
+    <div class="col-lg-3 ">
+      <div
+        class="d-flex justify-content-center align-items-center h-100"
+      >
+        <button
+          class="btn btn-outline-dark rounded-0 w-100 my-md-4"
+          data-bs-toggle="modal"
+          data-bs-target="#userDetails"
+        >
+          Bearbeiten
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row p-3 border-bottom">
+    <div
+      class="modal fade"
+      id="userEmail"
+      tabindex="-1"
+      aria-labelledby="userEmailLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1
+              class="modal-title fs-5"
+              id="exampleModalLabel"
+            >
+              Form Email
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="alertContainer"></div>
+            <form id="edit-email-form" method="post"> 
+                <label for="" class="form-label mt-3" >New E-mail adress :  </label>
+                <input required type="email" class="form-control mb-3" id="newEmail">
+                <label for="" class="form-label mt-3" >Confirm new email address : </label>
+                <input required type="email" class="form-control mb-3" id="confirmNewEmail">
+                <label for="" class="form-label mt-3" >password : </label>
+                <input required type="password" class="form-control mb-3" id="passwordEmailUpdate">
+                
+                <!-- Move the button inside the form -->
+                <!-- <button id="btn-email-update" type="submit" class="btn btn-primary" >
+                    Save changes
+                </button> -->
+                <div class="modal-footer">
+                  <!-- <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button> -->
+                  <button id="btn-email-update" type="submit" class="btn btn-primary" >
+                    Save changes
+                </button>
+                </div>
+            </form>
+        </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div
+        class="d-flex justify-content-center align-items-center h-100"
+      >
+        <i class="fa-solid fa-envelope p-3"></i>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div>
+        <div class="row">
+          <div class="col-6">
+            <div>
+              <div class="data-group mb-4 mb-lg-0 mt-lg-2">
+                <span class="h5 d-block">Email</span>
+                <span class="text-light text-black">{{user.email}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div
+        class="d-flex justify-content-center align-items-center h-100"
+      >
+        <button
+          class="btn btn-outline-dark rounded-0 w-100 my-md-4"
+          data-bs-toggle="modal"
+          data-bs-target="#userEmail"
+        >
+          Bearbeiten
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row p-3 border-bottom">
+    <div
+      class="modal fade"
+      id="userPass"
+      tabindex="-1"
+      aria-labelledby="userPassLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1
+              class="modal-title fs-5"
+              id="exampleModalLabel"
+            >
+              Change your Passwrod
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="alertpasswords"></div>
+
+              <form id="password-change-form" method="posts"> 
+                <label for="" class="form-label mt-3" id="oldPass">Old Password : </label>
+                <input required type="password" class="form-control mb-3" id="password">
+                
+                  <label for="" class="form-label mt-3">New Password :  </label>
+                  <input required type="password" class="form-control mb-3" id="newPass">
+                  <label for="" class="form-label mt-3">Confirm new Password : </label>
+                  <input required type="password" class="form-control mb-3" id="confirmNewPass">
+
+                  
+                  <div class="modal-footer">
+
+                    <button type="submit" class="btn btn-primary">
+                      Save changes
+                    </button>
+                  </div>
+              </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div
+        class="d-flex justify-content-center align-items-center h-100"
+      >
+      <i class="fa-solid fa-lock p-3"></i>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div>
+        <div class="row">
+          <div class="col-6">
+            <div>
+              <div class="data-group  mb-4 mb-lg-0 ">
+                <span class="h5 d-block">Dein Passwort</span>
+                <span class="">******************</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div
+        class="d-flex justify-content-center align-items-center h-100"
+      >
+        <button
+          class="btn btn-outline-dark rounded-0 w-100 my-md-4"
+          data-bs-toggle="modal"
+          data-bs-target="#userPass"
+        >
+          Bearbeiten
+        </button>
+      </div>
+    </div>
+  </div>
+  </div>     
+  
+  
+  </div>

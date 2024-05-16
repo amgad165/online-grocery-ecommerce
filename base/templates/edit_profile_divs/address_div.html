@@ -1,0 +1,82 @@
+{% load static %}
+<style>
+    .modal-backdrop {
+      z-index: -1;
+  }
+  </style>
+<div class="adress animate__animated animate__fadeIn">
+    <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+<form id="address-form" method="post">
+<h3 class="text-center">Update Udress</h3>
+<br>
+<label for="bezirk-input" class="form-label fw-bold ">Bezirk : </label>
+<input required id="bezirk-input" type="text" class="form-control" value="{{user.bezirk}}">
+<br>
+<label  class="form-label fw-bold">Postleitzahl : </label>
+<input required id="plz_zip-input" type="text" class="form-control" value="{{user.plz_zip}}">
+<br>
+<label  class="form-label fw-bold">Adresse : </label>
+<input required id="street_address-input" type="text" class="form-control" value="{{user.street_address}}">
+<br>
+<label  class="form-label fw-bold">Hausnummer : </label>
+<input required id="hausnummer-input" type="text" class="form-control" value="{{user.hausnummer}}">
+
+<div class="modal-footer">
+<!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+<button type="submit" class="btn btn-primary">Save changes</button>
+</div>
+
+</form>
+</div>
+
+</div>
+
+</div>
+</div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-xs-6">
+                <div class="border p-4">
+                <h6 class="mb-4 text-center">Aktuelle Adresse</h6>
+
+                
+                <!-- <span class="h6 d-block fw-light">Mustermanngasse 76/22</span>
+                <span class="h6 d-block fw-light">1110</span>
+                <span class="h6 d-block fw-light">Wien</span>
+                <span class="h6 d-block fw-light">Österreich</span> -->
+                
+                <div class="mb-3">
+                <label  class="form-label fw-bold">Bezirk : </label>
+                <span  style="margin-bottom: 8px;" class="h6 d-block fw-light">{{user.bezirk}}</span>
+                </div>
+                <div class="mb-3">
+                <label  class="form-label fw-bold">Postleitzahl : </label>
+                <span style=" margin-bottom: 8px;" class="h6 d-block fw-light">{{user.plz_zip}}</span>
+                </div>
+                <div class="mb-3">
+                <label  class="form-label fw-bold">Adresse: </label>
+                <span style=" margin-bottom: 8px;" class="h6 d-block fw-light">{{user.street_address}}</span>
+                </div>
+                <div class="mb-3">
+                <label  class="form-label fw-bold">Hausnummer : </label>
+                <span style=" margin-bottom: 8px ;" class="h6 d-block fw-light">{{user.hausnummer}}</span>
+                    </div>
+
+                <button class="btn btn-outline-dark rounded-0" data-bs-toggle="modal" data-bs-target="#exampleModal"> <img id="pen-image" src="{% static 'Bilder/Bearbeiten.png' %} " >
+                    Bearbeiten</button>
+            </div>
+        </div>
+        </div>
+    </div>
+  </div>
