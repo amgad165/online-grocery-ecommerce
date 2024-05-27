@@ -146,7 +146,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ALLOWED_ORIGINS = [
     "https://sm-handels.com/","https://sm-handels.com/"
 ]
-CSRF_TRUSTED_ORIGINS = ['https://sm-handels.com/']
+CSRF_TRUSTED_ORIGINS = ['https://*.sm-handels.com/']
 
 
 
