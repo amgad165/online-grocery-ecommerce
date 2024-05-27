@@ -328,7 +328,7 @@
                                   <tr>
                                     <td><i class="fa-solid fa-basket-shopping"></i> {{product_ingredient.ingredient}}</td>
                                      
-                                     <td class="right-t">{{product_ingredient.quantity}} KG</td>
+                                     <td class="right-t">{{product_ingredient.quantity}} {{ product_ingredient.ingredient.unit }}</td>
                                    </tr>
                                    {% endfor %}
   

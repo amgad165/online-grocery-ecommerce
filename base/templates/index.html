@@ -39,7 +39,14 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
 
                 </p>
               </div>
-              <button class="btn btn-orange">Jetzt Bestellen</button>
+
+              {% if user.is_authenticated %}
+              <a class="nav-link" href="{% url 'products' %}"><button class="btn btn-orange">Jetzt Bestellen</button></a>
+  
+              {% else %}
+             <a href="{% url 'home' %}#our-products"> <button class="btn btn-orange">Jetzt Bestellen</button></a>
+
+             {%  endif %}
             </div>
           </div>
           <div class="col-lg-6">

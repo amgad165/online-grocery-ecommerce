@@ -81,6 +81,7 @@ class DeliveryAddress(models.Model):
 class Ingredient(models.Model):
     name = models.CharField(max_length=255)
     price = models.FloatField()
+    unit = models.CharField(max_length=255,blank=True, null=True)
     
     def __str__(self):
         return self.name
