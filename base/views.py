@@ -776,7 +776,7 @@ def login_view(request):
 
 
 
-@login_required
+
 def add_to_cart(request):
     if request.method == 'POST':
         product_id = request.POST.get('id')
