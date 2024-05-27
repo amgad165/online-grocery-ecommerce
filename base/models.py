@@ -93,7 +93,9 @@ class Product(models.Model):
     image = models.FileField(upload_to='product_images/')
     price = models.FloatField()
     customize = models.BooleanField(_('Customize'), default=False)
-
+    
+    class Meta:
+        ordering = ['-customize', 'name']
     def calculate_total_cost(self):
         total_cost = 0
         # Iterate through each ProductIngredient related to this product
