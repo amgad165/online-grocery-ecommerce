@@ -20,7 +20,7 @@
                 class="modal-title fs-5"
                 id="exampleModalLabel"
               >
-                User details
+              Benutzerdaten
               </h1>
               <button
                 type="button"
@@ -31,12 +31,21 @@
             </div>
             <div class="modal-body">
                 <form method="post" > 
-                    <label for="" class="form-label ">first name  : </label>
+                    <label for="" class="form-label ">Vorname : </label>
                     <input type="text" class="form-control" id="userDetailsName" value="{{ user.first_name }}">
-                    <label for="" class="form-label">last name  : </label>
+                    <label for="" class="form-label">Nachname : </label>
                     <input type="text" class="form-control" id="userDetailsLastName" value="{{ user.last_name }}">
-                    <label for="" class="form-label">Tel : </label>
-                    <input type="tel" class="form-control" id="userDetailsTel" value="{{ user.atu_number }}">
+                    <label for="" class="form-label">Telefon : </label>
+                    
+                  
+                    <input type="tel" class="form-control" id="userDetailsTel" value="
+                    {% if user.atu_number %}
+                    {{ user.atu_number }}
+                    {% endif %}
+                      ">
+
+                 
+                      
                     
                 </form>
             </div>
@@ -46,10 +55,10 @@
                 class="btn btn-secondary"
                 data-bs-dismiss="modal"
               >
-                Close
+              Zurück
               </button>
-              <button type="button" class="btn btn-primary " id="saveChangesBtn" onclick="validateAllUserDetailsInputs()">
-                Save changes
+              <button type="button" class="btn btn-black " id="saveChangesBtn" onclick="validateAllUserDetailsInputs()">
+                Speichern
               </button>
             </div>
           </div>
@@ -66,10 +75,10 @@
         <div>
           <div class="row ">
             <div class="col ">
-              <div class="row">
+              <div class="row ">
                 <div class="col-lg-6">
                   <div class="data-group mb-2">
-                    <span class="h5 d-block mb-0">Name</span>
+                    <span class="h5 d-block mb-0 fw-bold">Name</span>
                     <span class="text-light text-black">{{user.first_name}}</span>
                   </div>
                   
@@ -77,7 +86,7 @@
               <div class="col-lg-6">
                 <div>
                   <div class="data-group mb-2">
-                    <span class="h5 d-block mb-0">Nachname</span>
+                    <span class="h5 d-block mb-0 fw-bold">Nachname</span>
                     <span class="text-light text-black">{{user.last_name}}</span>
                   </div>
                   
@@ -86,9 +95,11 @@
               </div>
               <div class="col-lg-6 ">
                 <div>
-                  <div class="data-group mb-2">
-                    <span class="h5 d-block mb-0">Telefon</span>
+                  <div class="data-group mb-2 mt-3">
+                    <span class="h5 d-block mb-3 fw-bold ">Telefon</span>
+                    {% if user.atu_number %}
                     <span class="text-light text-black">{{user.atu_number}}</span>
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -129,7 +140,8 @@
               class="modal-title fs-5"
               id="exampleModalLabel"
             >
-              Form Email
+            E-Mail-Änderung
+
             </h1>
             <button
               type="button"
@@ -141,11 +153,11 @@
           <div class="modal-body">
             <div id="alertContainer"></div>
             <form id="edit-email-form" method="post"> 
-                <label for="" class="form-label mt-3" >New E-mail adress :  </label>
+                <label for="" class="form-label mt-3" >Neue E-Mail-Adresse :  </label>
                 <input required type="email" class="form-control mb-3" id="newEmail">
-                <label for="" class="form-label mt-3" >Confirm new email address : </label>
+                <label for="" class="form-label mt-3" >Bestätige E-Mail-Adresse  : </label>
                 <input required type="email" class="form-control mb-3" id="confirmNewEmail">
-                <label for="" class="form-label mt-3" >password : </label>
+                <label for="" class="form-label mt-3" >Passwort : </label>
                 <input required type="password" class="form-control mb-3" id="passwordEmailUpdate">
                 
                 <!-- Move the button inside the form -->
@@ -160,8 +172,8 @@
                   >
                     Close
                   </button> -->
-                  <button id="btn-email-update" type="submit" class="btn btn-primary" >
-                    Save changes
+                  <button id="btn-email-update" type="submit" class="btn btn-black" >
+                    Speichern
                 </button>
                 </div>
             </form>
@@ -183,7 +195,7 @@
           <div class="col-6">
             <div>
               <div class="data-group mb-4 mb-lg-0 mt-lg-2">
-                <span class="h5 d-block">Email</span>
+                <span class="h5 d-block fw-bold">Email</span>
                 <span class="text-light text-black">{{user.email}}</span>
               </div>
             </div>
@@ -220,7 +232,8 @@
               class="modal-title fs-5"
               id="exampleModalLabel"
             >
-              Change your Passwrod
+            Passwort ändern
+
             </h1>
             <button
               type="button"
@@ -233,19 +246,19 @@
             <div id="alertpasswords"></div>
 
               <form id="password-change-form" method="posts"> 
-                <label for="" class="form-label mt-3" id="oldPass">Old Password : </label>
+                <label for="" class="form-label mt-3" id="oldPass">Altes Passwort : </label>
                 <input required type="password" class="form-control mb-3" id="password">
                 
-                  <label for="" class="form-label mt-3">New Password :  </label>
+                  <label for="" class="form-label mt-3"> Neues Passwort :  </label>
                   <input required type="password" class="form-control mb-3" id="newPass">
-                  <label for="" class="form-label mt-3">Confirm new Password : </label>
+                  <label for="" class="form-label mt-3"> Neues Password Bestätigen : </label>
                   <input required type="password" class="form-control mb-3" id="confirmNewPass">
 
                   
                   <div class="modal-footer">
 
-                    <button type="submit" class="btn btn-primary">
-                      Save changes
+                    <button type="submit" class="btn btn-black">
+                      Speichern
                     </button>
                   </div>
               </form>
@@ -267,7 +280,7 @@
           <div class="col-6">
             <div>
               <div class="data-group  mb-4 mb-lg-0 ">
-                <span class="h5 d-block">Dein Passwort</span>
+                <span class="h5 d-block fw-bold">Dein Passwort</span>
                 <span class="">******************</span>
               </div>
             </div>

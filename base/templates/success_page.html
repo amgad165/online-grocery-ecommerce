@@ -8,9 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   {% include 'include/links.html' %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/progress_tracker.css' %}">
 
-  <title>Home</title>
+  <title>Success</title>
+
+ <style>
+
+ </style> 
 </head>
+
 
 <body>
 <!-- side bar -->
@@ -24,43 +30,28 @@
 
 
 
-      <!-- Modal -->
-      <div class="modal fade" id="stripeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Checkout</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="payment-form">
-                  <!-- <div id="product-details"></div>   -->
-                  <div id="total-price"></div>  
-                  <div id="card-element"></div>
-                  <div id="card-errors" role="alert"></div>
-                  <button id="submit-button" type="submit" class="btn btn-primary mt-4">Submit Payment</button>
-              </form>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
 
   <main>
     <!-- landing section -->
-    <header class="d-flex justify-content-center align-items-center">
-      <div class="container " data-aos="fade-down">
-        <div class="row">
+    <section style="margin-bottom: 150px; margin-top: 100px;" class="d-flex justify-content-center">
+      <div  class="container" data-aos="fade-down">
+        <ol class="progress-tracker ms-4">
+          <li class="step completed"><a href="#" class="step-name">Daten</a></li>
+          <li class="step completed"><a href="#" class="step-name">Zahlung</a></li>
+          <li class="step active"><span class="step-name">Prüfen</span></li>
+        </ol>
+
+        <div class="row mt-5">
         <div class="col-12 text-center">
-          <h1 class="display-4">Payment Successful!</h1>
-          <p class="lead">Thank you for your purchase. Your transaction has been completed, and a receipt for your purchase has been emailed to you.</p>
-          <a href="{% url 'home' %}" class="btn btn-primary mt-3">Go to Home</a>
+          <h1 class="display-4">Vielen Dank für deine Bestellung !</h1>
+          <p >Vielen Dank für Ihren Einkauf. Ihre Transaktion wurde abgeschlossen, und eine Quittung für Ihren Einkauf wurde Ihnen per E-Mail zugesandt.</p>
+          <a href="{% url 'home' %}" class="btn btn-black mt-3">Startseite</a>
         </div>
 
         </div>
       </div>
-    </header>
+    </section>
 
     
 
@@ -76,9 +67,11 @@
   <script>
     AOS.init();
   </script>
+
+<script src="{% static 'Js/products.js' %}"></script>
+
     <script src="{% static 'Js/index.js' %}"></script>
 
-    <script src="{% static 'Js/products.js' %}"></script>
 
   <script src="{% static 'Js/custom.js' %}"></script>
 

@@ -1,18 +1,4 @@
-"""online_market URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from base import views
@@ -25,6 +11,8 @@ urlpatterns = [
     path('products/', views.products,name='products'),
     path('signup/', views.signup,name='signup'),
     path('login/', views.login_view,name='login_view'),
+    path('submit_contact/', views.submit_contact,name='submit_contact'),
+    path('success_contact/', views.success_contact,name='success_contact'),
 
     path('add_to_cart/', views.add_to_cart, name='add_to_cart'),
     path('update_cart/', views.update_cart, name='update_cart'),
@@ -37,6 +25,8 @@ urlpatterns = [
     # path('create_checkout_session/', views.create_checkout_session, name='create_checkout_session'),
 
     path('create_subscription/', views.create_subscription, name='create_subscription'),
+    path('create_one_time_payment/', views.create_one_time_payment, name='create_one_time_payment'),
+    path('submit_cash_payment/', views.submit_cash_payment, name='submit_cash_payment'),
 
     path('load_modal_data/', views.load_modal_data, name='load_modal_data'),
     path('stripe_webhook/', views.stripe_webhook, name='stripe_webhook'),
@@ -45,7 +35,6 @@ urlpatterns = [
 
 
     path('edit_profile/', views.edit_profile, name='edit_profile'),
-    path('confirm_order/', views.confirm_order, name='confirm_order'),
     path('get_orders/', views.get_orders, name='get_orders'),
     path('get_personal_info/', views.get_personal_info, name='get_personal_info'),
     path('update_email/', views.update_email, name='update_email'),
@@ -53,6 +42,8 @@ urlpatterns = [
     path('get_address/', views.get_address, name='get_address'),
     path('address_change/', views.address_change, name='address_change'),
 
+    path('confirm_order/', views.confirm_order, name='confirm_order'),
+    path('confirm_address/', views.confirm_address, name='confirm_address'),
 
     path('logout/', views.logout_view, name='logout'),
     # path('error/', views.error, name='error'),

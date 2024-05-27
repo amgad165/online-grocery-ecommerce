@@ -12,7 +12,7 @@
     <div class="billing-details">
       
       <div class="billing-details-content">
-        <h4 style="color: #0e8e92;" >Order date : {{order.ordered_date}} </h4>
+        <h4 style="color: #0e8e92;" >Bestelldatum : {{order.ordered_date}} </h4>
         {% for item in order.items.all  %}
         <div class="bil-title">{{item}}</div>
          <table>
@@ -31,7 +31,7 @@
          {% endfor %}
          <table class="mt-3">
          <tr class="br-top">
-          <td>Amount Paid</td>
+          <td>Bezahlte Summe</td>
           <td class="right-t">€ {{order.get_total}} EUR</td>
         </tr>
       </table>

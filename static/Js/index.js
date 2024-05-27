@@ -45,6 +45,7 @@ const passFirmError = document.getElementById('passFirmError');
 const vornamePrivInput= document.querySelector('#inputs-priv #vornamePriv');
 const nachnamePrivInput= document.querySelector('#inputs-priv #nachnamePriv');
 const emailPrivInput= document.querySelector('#inputs-priv #emailPriv');
+const phonePrivInput= document.querySelector('#inputs-priv #phonePriv');
 
 const bezirkPrivInput= document.querySelector('#inputs-priv #bezirkPriv');
 const street_addressPrivInput= document.querySelector('#inputs-priv #street_addressPriv');
@@ -93,6 +94,7 @@ function filterInputsAccordingToRole(button) {
     vornamePrivInput.setAttribute("required", "");
     nachnamePrivInput.setAttribute("required", "");
     emailPrivInput.setAttribute("required", "");
+    phonePrivInput.setAttribute("required", "");
 
     bezirkPrivInput.setAttribute("required", "");
     street_addressPrivInput.setAttribute("required", "");
@@ -147,7 +149,7 @@ function filterInputsAccordingToRole(button) {
     confpassFirmInput.setAttribute("required", "");
 
 
-    // remove required from inputs firm
+    // remove required from inputs priv
     vornamePrivInput.removeAttribute('required');
     nachnamePrivInput.removeAttribute('required');
 
@@ -157,6 +159,8 @@ function filterInputsAccordingToRole(button) {
     plz_zipPrivInput.removeAttribute('required');
 
     emailPrivInput.removeAttribute('required');
+    phonePrivInput.removeAttribute('required');
+
     passPrivInput.removeAttribute('required');
 
     roleInput.value = 'company';

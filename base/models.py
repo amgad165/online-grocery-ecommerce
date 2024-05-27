@@ -35,13 +35,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)
     first_name = models.CharField(_('first name'), max_length=150)
     last_name = models.CharField(_('last name'), max_length=150)
-    company_name = models.CharField(_('company name'), max_length=100, blank=True, null = True)
-    atu_number = models.CharField(_('ATU number'), max_length=20, blank=True, null = True)
+    company_name = models.CharField(_('company name'), max_length=100, blank=True, null=True)
+    atu_number = models.CharField(_('ATU number'), max_length=20, blank=True, null=True)
     role = models.CharField(_('role'), max_length=20, choices=ROLE_CHOICES, default=PRIVATE)
     is_active = models.BooleanField(_('active'), default=True)
     is_staff = models.BooleanField(_('staff status'), default=False)
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
-    
+    address_type = models.CharField(max_length=255, choices=[('billing', 'Billing'), ('delivery', 'Delivery')], blank=True, null=True)
+
     bezirk = models.CharField(max_length=255)
     street_address = models.CharField(max_length=255)
     hausnummer = models.CharField(max_length=255)
@@ -54,7 +55,26 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class InactiveCompanyUser(CustomUser):
+    class Meta:
+        proxy = True
+        verbose_name = 'Inactive Company User'
+        verbose_name_plural = 'Inactive Company Users'
+
+
+class DeliveryAddress(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='delivery_addresses')
+    bezirk = models.CharField(_('bezirk'), max_length=255)
+    street_address = models.CharField(_('street address'), max_length=255)
+    hausnummer = models.CharField(_('hausnummer'), max_length=255)
+    plz_zip = models.CharField(_('postal code'), max_length=255)
+    phone_number = models.CharField(_('phone number'), max_length=255)
+    additional_info = models.CharField(_('additional info'), max_length=255, blank=True, null=True)
     
+    def __str__(self):
+        return f'{self.street_address}, {self.bezirk}, {self.plz_zip}'
 
 
     
@@ -68,6 +88,7 @@ class Ingredient(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255, blank=True, null=True)
+    delivery = models.CharField(max_length=255, blank=True, null=True)
     category = models.CharField(max_length=255, choices=[('privat', 'Privat'), ('business', 'Business')])
     image = models.FileField(upload_to='product_images/')
     price = models.FloatField()
@@ -181,6 +202,21 @@ class Transaction(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     amount = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
-    subscription_type = models.CharField(max_length=255, choices=[('active', 'Active'), ('non active', 'Non Active'),('one time purchase', 'One Time Purchase')])
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True,related_name='transaction')
+    subscription_type = models.CharField(max_length=255, choices=[('active', 'Active'), ('non active', 'Non Active'),('one time purchase', 'One Time Purchase'),('cash', 'Cash')])
 
+
+    def __str__(self):
+        return f"user {self.user} - amount {self.amount} - created at {self.created_at} - order {self.order}"
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    telephone_number = models.CharField(max_length=255)
+    address = models.CharField(max_length=255,null=True,blank=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name

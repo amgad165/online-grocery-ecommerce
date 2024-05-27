@@ -1,0 +1,232 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>confirm address</title>
+  {% include 'include/links.html' %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/progress_tracker.css' %}">
+
+
+</head>
+
+<body>
+<!-- side bar -->
+{% include 'include/nav.html' %}
+
+  {% include 'include/aside.html' %}
+
+
+
+
+ 
+    <!-- confirm order section -->
+    <section id="confirm_order" class="d-flex justify-content-center mt-5">
+      <div class="container " data-aos="fade-down">
+        <ol class="progress-tracker">
+            <li class="step active"><a href="#" class="step-name">Daten</a></li>
+            <li class="step "><a href="#" class="step-name">Zahlung</a></li>
+            <li class="step"><span class="step-name">Prüfen</span></li>
+          </ol>
+        
+          <div class="row mt-5 mb-5">
+            <h4 class="fw-bold mb-4">Rechnungsadresse</h4>
+            <div class="col-md-12 mb-3">
+              <div class="form-floating">
+                <input disabled type="text" id="input3" name="input3" value="Österreich" class="form-control" placeholder=" " />
+                <label for="input3">Land*</label>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-floating">
+                <input disabled type="text" id="input1" name="input1" class="form-control" placeholder=" " value="{{user.first_name}}" />
+                <label for="input1">Vorname*</label>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-floating">
+                <input disabled type="text" id="input2" name="input2" class="form-control" placeholder=" " value="{{user.last_name}}" />
+                <label for="input2">Nachname*</label>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-floating">
+                <input disabled type="text" id="input4" name="input4" class="form-control" placeholder=" " value="{{user.street_address}}" />
+                <label for="input4">Adresse</label>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-floating">
+                <input disabled type="text" id="input8" name="input8" class="form-control" placeholder=" " value="{{user.hausnummer}}" />
+                <label for="input8">Hausnummer*</label>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="form-floating">
+                <input disabled type="text" id="input6" name="input6" class="form-control" placeholder=" " value="{{user.plz_zip}}" />
+                <label for="input6">PlZ</label>
+              </div>
+            </div>
+            <div class="col-md-9 mb-3">
+              <div class="form-floating">
+                <input disabled type="text" id="input7" name="input7" class="form-control" placeholder=" " value="{{user.bezirk}}" />
+                <label for="input7">Bezirk*</label>
+              </div>
+            </div>
+
+            
+            {% if user.atu_number %}
+            <div class="col-md-6 mb-3">
+              <div class="form-floating">
+                <input disabled type="text" id="input9" name="input9" class="form-control" placeholder=" " value="{{user.atu_number}}" />
+                <label for="input9">Telefonnummer*</label>
+              </div>
+            </div>
+            {% endif %}
+              
+
+            <div class="col-md-12">
+              <hr>
+            </div>
+            <div class="col-md-12 mt-5 ms-4">
+                <h4 class="fw-bold mb-4">Lieferadresse</h4>
+            </div>
+            <form method="POST">
+              {% csrf_token %}
+              
+              <!-- Radio buttons for address selection -->
+              <div class="custom-radio">
+                  <div class="col-md-12 ms-4 d-flex align-items-center">
+                      <input class="form-check-input" type="radio" name="addressType" id="billingAddress" value="billing" checked>
+                      <label class="form-check-label" for="billingAddress">
+                          Rechnungsadresse
+                      </label>
+                  </div>
+                  <div class="col-md-12">
+                      <hr>
+                  </div>
+                  <div class="col-md-12 ms-4 d-flex align-items-center">
+                      <input class="form-check-input" type="radio" name="addressType" id="shippingAddress" value="delivery">
+                      <label class="form-check-label" for="shippingAddress">
+                          Neue Lieferadresse
+                      </label>
+                  </div>
+              </div>
+          
+              <!-- Shipping Address Fields -->
+              <div id="shippingAddressFields" class="address-fields mt-3" style="display: none;">
+                  <div class="row">
+                      <div class="col-md-12 mb-3">
+                          <div class="form-floating">
+                              <input disabled type="text" id="input3_shipping" name="input3_shipping" class="form-control" placeholder=" " value="Österreich" />
+                              <label for="input3_shipping">Land*</label>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="form-floating">
+                              <input disabled type="text" id="input1_shipping" name="input1_shipping" class="form-control" placeholder=" " value="{{ user.first_name}}" />
+                              <label for="input1_shipping">Vorname*</label>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="form-floating">
+                              <input disabled type="text" id="input2_shipping" name="input2_shipping" class="form-control" placeholder=" " value="{{ user.last_name}}" />
+                              <label for="input2_shipping">Nachname*</label>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                          <div class="form-floating">
+                              <input  type="text" id="input4_shipping" name="input4_shipping" class="form-control" placeholder=" " value="{{ delivery_address.street_address|default:'' }}" />
+                              <label for="input4_shipping">Adresse*</label>
+                          </div>
+                      </div>
+                      <div class="col-md-12 mb-3">
+                          <div class="form-floating">
+                              <input  type="text" id="input5_shipping" name="input5_shipping" class="form-control" placeholder=" " value="{{ delivery_address.additional_info|default:'' }}" />
+                              <label for="input5_shipping">Zusatzadresse</label>
+                          </div>
+                      </div>
+                      <div class="col-md-3 mb-3">
+                          <div class="form-floating">
+                              <input  type="text" id="input6_shipping" name="input6_shipping" class="form-control" placeholder=" " value="{{ delivery_address.plz_zip|default:'' }}" />
+                              <label for="input6_shipping">PlZ*</label>
+                          </div>
+                      </div>
+                      <div class="col-md-9 mb-3">
+                          <div class="form-floating">
+                              <input  type="text" id="input7_shipping" name="input7_shipping" class="form-control" placeholder=" " value="{{ delivery_address.bezirk|default:'' }}" />
+                              <label for="input7_shipping">Bezirk*</label>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="form-floating">
+                              <input  type="text" id="input8_shipping" name="input8_shipping" class="form-control" placeholder=" " value="{{ delivery_address.hausnummer|default:'' }}" />
+                              <label for="input8_shipping">Hausnummer*</label>
+                          </div>
+                      </div>
+                      <div class="col-md-6 mb-3">
+                          <div class="form-floating">
+                              <input  type="text" id="input9_shipping" name="input9_shipping" class="form-control" placeholder=" " value="{{ delivery_address.telefonnummer|default:'' }}" />
+                              <label for="input9_shipping">Telefonnummer*</label>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="text-center mt-5">
+              <button class="btn btn-black" type="submit">Weiter zur Zahlung</button>
+            </div>
+          </form>
+            </div>
+          </div>
+    </div>
+</div>
+    </section>
+  
+
+  
+  {% include 'include/footer.html' %}
+
+
+  {% include 'include/scripts.html' %}
+
+  <script src="{% static 'Js/products.js' %}"></script>
+
+  <script src="{% static 'Js/index.js' %}"></script>
+
+
+<script src="{% static 'Js/custom.js' %}"></script>
+
+  <script>
+$(document).ready(function() {
+    $('input[name="addressType"]').on('change', function() {
+        if ($(this).val() === 'delivery') {
+            $('#shippingAddressFields').fadeIn();
+            $('#shippingAddressFields input').prop('required', true);
+        } else {
+            $('#shippingAddressFields').fadeOut();
+            $('#shippingAddressFields input').prop('required', false);
+        }
+    });
+});
+  </script>
+
+
+
+
+  <script src="https://js.stripe.com/v3/"></script>
+    
+  {% include 'include/ajax_functions.html' %}
+
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+</body>
+
+</html>

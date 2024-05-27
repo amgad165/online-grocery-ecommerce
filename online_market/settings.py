@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*z+j51ruu^)(c3iqissx-w&gkjbq&1v_g9(1wbk87lm20@67a#'
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -107,9 +109,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de-at'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Vienna'
 
 USE_I18N = True
 
@@ -129,15 +131,32 @@ STATIC_ROOT=os.path.join(BASE_DIR,"staticfiles")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+
+
+
+
+
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51P9KSX01O1w15fHJhKHozeBCAhQt9aX6mwcFhnBiTYVyJyW5fGz1qrXPdW5ZdeerE5vUoEo3S1b0BqO8YWICTuva00yaKIkdCY'
-STRIPE_SECRET_KEY = 'sk_test_51P9KSX01O1w15fHJt06FYYmI82BXvDeywQd0qs85daNDWpbC7KMijItxlkwzT74Xe2coCd1AapGNpxV9BGzXqIfW00zkDUDxVp'
-ENDPOINT_SECRET = 'whsec_5bad0386a1ad4469c396aafce839ee67acfd6aa2ac22b05c50af4b711a843e93'
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = "sm-handels"
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+ENDPOINT_SECRET = config('ENDPOINT_SECRET')
 
 BACKEND_DOMAIN = 'http://127.0.0.1:8000'
 PAYMENT_SUCCESS_URL = 'http://127.0.0.1:8000/success/'
@@ -147,7 +166,11 @@ PAYMENT_CANCEL_URL = 'http://127.0.0.1:8000/cancel/'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp-mail.outlook.com"
 EMAIL_HOST_USER = "office@smhandels.onmicrosoft.com"
-EMAIL_HOST_PASSWORD = "2024Moh2024"
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+
+
+

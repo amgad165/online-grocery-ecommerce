@@ -80,9 +80,57 @@ def products(request):
 
 
 @login_required
+def submit_cash_payment(request):
+    # Determine the type of transaction based on billing_reason
+    
+    try:
+        order = Order.objects.filter(user=request.user, ordered=False).first()
+        order.ordered = True
+        order.save()
+
+
+        order_items = order.items.all()
+        order_items.update(ordered=True)
+        items_lists = []
+        index = 1
+        for item in order_items:
+            item.save()
+            # Start with the order item's string representation
+            item_details = f"{index}- {item}"
+            # Fetch and format all related IngredientUserCustomize objects
+            customized_ingredients = item.ingredients_customized.all()
+            ingredient_details = []
+            for ingredient in customized_ingredients:
+                ingredient_details.append(f"    - {ingredient}")
+            # Join all ingredient details and append to the item details
+            if ingredient_details:
+                item_details += "<br>    " + "<br>    ".join(ingredient_details)
+            items_lists.append(item_details)
+            index += 1
+
+        items_lists = '<br> '.join(items_lists)
+    
+        # Record the transaction
+        Transaction.objects.create(
+            user=order.user,
+            amount=order.get_total(),  # Convert cents to euros
+            order=order,
+            subscription_type="cash"  # Set based on billing_reason
+        )
+
+        mail(order,settings.EMAIL_HOST_USER, items_lists)
+
+
+        return redirect('success_page')
+    except:
+        return redirect('fail_page')
+
+@login_required
 def create_subscription(request):
     data = json.loads(request.body)
     payment_method_id = data.get('paymentMethodId')
+    final_price = float(data.get('final_price'))
+
     
     if not payment_method_id:
         return JsonResponse({'error': 'Payment Method ID is required'}, status=400)
@@ -115,6 +163,7 @@ def create_subscription(request):
             # Set the payment method as the default for invoices
             stripe.Customer.modify(
                 customer.id,
+                email=user.email,
                 invoice_settings={'default_payment_method': payment_method_id},
             )
 
@@ -124,7 +173,7 @@ def create_subscription(request):
             return JsonResponse({'error': 'No active order found'}, status=404)
 
         # Calculate the total price based on the order
-        total_price = int(order.get_total() * 100)  # Convert to cents
+        total_price = int(final_price * 100)  # Convert to cents
 
         # Create a price object dynamically
         price = stripe.Price.create(
@@ -147,7 +196,56 @@ def create_subscription(request):
     except stripe.error.StripeError as e:
         return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
+@login_required
+def create_one_time_payment(request):
+    data = json.loads(request.body)
+    amount = float(data.get('amount'))  
 
+    if not amount:
+        return JsonResponse({'error': 'Amount is required'}, status=400)
+
+    user = request.user
+    profile, created = UserSubscription.objects.get_or_create(user=user)
+
+    try:
+        if not profile.stripe_customer_id:
+            # Create a new Stripe customer and attach the payment method
+            customer = stripe.Customer.create(
+                email=user.email,
+            )
+            profile.stripe_customer_id = customer.id
+            profile.save()
+        else:
+            # Retrieve the existing customer
+            customer = stripe.Customer.retrieve(profile.stripe_customer_id)
+            # Attach the payment method to the customer if not already attached
+
+            # Set the payment method as the default for invoices
+            stripe.Customer.modify(
+                customer.id,  
+                email=user.email,    
+            )
+
+        user = request.user
+
+        # Retrieve or create the order
+        order = Order.objects.filter(user=user, ordered=False).first()
+        if not order:
+            return JsonResponse({'error': 'No active order found'}, status=404)
+
+
+        # Create a PaymentIntent with the order amount and currency
+        intent = stripe.PaymentIntent.create(
+            customer=customer.id,
+            amount=int(amount * 100),  # Convert to cents
+            currency='eur',
+            payment_method_types=['card'],
+            metadata={'order_id': order.id}
+        )
+
+        return JsonResponse({'clientSecret': intent.client_secret})
+    except stripe.error.StripeError as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 
 
@@ -192,7 +290,8 @@ def stripe_webhook(request):
         'customer.subscription.updated': handle_subscription_updated,
         'customer.subscription.deleted': handle_subscription_deleted,
         'charge.refunded': handle_charge_refunded,
-        'charge.failed': handle_charge_failed
+        'charge.failed': handle_charge_failed,
+        'payment_intent.succeeded': handle_payment_intent_succeeded,
     }
 
     handler = event_handlers.get(event['type'])
@@ -222,7 +321,6 @@ def handle_payment_success(invoice):
     try:
         order = Order.objects.get(id=order_id)
         order.ordered = True
-        order.being_delivered = True
         order.save()
 
 
@@ -259,6 +357,61 @@ def handle_payment_success(invoice):
 
 
         print("Payment succeeded for invoice:", invoice['id'])
+    except Order.DoesNotExist:
+        print(f"Order with id {order_id} does not exist.")
+
+
+def handle_payment_intent_succeeded(payment_intent):
+    # Determine the type of transaction based on billing_reason
+
+    transaction_type = 'one time purchase'
+
+    # Extract order_id safely
+    metadata = payment_intent.get('metadata', {})
+    order_id = metadata.get('order_id')
+    if not order_id:
+        print("No order_id found in payment_intent metadata.")
+        return
+
+    try:
+        order = Order.objects.get(id=order_id)
+        order.ordered = True
+        order.save()
+
+
+        order_items = order.items.all()
+        order_items.update(ordered=True)
+        items_lists = []
+        index = 1
+        for item in order_items:
+            item.save()
+            # Start with the order item's string representation
+            item_details = f"{index}- {item}"
+            # Fetch and format all related IngredientUserCustomize objects
+            customized_ingredients = item.ingredients_customized.all()
+            ingredient_details = []
+            for ingredient in customized_ingredients:
+                ingredient_details.append(f"    - {ingredient}")
+            # Join all ingredient details and append to the item details
+            if ingredient_details:
+                item_details += "<br>    " + "<br>    ".join(ingredient_details)
+            items_lists.append(item_details)
+            index += 1
+
+        items_lists = '<br> '.join(items_lists)
+    
+        # Record the transaction
+        Transaction.objects.create(
+            user=order.user,
+            amount=payment_intent['amount'] / 100,  # Convert cents to euros
+            order=order,
+            subscription_type=transaction_type  # Set based on billing_reason
+        )
+
+        mail(order,settings.EMAIL_HOST_USER, items_lists)
+
+
+        print("Payment succeeded for payment intent:", payment_intent['id'])
     except Order.DoesNotExist:
         print(f"Order with id {order_id} does not exist.")
 
@@ -468,7 +621,7 @@ def update_email(request):
 
         # Validate password
         if not check_password(password, user.password):
-            return JsonResponse({'error': 'Invalid password'}, status=400)
+            return JsonResponse({'error': 'Ungültiges Passwort'}, status=400)
 
         # Check if the email already exists
         if CustomUser.objects.exclude(pk=user.pk).filter(email=email).exists():
@@ -514,34 +667,72 @@ def my_orders_view(request):
     return render(request, 'my_orders_page.html', {'orders_html': orders_html})
 
 
+
+
 @login_required
 def confirm_order(request):
-    user = request.user
-    
     try:
-        order = Order.objects.get(user=user, ordered=False)
-        order_items = order.items.all()
+        order = Order.objects.get(user = request.user, ordered=False)
+    except:
+        order = None
+
+    context = {'order':order}
+
+
+    return render(request, 'confirm_order.html',context)
+    
+@login_required
+def confirm_address(request):
+    delivery_address = None
+    if request.method == 'POST':
+        address_type = request.POST.get('addressType')
         
-        order_items.update(ordered=True)
-        items_lists = []
-        index = 1
-        for item in order_items:
-            item.save()        
+        if address_type == 'delivery':
+            # Get the shipping address fields from the form
+            bezirk = request.POST.get('input7_shipping')
+            street_address = request.POST.get('input4_shipping')
+            hausnummer = request.POST.get('input8_shipping')
+            plz_zip = request.POST.get('input6_shipping')
+            additional_info = request.POST.get('input5_shipping')
+            
+            # Check if the user already has a delivery address
+            delivery_address, created = DeliveryAddress.objects.get_or_create(user=request.user)
+            
+            # Update the delivery address
+            delivery_address.bezirk = bezirk
+            delivery_address.street_address = street_address
+            delivery_address.hausnummer = hausnummer
+            delivery_address.plz_zip = plz_zip
+            delivery_address.additional_info = additional_info
+            delivery_address.save()
 
-        order.ordered = True
+            current_user = request.user
+            current_user.address_type = 'delivery'
+            current_user.save()
 
-        order.save()
+            return redirect('confirm_order')  
+            
+        else:
+            current_user = request.user
+            current_user.address_type = 'billing'
+            current_user.save()
+            return redirect('confirm_order')  
 
-        return redirect('products')  
+    else:
+        # Check if the user already has a delivery address
+        try:
+            delivery_address = DeliveryAddress.objects.get(user=request.user)
+        except DeliveryAddress.DoesNotExist:
+            delivery_address = None
 
-    except Exception as e:
-        
-        
-        return HttpResponseServerError("A serious error occurred. We have been notified.", content_type="text/plain")
+    try:
+        order = Order.objects.get(user = request.user, ordered=False)
+    except:
+        order = None
 
+    context = {'order':order,'delivery_address': delivery_address}
 
-
-
+    return render(request, 'confirm_address.html', context)
 
 def signup(request):
     if request.method == 'POST':
@@ -551,8 +742,18 @@ def signup(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password1'])
             user.save()
-            login(request, user)
-            return JsonResponse({'success': True})  # Return success JSON response
+
+            if user.role == "company":
+                user.is_active = False
+                mail(None,settings.EMAIL_HOST_USER, None, user = user,kind = "company_confirmation")
+                user.save()
+                return JsonResponse({'waiting_acceptance': "your account has been created and waiting for approval"})
+
+            else:
+                login(request, user)
+                return JsonResponse({'success': True})  # Return success JSON response
+
+
         else:
             error_message = list(form.errors.values())[0][0]
             return JsonResponse({'error': error_message}, status=400)
@@ -575,67 +776,6 @@ def login_view(request):
 
 
 
-# @login_required
-# def add_to_cart(request):
-#     if request.method == 'POST':
-#         product_id = request.POST.get('id')
-#         # id = request.data.get('id', None)
-#         qty = request.POST.get('qty')
-
-#         current_user = request.user
-#         product = get_object_or_404(Product, id=product_id)
-
-#         order_item_qs = OrderItem.objects.filter(
-#             product=product,
-#             user=current_user,
-#             ordered=False
-#         )
-
-
-#         if order_item_qs.exists():
-#             order_item = order_item_qs.first()
-#             if qty:
-#                 order_item.quantity += qty
-#             else:
-#                 order_item.quantity += 1
-#             order_item.save()
-#         else:
-#             if qty:
-#                 order_item = OrderItem.objects.create(
-#                 product=product,
-#                 user=current_user,
-#                 ordered=False,
-#                 quantity=qty
-#                 )           
-#             else:
-#                 order_item = OrderItem.objects.create(
-#                     product=product,
-#                     user=current_user,
-#                     ordered=False
-#                 )
-#             order_item.save()
-
-#         order_qs = Order.objects.filter(user=current_user, ordered=False)
-        
-#         if order_qs.exists():
-#             order = order_qs[0]
-#             if not order.items.filter(product__id=order_item.id).exists():
-#                 order.items.add(order_item)
-
-
-#         else:
-#             ordered_date = timezone.now()
-#             order = Order.objects.create(
-#                 user=current_user, ordered_date=ordered_date)
-#             order.items.add(order_item)
-
-#         cart_items = order.items.all()
-#         total_quantity = sum(item.quantity for item in cart_items)
-
-#         return JsonResponse({'success': 'Item added to cart', 'cart_items_count': total_quantity})
-    
-
-
 @login_required
 def add_to_cart(request):
     if request.method == 'POST':
@@ -648,7 +788,6 @@ def add_to_cart(request):
         print(ingredient_quantities)
         if ingredient_quantities:
 
-            print('hello')
 
 
             current_user = request.user
@@ -772,11 +911,62 @@ def remove_item(request):
 
 
 def success_page(request):
-    return render(request, 'success_page.html')
+    try:
+        order = Order.objects.get(user = request.user, ordered=False)
+    except:
+        order = None
+
+    context = {'order':order}
+
+    return render(request, 'success_page.html', context)
 
 def fail_page(request):
-    return render(request, 'fail_page.html')
+    try:
+        order = Order.objects.get(user = request.user, ordered=False)
+    except:
+        order = None
 
+    context = {'order':order}
+    return render(request, 'fail_page.html', context)
+
+
+
+
+
+
+
+def submit_contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        message = request.POST.get('message')
+        
+        # Create and save the contact instance
+        contact = Contact(
+            name=name,
+            email=email,
+            telephone_number=phone,
+            address = address,
+            message=message
+        )
+        contact.save()
+
+        # Redirect to a success page
+        return redirect('success_contact')
+    
+    return render(request, 'index.html')  # If not POST, render the index page again
+
+
+def success_contact(request):
+    try:
+        order = Order.objects.get(user = request.user, ordered=False)
+    except:
+        order = None
+
+    context = {'order':order}
+    return render(request, 'success_contact.html', context)
 
 @login_required
 def logout_view(request):

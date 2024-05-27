@@ -41,8 +41,8 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <!-- Add your dropdown menu items here -->
-              <li><a class="dropdown-item fw-bold" href="{% url 'edit_profile' %}">Setting</a></li>
-              <li><a class="dropdown-item fw-bold" href="{% url 'logout' %}">Log Out</a></li>
+              <li><a class="dropdown-item fw-bold" href="{% url 'edit_profile' %}">Profil</a></li>
+              <li><a class="dropdown-item fw-bold" href="{% url 'logout' %}">Abmelden</a></li>
             </ul>
           </li>
 
@@ -63,7 +63,7 @@
       </div>
       {% if user.is_authenticated %}
 
-      <div class="icon-cart-container" id="icon-cart-container">
+      <div class="icon-cart-container p-1" id="icon-cart-container">
         <img src="{% static 'Bilder/cart.png' %}" class="icon-cart" id="cartIcon"> 
         
         {% if total_quantity > 0 %}

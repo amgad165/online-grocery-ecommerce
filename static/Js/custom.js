@@ -8,12 +8,16 @@ $(document).ready(function() {
         // Send AJAX request
         $.ajax({
             type: 'POST',
-            url: '/signup/', // Replace '/signup/' with your signup URL
+            url: '/signup/', 
             data: formData,
             dataType: 'json',
             success: function(response) {
- 
-                    // Redirect to success page or perform other actions
+                
+                    if (response.waiting_acceptance) {
+                        // Create an alert if waiting for acceptance
+                        alert(response.waiting_acceptance);
+                    }
+
                     window.location.href = '';
                 
             },

@@ -52,6 +52,10 @@
     
         </div>
   
+        
+        {% if order %}
+          
+          
         <div class="bg-gray px-5 py-4  add-to-cart ">
           <div class="d-flex  justify-content-between sidebarFooter">
             <span class="fs-2">Zwischensumme</span>
@@ -59,15 +63,16 @@
           </div>
             <p>Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet.</p>
   
-            <!-- <a id="checkout-button" class="btn btn-black w-100" href="{% url 'confirm_order' %}">ZUR KASSE</a> -->
+            <a  class="btn btn-black w-100" href="{% url 'confirm_address' %}">ZUR KASSE</a>
             
-            <a id="checkout-button" class="btn btn-black w-100" data-bs-toggle="modal" data-bs-target="#stripeModal">ZUR KASSE</a>
-  
+            <!-- <a id="checkout-button" class="btn btn-black w-100" data-bs-toggle="modal" data-bs-target="#stripeModal">ZUR KASSE</a> -->
+
   
   
         </div>
   
   
-        
+        {% endif %}
+
       </div>
       </aside>

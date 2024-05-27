@@ -1,0 +1,299 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>confirm order</title>
+  {% include 'include/links.html' %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/progress_tracker.css' %}">
+
+<style>
+  #loadingGif {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Make sure it appears above other content */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+.custom-margin {
+  
+margin-bottom: 150px;
+}
+</style>
+
+</head>
+
+<body>
+<!-- side bar -->
+
+
+
+  {% include 'include/nav.html' %}
+
+  {% include 'include/aside.html' %}
+
+  <div id="loadingGif" style="display: none;">
+    <img src="{% static 'bilder/loading.gif' %}" alt="Loading...">
+</div>
+    <!-- confirm order section -->
+    <section id="confirm_order" class="d-flex justify-content-center mt-5">
+      <div class="container " data-aos="fade-down">
+        <ol class="progress-tracker">
+            <li class="step completed "><a href="#" class="step-name">Daten</a></li>
+            <li class="step active"><a href="#" class="step-name">Zahlung</a></li>
+            <li class="step"><span class="step-name">Prüfen</span></li>
+          </ol>
+        
+          <div class="row mt-5 mb-5">
+   
+            <h4 class="fw-bold mb-4">Zahlungsart</h4>
+            
+            {% if user.role == "private" %}
+            <div class="col-md-12">
+              <hr>
+            </div>
+
+            <div class="subscription-container fs-4 mb-5">
+              <h2>Abonnement </h2>
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-check subscription-option">
+                          <input class="form-check-input" type="radio" name="subscription" id="daily" value="daily">
+                          <label class="form-check-label" for="daily">1x täglich </label>
+                      </div>
+                      <div class="form-check subscription-option">
+                          <input class="form-check-input" type="radio" name="subscription" id="weekly" value="weekly">
+                          <label class="form-check-label" for="weekly">1x wöchentlich </label>
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="form-check subscription-option">
+                          <input class="form-check-input" type="radio" name="subscription" id="monthly" value="monthly">
+                          <label class="form-check-label" for="monthly">1x monatlich </label>
+                      </div>
+ 
+                      <div class="form-check subscription-option">
+                        <input checked class="form-check-input" type="radio" name="subscription" id="one_time" value="one_time">
+                        <label class="form-check-label" for="one_time">Einmalzahlung </label>
+                    </div>
+                  </div>
+              </div>
+
+          </div>
+
+              <hr>
+              {% else %}
+              <div hidden class="form-check subscription-option">
+                <input checked class="form-check-input" type="radio" name="subscription" id="one_time" value="one_time">
+                <label class="form-check-label" for="one_time">Einmalzahlung </label>
+            </div>
+              {% endif %}
+              <div class="fs-4">
+              
+                {% if user.role == "company" %}
+                <div class="form-check payment-option">
+                    <input class="form-check-input" type="radio" name="paymentMethod" id="cashPayment" value="cash">
+                    <label class="form-check-label" for="cashPayment">Barzahlung</label>
+                </div>
+            {% endif %}
+            
+            <div class="form-check payment-option">
+                <input checked class="form-check-input" type="radio" name="paymentMethod" id="cardPayment" value="card">
+                <label class="form-check-label" for="cardPayment">Kartenzahlung</label>
+            </div>
+            
+
+            <div class="mb-3 mt-3"  id="total-price"></div>
+              <div style="display: none;" id="min-charge-message" class="alert alert-danger fs-5" >Der Mindestbetrag beträgt €50</div>
+            
+            <!-- div for checkout -->
+            <div class="checkout-container" id="checkout-container">
+              <div class="col-lg-3 col-12 mt-5 mb-3">
+                <img class="img-fluid w-100" src="{% static 'Bilder/pay_icons.png' %}" alt="">
+            </div>
+                <div class="col-lg-6 col-12">
+                  <form id="payment-form">
+                    <div class="">
+                      <div class="row flex fs-4">
+                      <div class="col-12">
+                          <label for="card-number-element">Kartennummer</label>
+                          <div id="card-number-element" class="form-control p-3"></div>
+                      </div>
+                      <div class="col-6">
+                          <label for="card-expiry-element">Gültig bis MM/JJ</label>
+                          <div id="card-expiry-element" class="form-control p-3"></div>
+                      </div>
+                      <div class="col-6">
+                          <label for="card-cvc-element">Sicherheitscode</label>
+                          <div id="card-cvc-element" class="form-control p-3"></div>
+                      </div>
+                      <div class="text-danger" id="card-errors" role="alert"></div>
+                  </div>
+                    </div>
+                    <div id="checkout-card-container" class="text-md-start text-center">
+                    <button id="submit-button" type="submit" class="btn btn-black mt-4 loading_gif">Zahlung abschließen  </button>
+                  </div>
+                </form>
+                </div>
+            </div>
+            
+            <div class="checkout-cash-container text-center text-md-start" id="checkout-cash-container" style="display: none;">
+                              <a class="btn btn-black mt-4 loading_gif" href="{% url 'submit_cash_payment' %}">Barzahlung bei Lieferung </a>
+            </div>
+
+    </div>
+          </div>
+          
+              
+
+ 
+            </div>
+          </div>
+    </div>
+</div>
+    </section>
+  
+
+
+  {% include 'include/footer.html' %}
+
+
+  {% include 'include/scripts.html' %}
+
+  <script src="{% static 'Js/products.js' %}"></script>
+
+  <script src="{% static 'Js/index.js' %}"></script>
+
+
+<script src="{% static 'Js/custom.js' %}"></script>
+
+  <script>
+   
+    // Function to update the total price based on subscription type
+    function updateTotalPrice() {
+      
+        const daily = document.getElementById('daily');
+        const weekly = document.getElementById('weekly');
+        const monthly = document.getElementById('monthly');
+        const totalPriceDiv = document.getElementById('total-price');
+
+        // Retrieve the original base price from the data attribute
+        let basePrice = parseFloat(totalPriceDiv.getAttribute('data-total-price'));
+
+        let finalPrice = basePrice;
+
+        if (daily.checked) {
+            finalPrice = basePrice * 30; // daily price multiplied by 30 days
+        } else if (weekly.checked) {
+            finalPrice = basePrice * 4; // weekly price multiplied by 4 weeks
+        }
+
+        totalPriceDiv.textContent = `Gesamtsumme: €${finalPrice.toFixed(2)}`;
+        totalPriceDiv.setAttribute('data-final-price', finalPrice.toFixed(2));
+
+    }
+
+    // Add event listeners to radio inputs
+    const radios = document.querySelectorAll('input[name="subscription"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', updateTotalPrice);
+    });
+
+</script>
+
+
+<script>
+  document.querySelectorAll('input[name="paymentMethod"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+          if (this.value === 'cash') {
+              document.getElementById('checkout-container').style.display = 'none';
+              
+              document.getElementById('checkout-cash-container').style.display = 'block';
+
+              document.getElementById('checkout-cash-container').classList.add('custom-margin');
+          } else {
+              document.getElementById('checkout-container').style.display = 'block';
+              document.getElementById('checkout-cash-container').style.display = 'none';
+              
+          }
+      });
+  });
+</script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.loading_gif').forEach(function(element) {
+      element.addEventListener('click', function() {
+          setTimeout(function() {
+              var cardErrors = document.getElementById('card-errors');
+              if (cardErrors && cardErrors.textContent.trim() === '') {
+                  document.getElementById('loadingGif').style.display = 'block';
+              }
+          }, 1500); // Wait for 500 milliseconds (adjust as needed)
+      });
+  });
+});
+</script>
+
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+
+  <script src="https://js.stripe.com/v3/"></script>
+    
+  {% include 'include/ajax_functions.html' %}
+
+  {% include 'include/stripe_functions.html' %}
+
+
+
+
+  <script>
+    $(document).ready(function() {
+        const totalPriceDiv = $('#total-price');
+        const minChargeMessage = $('#min-charge-message');
+    
+        // Function to check and enforce minimum total price
+        function checkMinTotalPrice() {
+            let finalPrice = parseFloat(totalPriceDiv.attr('data-final-price'));
+            let originalPrice = parseFloat(totalPriceDiv.attr('data-original-price')); // Retrieve the original price
+    
+            console.log(finalPrice);
+            // If the final price is less than 50, update it to 50 and show the message
+            if (finalPrice < 50) {
+                console.log('Minimum charge');
+                originalPrice = finalPrice; // Store the original price
+                finalPrice = 50;
+                totalPriceDiv.text(`Gesamtsumme: €${finalPrice.toFixed(2)}`);
+                totalPriceDiv.attr('data-final-price', finalPrice.toFixed(2));
+                totalPriceDiv.attr('data-original-price', originalPrice.toFixed(2)); // Update the original price attribute
+                minChargeMessage.css('display', 'block'); // Show the minimum charge message
+                minChargeMessage.text(`Die Bestellsumme beträgt: €${originalPrice.toFixed(2)}. Mindestgebühr in Höhe von €50 wurde angewendet.`); // Display the original price in the message along with the minimum charge
+            } else {
+                console.log('No minimum charge');
+                minChargeMessage.css('display', 'none'); // Hide the minimum charge message
+            }
+        }
+    
+        // Perform initial check after a delay when the page loads
+        setTimeout(checkMinTotalPrice, 100); // Adjust the delay as needed
+    
+        // Add event listeners to radio inputs to recheck the total price whenever it changes
+        $('input[name="subscription"]').change(checkMinTotalPrice);
+    });
+    </script>
+</body>
+
+</html>

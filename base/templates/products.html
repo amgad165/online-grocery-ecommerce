@@ -21,27 +21,7 @@
 
 
 
-      <!-- Modal -->
-      <div class="modal fade" id="stripeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Checkout</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="payment-form">
-                  <!-- <div id="product-details"></div>   -->
-                  <div id="total-price"></div>  
-                  <div id="card-element"></div>
-                  <div id="card-errors" role="alert"></div>
-                  <button id="submit-button" type="submit" class="btn btn-primary mt-4">Submit Payment</button>
-              </form>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
 
     <main>
       {% if user.role == "private" %}
@@ -61,21 +41,17 @@
           
               
             <div class="col-md-6 col-lg-4 p-3">
-              <div class="bg-white p-4 h-100">
-                <img
-                  src="{{ product.image.url }}"
-                  class="w-100 translated-img"
-                  alt=""
-                />
+              <div class="bg-white p-4 h-100 position-relative">
+                <div class="product-image-container">
+                  <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
+                  <div class="overlay-text">{{product.name}}</div>
+                </div>
                 <p class="fs-6 fw-semibold">
-                      {{product.description}}
+                  {{product.description}}
                 </p>
-                <a href="" class="btn btn-orange d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}"
-                  >Jetzt Bestellen</a
-                >
+                <a href="" class="btn btn-orange d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
               </div>
             </div>
-
 
 
 
@@ -97,17 +73,31 @@
                 <h1>Konfiguriere deine Box</h1>
                 <i class="fa-solid fa-x pointer-cursor" data-bs-dismiss="modal"></i>
               </div>
-              <div class="size-selection">
-                <button type="button" class="btn btn-outline-primary size-btn" data-max-quantity="5" data-size="S">S</button>
-                <button type="button" class="btn btn-outline-primary size-btn" data-max-quantity="10" data-size="M">M</button>
-                <button type="button" class="btn btn-outline-primary size-btn" data-max-quantity="15" data-size="L">L</button>
-                <p id="size-info" class="text-muted"></p>
-              </div>
+
 
               <div class="col-12 col-lg-6 mt-4  p-3 p-lg-5 ">
                 <div class="row gap-4"> 
+                  {% if product.customize %}
+                  <div class="size-selection">
+                    <h4>Boxgröße</h4>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeS" value="S" data-max-quantity="5" checked>
+                      <label class="form-check-label" for="sizeS">S (max 5 kg)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeM" value="M" data-max-quantity="10">
+                      <label class="form-check-label" for="sizeM">M (max 10 kg)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeL" value="L" data-max-quantity="15">
+                      <label class="form-check-label" for="sizeL">L (max 15 kg)</label>
+                    </div>
+                  </div>
+                {% endif %} 
+                  <h4>Inhalt</h4>
                 {% for product_ingredient in product.ingredients.all %}
                 <div class="row m-0 p-0"> 
+                  
                   <div class="col-6">
                       <div class="ingredient-details">
                         {% if product.customize %}
@@ -152,19 +142,20 @@
             </div>
               
               <div class="col-12 col-lg-6 mt-4 mt-lg-3  p-3 p-lg-5 border-left"><div>
-                <h2 class="mt-4 mt-lg-0">Summe:</h2>
-                <p class="mb-4">Lorem ipsum dolor sit amet, consectetuer
-                  adipiscing elit, sed diam nonummy nibh
-                  euismod tincidunt ut laoreet dolore
-                  magna aliquam erat volutpat. Ut wisi enim
-                  ad minim veniam, quis nostrud exerci
-                  tation ullamcorper suscipit lobortis nisl ut
-                  aliquip ex ea commodo consequat. Duis</p>
+                <h2 class="mt-4 mt-lg-0">Beschreibung:</h2>
+                <p class="mb-4">
+                  {{ product.description }}
+                </p>
+                {% if  product.delivery  %}
+
                   <h2>Lieferung</h2>
-                  <p class="mb-4">Lorem ipsum dolor sit amet, consectetuer
-                    adipiscing elit, sed diam nonummy nibh
-                    euismod tincidunt ut laoreet dolore
-                    magna aliquam erat volutpat.</p>
+                  <p class="mb-4">
+                    
+                    {{ product.delivery }}
+                      
+                    </p>
+                    {% endif %}
+
                     <div class="mb-4 d-flex justify-content-between">
                       <span class="h5">Summe</span>
                       {% if product.customize %}
@@ -251,12 +242,32 @@
                 <i class="fa-solid fa-x pointer-cursor" data-bs-dismiss="modal"></i>
               </div>
 
-              <div class="col-lg-6 mt-4  p-5 ">
+
+              <div class="col-12 col-lg-6 mt-4  p-3 p-lg-5 ">
                 <div class="row gap-4"> 
+                  {% if product.customize %}
+                  <div class="size-selection">
+                    <h4>Boxgröße</h4>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeS" value="S" data-max-quantity="5" checked>
+                      <label class="form-check-label" for="sizeS">S (max 5 kg)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeM" value="M" data-max-quantity="10">
+                      <label class="form-check-label" for="sizeM">M (max 10 kg)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeL" value="L" data-max-quantity="15">
+                      <label class="form-check-label" for="sizeL">L (max 15 kg)</label>
+                    </div>
+                  </div>
+                {% endif %} 
+                  <h4>Inhalt</h4>
                 {% for product_ingredient in product.ingredients.all %}
-                <div class="row m-0 p-0">
+                <div class="row m-0 p-0"> 
+                  
                   <div class="col-6">
-                      <div>
+                      <div class="ingredient-details">
                         {% if product.customize %}
                           <input type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
 
@@ -298,20 +309,24 @@
               </div>
             </div>
               
-              <div class="col-lg-6 mt-4  p-5 border-left"><div>
-                <h2>Summe:</h2>
-                <p class="mb-4">Lorem ipsum dolor sit amet, consectetuer
-                  adipiscing elit, sed diam nonummy nibh
-                  euismod tincidunt ut laoreet dolore
-                  magna aliquam erat volutpat. Ut wisi enim
-                  ad minim veniam, quis nostrud exerci
-                  tation ullamcorper suscipit lobortis nisl ut
-                  aliquip ex ea commodo consequat. Duis</p>
-                  <h2>Lieferung</h2>
-                  <p class="mb-4">Lorem ipsum dolor sit amet, consectetuer
-                    adipiscing elit, sed diam nonummy nibh
-                    euismod tincidunt ut laoreet dolore
-                    magna aliquam erat volutpat.</p>
+              <div class="col-12 col-lg-6 mt-4 mt-lg-3  p-3 p-lg-5 border-left"><div>
+                <h2 class="mt-4 mt-lg-0">Beschreibung:</h2>
+                <p class="mb-4">
+                  {{ product.description }}
+                </p>
+
+                
+                {% if product.delivery %}
+                  
+                
+                  
+                <h2>Lieferung</h2>
+                <p class="mb-4">
+                  
+                  {{ product.delivery }}
+                    
+                  </p>
+                  {% endif %}
                     <div class="mb-4 d-flex justify-content-between">
                       <span class="h5">Summe</span>
                       {% if product.customize %}

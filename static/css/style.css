@@ -1,6 +1,9 @@
 html {
   overflow-x: hidden;
 }
+body{
+  font-family: 'Montserrat' !important
+}
 
 a {
   text-decoration: none;
@@ -32,6 +35,7 @@ a {
 
 .lead {
   font-size: 13px;
+  text-align: justify;
 }
 
 .fw-bold {
@@ -325,7 +329,7 @@ header .header-heading {
 }
 header .paragraph-width {
   max-width: 400px;
-  text-align: left;
+  text-align: justify;
 }
 /* @media (max-width: 991.98px) {
   header img {
@@ -487,7 +491,7 @@ nav .container {
 @media (min-width: 992px) {
 
   .personal-data i {
-    font-size: 24px;
+    font-size: 40px;
   }
 
 
@@ -575,6 +579,9 @@ section#about-us h3{
   font-size: 1.25rem !important
 
 }
+section#about-us .special-style{
+  font-size: 1rem !important
+}
 
 section#about-us ul li{
 font-size: 18px;
@@ -616,12 +623,10 @@ header .header-heading {
   margin-right: 30px !important;
 }
 nav .nav-link{
-  font-size: 11px
+  font-size: 9px
 }
 
-nav .nav-link{
-  font-size: 11px
-}
+
 nav .dropdown-toggle{
   padding-left: 5px;
   padding-right: 5px;
@@ -670,6 +675,21 @@ header .paragraph-width {
 
 }
 
+section#about-us article p {
+  font-size: 10px;
+}
+
+#contact-us .lead{
+  font-size: 8px;
+  text-align: inherit;
+}
+#contact-us .line-h{
+  line-height: 10px;
+}
+#contact-us .h5{
+  font-size: 13px;
+}
+
 }
 
 
@@ -710,3 +730,42 @@ header span{
 }
 
 
+.custom-radio .form-check-input {
+  width: 2em;
+  height: 2em;
+}
+
+.custom-radio .form-check-label {
+  padding-left: 0.5em;
+}
+
+
+
+
+
+
+.product-image-container {
+  position: relative;
+  width: 100%;
+}
+
+.product-image-container img {
+  display: block;
+  width: 100%;
+}
+
+.overlay-text {
+  position: absolute;
+  top: 1%;
+  left: 38%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 2.2rem;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.form-check-input:checked{
+  background-color: #000;
+}

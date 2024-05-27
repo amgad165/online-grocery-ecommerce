@@ -13,40 +13,15 @@
 </head>
 
 <body>
-<!-- side bar -->
-
-  {% include 'include/aside.html' %}
 
 
+  
   {% include 'include/nav.html' %}
 
 
 
-
-
-      <!-- Modal -->
-      <div class="modal fade" id="stripeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Checkout</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form id="payment-form">
-                  <!-- <div id="product-details"></div>   -->
-                  <div id="total-price"></div>  
-                  <div id="card-element"></div>
-                  <div id="card-errors" role="alert"></div>
-                  <button id="submit-button" type="submit" class="btn btn-primary mt-4">Submit Payment</button>
-              </form>
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
+  {% include 'include/aside.html' %}
+  
   <main>
     <!-- landing section -->
     <header class="d-flex justify-content-center align-items-center">
@@ -84,7 +59,7 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
             </div>
           </div>
           <div class="col-md-7 about-second-part d-flex align-items-center">
-            <div data-aos="fade-down">
+            <div style="margin-left: 10px;" data-aos="fade-down ms-3">
               <h3 class="">Restaurants, Events, Klein- & Großunternehmen, Privat</h3>
               <ul>
                 <li>
@@ -106,11 +81,11 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
       </div>
         <div class="cards-about-us my-5 py-3">
           <div class="row">
-            <div class="col-6 col-lg-3" data-aos="zoom-in-up">
+            <div class="col-6 col-lg-4" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
-                  <img src="{% static 'Bilder/Flexibel_Icon.png' %}" alt="Card Image" />
-                  <h3>Flexibel</h3>
+                  <img  class="mt-2" src="{% static 'Bilder/Flexibel_Icon.png' %}" alt="Card Image" />
+                  <h3 class="mt-3">Flexibel</h3>
                   <div class="card-content">
                     <p>
                       Ihre Bedürfnisse ändern sich und wir passen uns an. Bestellen Sie, wie es Ihnen passt – ohne Mindestlaufzeiten oder feste Abnahmemengen
@@ -119,11 +94,11 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
                 </article>
               </div>
             </div>
-            <div class="col-6 col-lg-3" data-aos="zoom-in-up">
+            <div class="col-6 col-lg-4" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
-                  <img src="{% static 'Bilder/Bindung_icon.png' %}" alt="Card Image" />
-                  <h3>Keine Bindung</h3>
+                  <img class="mt-2" src="{% static 'Bilder/Bindung_icon.png' %}" alt="Card Image" />
+                  <h3 class="mt-3">Keine Bindung</h3>
                   <div class="card-content">
                     <p>
                       Genießen Sie volle Freiheit mit unseren flexiblen Vertragsmodellen. Ohne langfristige Verpflichtungen bleiben Sie ungebunden und flexibel
@@ -132,11 +107,13 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
                 </article>
               </div>
             </div>
-            <div class="col-6 col-lg-3" data-aos="zoom-in-up">
+            <div class="col-6 col-lg-4" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
-                  <img src="{% static 'Bilder/Monat.png' %}" alt="Card Image" />
-                  <h3>Monatsrechnungen</h3>
+                  <img class="mt-2" src="{% static 'Bilder/Monat.png' %}" alt="Card Image" />
+                  <h3 class="special-style mt-3 me-3">Monats- <br>
+                    rechnungen
+                    </h3>
                   <div class="card-content">
                     <p>
                       Einfache und übersichtliche Monatsrechnungen erleichtern Ihre Buchhaltung und sorgen für klare Kostenkontrolle
@@ -145,15 +122,28 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
                 </article>
               </div>
             </div>
-            <div class="col-6 col-lg-3" data-aos="zoom-in-up">
+            <div class="col-6 col-lg-4 offset-lg-2" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
-                  <img  src="{% static 'Bilder/Lieferung.png' %}" class="unique-img" alt="Card Image" />
-                  <h3>Lieferung</h3>
+                  <img  src="{% static 'Bilder/van.png' %}" class="unique-img mt-2" alt="Card Image" />
+                  <h3 class="mt-2">Lieferung</h3>
                   <div class="card-content">
                     <p>
                       Schnell und zuverlässig: Wir liefern frisch und pünktlich an Ihre Wunschadresse, damit Sie immer das Beste aus unserer Auswahl genießen können
                     </p>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <div class="offset-3 offset-lg-0 col-6 col-lg-4 align-self-center" data-aos="zoom-in-up">
+              <div class="h-100 about-div">
+                <article class="text-center">
+                  <img  src="{% static 'Bilder/quality.png' %}" class="unique-img mt-2" alt="Card Image" />
+                  <h3 class="mt-3">Qualität</h3>
+                  <div class="card-content">
+                    <p>
+Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptate similique nemo magni, voluptatibus enim maiores reiciendis ducimu</p>
                   </div>
                 </article>
               </div>
@@ -204,6 +194,10 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
 
                     <label class="form-label fw-bold">E-Mail*</label>
                     <input type="email" class="form-control" name="email" id="emailPriv" />
+                    <span id="emailErrorPriv" class="error-message text-danger d-block"></span>
+
+                    <label class="form-label fw-bold">Telefonnummer*</label>
+                    <input type="text" class="form-control" name="atu_number" id="phonePriv" />
                     <span id="emailErrorPriv" class="error-message text-danger d-block"></span>
 
                     <label class="form-label fw-bold">Bezirk*</label>
@@ -325,7 +319,7 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
                   quis nostrud exerci tation ullamcorper suscipit lobortis
                   nisl ut
                 </p>
-                <a href="" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
+                <a href="{% url 'products' %}" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
               </div>
             </div>
             <div class=" col-md-6 col-lg-4 resposive-padding" data-aos="zoom-in-left" data-aos-delay="100">
@@ -338,7 +332,7 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
                   quis nostrud exerci tation ullamcorper suscipit lobortis
                   nisl ut
                 </p>
-                <a href="" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
+                <a href="{% url 'products' %}" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
               </div>
             </div>
             <div class=" col-md-6 col-lg-4 resposive-padding" data-aos="zoom-in-left" data-aos-delay="200">
@@ -351,7 +345,7 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
                   quis nostrud exerci tation ullamcorper suscipit lobortis
                   nisl ut
                 </p>
-                <a href="" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
+                <a href="{% url 'products' %}" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
               </div>
             </div>
             
@@ -381,15 +375,15 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
           <div class="col-lg-6 bg-third-color p-4">
             <div class="">
               <h4>Senden Sie Ihre Anfrage</h4>
-              <form>
+              <form method="post" action="{% url 'submit_contact' %}">
+                {% csrf_token %}
                 <div class="inputs-container">
-                  <input type="text" name="name" class="contact-input form-control" placeholder="Name" />
-                  <input type="email" name="email" class="contact-input form-control" placeholder="Email" />
-                  <input type="tel" name="phone" class="contact-input form-control" placeholder="Telefon" />
-                  <input type="text" name="adress" class="contact-input form-control" placeholder="Adresse(Optional)" />
-                  <textarea name="message" class="contact-input form-control" id=""
-                    placeholder="Nachricht schreiben ..."></textarea>
-                  <button class="btn btn-orange my-3">Jetzt Senden</button>
+                  <input type="text" name="name" class="contact-input form-control" placeholder="Name" required />
+                  <input type="email" name="email" class="contact-input form-control" placeholder="Email" required />
+                  <input type="tel" name="phone" class="contact-input form-control" placeholder="Telefon" required />
+                  <input type="text" name="address" class="contact-input form-control" placeholder="Adresse (Optional)" />
+                  <textarea name="message" class="contact-input form-control" placeholder="Nachricht schreiben ..." required></textarea>
+                  <button type="submit" class="btn btn-orange my-3">Jetzt Senden</button>
                 </div>
               </form>
             </div>
@@ -401,29 +395,26 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
                 <div class="col-6 py-5 px-3 text-white">
                   <div>
                     <h2 class="fs-2 letter-spacing">Kontakt</h2>
-                    <p class="lead fw-lighter">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
-                      nibh euismod tincidunt ut laoreet. </p>
+                    <p class="lead fw-lighter ">Bei Fragen oder für weitere Informationen kontaktieren Sie uns gerne über das Formular oder direkt per Telefon und E-Mail. Wir helfen Ihnen schnell und kompetent weiter. </p>
                       <ul>
                         <li class="d-flex my-3">
                           <div class=" d-flex align-items-center "><img src="{% static 'Bilder/Ort.png' %}" class="img-icon " alt=""></div>
-                          <div class="ps-2">
+                          <div class="ps-2 line-h">
                             <h6 class="h5 p-0 m-0 fw-lighter" >Adresse</h6>
                             <span class="text-white lead">Großmarkt Wien: Laxenburger Str. 367, 1230 Wien</span>
                           </div>
                            
                         </li>
-                        <li class="d-flex my-3">
+                        <li class="d-flex my-3 line-h">
                           <div class=" d-flex align-items-center "><img src="{% static 'Bilder/Telefon.png' %}" class="img-icon " alt=""></div>
                           <div class="ps-2">
                             <h6 class="h5 p-0 m-0 fw-lighter" >Telefonnummer</h6>
-                            <span class=""><a href="tel:+01234 567890" class="text-white lead">01234 567890</a></span>
-                            <br>
-                            <span class=""><a href="tel:+0043 123456789" class="text-white lead">+0043 123456789
+                            <span class=""><a href="tel:+43 676 6996690" class="text-white lead">+43 676 6996690
                             </a></span>
                           </div>
                            
                         </li>
-                        <li class="d-flex my-3">
+                        <li class="d-flex my-3 line-h">
                           <div class=" d-flex align-items-center "><img src="{% static 'Bilder/mail.png' %}" class="img-icon " alt=""></div>
                           <div class="ps-2">
                             <h6 class="h5 p-0 m-0 fw-lighter" >Email</h6>
@@ -439,10 +430,7 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
                 </div>
                 <div class="col-6 p-0">
                   <div class="h-100 p-0">
-                    <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d41508.291757153835!2d8.306962429013943!3d49.44164709281825!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sMusterstrasse%201%2C%201234%20Musterstadt!5e0!3m2!1sen!2seg!4v1710118312200!5m2!1sen!2seg"
-                      width="100%" height="100%" style="border: 0" allowfullscreen="" loading="lazy"
-                      referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2662.885151005754!2d16.360608391851066!3d48.131738177427685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476da96af8e66d6d%3A0x4248020de889dad9!2sLaxenburger%20Str.%20367%2C%201230%20Wien!5e0!3m2!1sde!2sat!4v1716723444952!5m2!1sde!2sat" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                   </div>
                 </div>
               </div>
@@ -463,13 +451,15 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
   <script>
     AOS.init();
   </script>
-    <script src="{% static 'Js/index.js' %}"></script>
-
-    <script src="{% static 'Js/products.js' %}"></script>
+      <script src="{% static 'Js/index.js' %}"></script>
 
   <script src="{% static 'Js/custom.js' %}"></script>
 
-  <script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'Js/products.js' %}"></script>
+
+
+
+
     
   {% include 'include/ajax_functions.html' %}
 
