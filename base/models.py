@@ -206,7 +206,7 @@ class Transaction(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     amount = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True,related_name='transaction')
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True,related_name='transaction_order')
     subscription_type = models.CharField(max_length=255, choices=[('active', 'Active'), ('non active', 'Non Active'),('one time purchase', 'One Time Purchase'),('cash', 'Cash')])
 
 

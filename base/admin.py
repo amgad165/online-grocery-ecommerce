@@ -1,5 +1,7 @@
 from django.contrib import admin
 from . models import *
+from django.db.models import Sum
+
 # Register your models here.
 
 admin.site.register(CustomUser)
@@ -17,7 +19,7 @@ admin.site.register(Ingredient)
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id','order_summary','get_user_telefon', 'get_user_email','get_user_role',
-                    'get_bezirk', 'get_street_address', 'get_hausnummer', 'get_plz_zip', 'ordered_date', 'being_delivered',
+                    'get_bezirk', 'get_street_address', 'get_hausnummer', 'get_plz_zip','get_subscription_type' ,'ordered_date', 'being_delivered',
                     'get_total')
     list_editable = ('being_delivered',)  # Add this line to make 'being_delivered' editable
 
@@ -64,12 +66,19 @@ class OrderAdmin(admin.ModelAdmin):
 
 
     def get_total(self, obj):
-        return obj.get_total()
+            total = obj.transaction_order.aggregate(total_amount=Sum('amount'))['total_amount']
+            return total if total else 0
     get_total.short_description = 'Total'
 
     def being_delivered(self, obj):
         return obj.being_delivered
     being_delivered.short_description = 'Delivered'
+
+    def get_subscription_type(self, obj):
+        # Get the most recent transaction related to this order
+        latest_transaction = obj.transaction_order.order_by('-created_at').first()
+        return latest_transaction.subscription_type if latest_transaction else ""
+    get_subscription_type.short_description = 'Subscription Type'
 
 admin.site.register(Order, OrderAdmin)
 
