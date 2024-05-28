@@ -548,7 +548,6 @@ def handle_charge_refunded(charge):
 
     metadata = charge.get('metadata', {})
     order_id = metadata.get('order_id')
-    print("hhahah",order_id)
     try:
         # Assuming `order_id` is the ID of an Order object
         order = Order.objects.get(id=order_id)
