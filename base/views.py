@@ -270,6 +270,7 @@ def load_modal_data(request):
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    endpoint_secret = 'your_endpoint_secret_here'
 
     try:
         event = stripe.Webhook.construct_event(
@@ -277,10 +278,20 @@ def stripe_webhook(request):
         )
     except ValueError as e:
         # Invalid payload
-        return HttpResponse(status=400)
+        response_content = {
+            "status": "error",
+            "message": "Invalid payload",
+            "detail": str(e)
+        }
+        return HttpResponse(json.dumps(response_content), status=400, content_type='application/json')
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
-        return HttpResponse(status=400)
+        response_content = {
+            "status": "error",
+            "message": "Invalid signature",
+            "detail": str(e)
+        }
+        return HttpResponse(json.dumps(response_content), status=400, content_type='application/json')
 
     # Dispatch event type to appropriate handler
     event_handlers = {
@@ -296,9 +307,21 @@ def stripe_webhook(request):
 
     handler = event_handlers.get(event['type'])
     if handler:
-        handler(event['data']['object'])
+        try:
+            handler(event['data']['object'])
+        except Exception as e:
+            response_content = {
+                "status": "error",
+                "message": f"Error handling event {event['type']}",
+                "detail": str(e)
+            }
+            return HttpResponse(json.dumps(response_content), status=500, content_type='application/json')
     else:
-        print(f"Unhandled event type {event['type']}")
+        response_content = {
+            "status": "error",
+            "message": f"Unhandled event type {event['type']}"
+        }
+        return HttpResponse(json.dumps(response_content), status=400, content_type='application/json')
 
     return HttpResponse(status=200)
 
