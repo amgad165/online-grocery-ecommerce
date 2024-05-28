@@ -24,7 +24,6 @@ from django.http import HttpResponse
 from .utilities import mail
 stripe.api_key = settings.STRIPE_SECRET_KEY
 # The endpoint secret from Stripe webhook settings
-endpoint_secret = settings.ENDPOINT_SECRET
 
 # Create your views here.
 
@@ -270,7 +269,7 @@ def load_modal_data(request):
 def stripe_webhook(request):
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-    endpoint_secret = 'your_endpoint_secret_here'
+    endpoint_secret = settings.ENDPOINT_SECRET
 
     try:
         event = stripe.Webhook.construct_event(
