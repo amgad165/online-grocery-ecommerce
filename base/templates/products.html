@@ -203,20 +203,16 @@
             {% for product in business_products %}
               
             
-              
-            <div class="col-md-6 col-lg-4 p-3">
-              <div class="bg-white p-4 h-100">
-                <img
-                  src="{{ product.image.url }}"
-                  class="w-100 translated-img"
-                  alt=""
-                />
+             <div class="col-md-6 col-lg-4 p-3">
+              <div class="bg-white p-4 h-100 position-relative">
+                <div class="product-image-container">
+                  <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
+                  <div class="overlay-text">{{product.name}}</div>
+                </div>
                 <p class="fs-6 fw-semibold">
-                      {{product.description}}
+                  {{product.description}}
                 </p>
-                <a href="" class="btn btn-orange d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}"
-                  >Jetzt Bestellen</a
-                >
+                <a href="" class="btn btn-orange d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
               </div>
             </div>
 

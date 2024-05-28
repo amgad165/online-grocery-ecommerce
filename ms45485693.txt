@@ -1,0 +1,5 @@
+﻿{
+  "Description": "Überprüfungsdatei für Domänen-Eigentümerschaft für Microsoft 365-Position im Website-Root",
+  "Domain": "sm-handels.com",
+  "Id": "86f98dbd-7e69-4bac-9269-f6d4f4ff793c"
+}

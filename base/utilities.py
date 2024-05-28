@@ -42,7 +42,6 @@ def mail(order,sender, items_lists,user=None, kind=None):
 
 
         message = format_html(
-            f"Betreff: Bestellbestätigung für Ihre Bestellung {order.id} ,<br><br>"
             f"Sehr geehrte/r {order.user.first_name}. <br><br>"
             f"wir freuen uns, Ihnen mitteilen zu können, dass Ihre Bestellung mit der Bestellnummer <strong>{order.id}</strong> erfolgreich eingegangen ist. Hier sind die Details Ihrer Bestellung:<br><br>"
 
@@ -75,10 +74,10 @@ def mail(order,sender, items_lists,user=None, kind=None):
             f"{items_lists} <br><br>"
             f"Kunden-E-Mail: {order.user.email}<br><br>"
             f"Telefonnummer des Kunden: {order.user.atu_number} <br><br>"
-            f"bezirk: {order.user.bezirk}<br>"
-            f"street_address: {order.user.street_address}<br>"
-            f"hausnummer: {order.user.hausnummer}<br>"
-            f"plz_zip: {order.user.plz_zip}<br>"
+            f"Ort: {order.user.bezirk}<br>"
+            f"Adresse: {order.user.street_address}<br>"
+            f"Hausnummer: {order.user.hausnummer}<br>"
+            f"Postleitzahl: {order.user.plz_zip}<br>"
 
         )
 
