@@ -88,13 +88,14 @@ class Ingredient(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, blank=True, null=True)
+    description = models.CharField(max_length=355, blank=True, null=True)
     delivery = models.CharField(max_length=255, blank=True, null=True)
     category = models.CharField(max_length=255, choices=[('privat', 'Privat'), ('business', 'Business')])
     image = models.FileField(upload_to='product_images/')
     price = models.FloatField()
     customize = models.BooleanField(_('Customize'), default=False)
-    
+    view_homepage = models.BooleanField(default=False)
+
     class Meta:
         ordering = ['-customize', 'name']
     def calculate_total_cost(self):

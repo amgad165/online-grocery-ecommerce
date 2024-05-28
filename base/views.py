@@ -33,7 +33,13 @@ def home(request):
     except:
         order = None
 
-    context = {'order':order}
+    try:
+        best_products = Product.objects.filter(view_homepage = True)
+
+    except:
+        best_products = None
+
+    context = {'order':order,'best_products':best_products}
 
     return render(request,"index.html", context)
 

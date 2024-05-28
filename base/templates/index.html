@@ -10,6 +10,24 @@
   {% include 'include/links.html' %}
 
   <title>SM-Handels</title>
+
+<style>
+  @media (min-width: 992px) {
+  .custom-height{
+    height: 197px;
+    margin-bottom: 0.25rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .custom-height{
+    height: 147px;
+    margin-bottom: 0.25rem;
+  }
+}
+  
+</style>
+
 </head>
 
 <body>
@@ -91,8 +109,10 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
             <div class="col-6 col-lg-4" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
+                  <div class="custom-height">
                   <img  class="mt-2" src="{% static 'Bilder/Flexibel_Icon.png' %}" alt="Card Image" />
                   <h3 class="mt-3">Flexibel</h3>
+                </div>
                   <div class="card-content">
                     <p>
                       Ihre Bedürfnisse ändern sich und wir passen uns an. Bestellen Sie, wie es Ihnen passt – ohne Mindestlaufzeiten oder feste Abnahmemengen
@@ -104,8 +124,10 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
             <div class="col-6 col-lg-4" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
+                  <div class="custom-height">
                   <img class="mt-2" src="{% static 'Bilder/Bindung_icon.png' %}" alt="Card Image" />
                   <h3 class="mt-3">Keine Bindung</h3>
+                </div>
                   <div class="card-content">
                     <p>
                       Genießen Sie volle Freiheit mit unseren flexiblen Vertragsmodellen. Ohne langfristige Verpflichtungen bleiben Sie ungebunden und flexibel
@@ -117,10 +139,12 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
             <div class="col-6 col-lg-4" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
+                  <div class="custom-height">
                   <img class="mt-2" src="{% static 'Bilder/Monat.png' %}" alt="Card Image" />
-                  <h3 class="special-style mt-3 me-3">Monats- <br>
-                    rechnungen
+                  <h3 class="special-style mt-3 me-3">Monatsrechnungen
                     </h3>
+
+                  </div>
                   <div class="card-content">
                     <p>
                       Einfache und übersichtliche Monatsrechnungen erleichtern Ihre Buchhaltung und sorgen für klare Kostenkontrolle
@@ -132,8 +156,10 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
             <div class="col-6 col-lg-4 offset-lg-2" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
+                  <div class="custom-height">
                   <img  src="{% static 'Bilder/van.png' %}" class="unique-img mt-2" alt="Card Image" />
                   <h3 class="mt-2">Lieferung</h3>
+                </div>
                   <div class="card-content">
                     <p>
                       Schnell und zuverlässig: Wir liefern frisch und pünktlich an Ihre Wunschadresse, damit Sie immer das Beste aus unserer Auswahl genießen können
@@ -146,8 +172,10 @@ Bei S&M Handels bringen wir die Frische des Marktes zu Ihnen – ob nach Hause o
             <div class="offset-3 offset-lg-0 col-6 col-lg-4 align-self-center" data-aos="zoom-in-up">
               <div class="h-100 about-div">
                 <article class="text-center">
+                  <div class="custom-height">
                   <img  src="{% static 'Bilder/quality.png' %}" class="unique-img mt-2" alt="Card Image" />
                   <h3 class="mt-3">Qualität</h3>
+                </div>
                   <div class="card-content">
                     <p>
 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptate similique nemo magni, voluptatibus enim maiores reiciendis ducimu</p>
@@ -316,15 +344,19 @@ Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptat
       <div class="cards-container p-4 mt-4">
         <div class="container">
           <div class="row">
+            
+            {% for product in best_products %}
+              
+           
+              
             <div class=" col-md-6 col-lg-4 resposive-padding" data-aos="zoom-in-left">
               <div class="bg-white p-4 h-100">
-                <img src="{% static 'Bilder/box.JPG' %}" class="w-100 translated-img" alt="" />
+                <div class="product-image-container">
+                  <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
+                  <div class="overlay-text fs-2">{{product.name}}</div>
+                </div>
                 <p class="fs-6 fw-semibold">
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                  sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                  magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-                  quis nostrud exerci tation ullamcorper suscipit lobortis
-                  nisl ut
+                  {{product.description}}
                 </p>
                 {% if user.is_authenticated %}
                 <a href="{% url 'products' %}" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
@@ -337,48 +369,9 @@ Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptat
 
               </div>
             </div>
-            <div class=" col-md-6 col-lg-4 resposive-padding" data-aos="zoom-in-left" data-aos-delay="100">
-              <div class="bg-white p-4 h-100">
-                <img src="{% static 'Bilder/box.JPG' %}" class="w-100 translated-img" alt="" />
-                <p class="fs-6 fw-semibold">
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                  sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                  magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-                  quis nostrud exerci tation ullamcorper suscipit lobortis
-                  nisl ut
-                </p>
-                {% if user.is_authenticated %}
-                <a href="{% url 'products' %}" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
-                {% else %}
-                <button class="btn btn-orange d-block m-auto mt-3" id="allProdBtn" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
-                Jetzt Bestellen
-              </button>
-                {% endif %}
 
-              </div>
-            </div>
-            <div class=" col-md-6 col-lg-4 resposive-padding" data-aos="zoom-in-left" data-aos-delay="200">
-              <div class="bg-white p-4 h-100">
-                <img src="{% static 'Bilder/box.JPG' %}" class="w-100 translated-img" alt="" />
-                <p class="fs-6 fw-semibold">
-                  Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                  sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-                  magna aliquam erat volutpat. Ut wisi enim ad minim veniam,
-                  quis nostrud exerci tation ullamcorper suscipit lobortis
-                  nisl ut
-                </p>
-                {% if user.is_authenticated %}
-                <a href="{% url 'products' %}" class="btn btn-orange d-block m-auto">Jetzt Bestellen</a>
-                {% else %}
-                <button class="btn btn-orange d-block m-auto mt-3" id="allProdBtn" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
-                Jetzt Bestellen
-              </button>
-                {% endif %}
-              </div>
-            </div>
-            
+            {% endfor %}
+
             {% if user.is_authenticated %}
             <a href="{% url 'products' %}">
             <button class="btn btn-orange d-block m-auto mt-3" id="allProdBtn" >

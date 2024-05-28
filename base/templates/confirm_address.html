@@ -138,12 +138,18 @@
                               <label for="input2_shipping">Nachname*</label>
                           </div>
                       </div>
-                      <div class="col-md-12 mb-3">
+                      <div class="col-md-6 mb-3">
                           <div class="form-floating">
                               <input  type="text" id="input4_shipping" name="input4_shipping" class="form-control" placeholder=" " value="{{ delivery_address.street_address|default:'' }}" />
                               <label for="input4_shipping">Adresse*</label>
                           </div>
                       </div>
+                      <div class="col-md-6 mb-3">
+                        <div class="form-floating">
+                            <input  type="text" id="input8_shipping" name="input8_shipping" class="form-control" placeholder=" " value="{{ delivery_address.hausnummer|default:'' }}" />
+                            <label for="input8_shipping">Hausnummer*</label>
+                        </div>
+                    </div>
                       <div class="col-md-12 mb-3">
                           <div class="form-floating">
                               <input  type="text" id="input5_shipping" name="input5_shipping" class="form-control" placeholder=" " value="{{ delivery_address.additional_info|default:'' }}" />
@@ -162,13 +168,8 @@
                               <label for="input7_shipping">Ort*</label>
                           </div>
                       </div>
-                      <div class="col-md-6 mb-3">
-                          <div class="form-floating">
-                              <input  type="text" id="input8_shipping" name="input8_shipping" class="form-control" placeholder=" " value="{{ delivery_address.hausnummer|default:'' }}" />
-                              <label for="input8_shipping">Hausnummer*</label>
-                          </div>
-                      </div>
-                      <div class="col-md-6 mb-3">
+
+                      <div class="col-md-12 mb-3">
                           <div class="form-floating">
                               <input  type="text" id="input9_shipping" name="input9_shipping" class="form-control" placeholder=" " value="{{ delivery_address.telefonnummer|default:'' }}" />
                               <label for="input9_shipping">Telefonnummer*</label>

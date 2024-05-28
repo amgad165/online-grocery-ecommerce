@@ -9,6 +9,14 @@
     {% include 'include/links.html' %}
 
     <title>Products</title>
+
+    <style>
+      .unit-span {
+  display: inline-block;
+  width: 50px; 
+  text-align: start;
+}
+    </style>
   </head>
   <body>
     
@@ -42,9 +50,9 @@
               
             <div class="col-md-6 col-lg-4 p-3">
               <div class="bg-white p-4 h-100 position-relative">
-                <div class="product-image-container">
+                <div class="product-image-container ">
                   <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
-                  <div class="overlay-text">{{product.name}}</div>
+                  <div class="overlay-text fs-2">{{product.name}}</div>
                 </div>
                 <p class="fs-6 fw-semibold">
                   {{product.description}}
@@ -81,60 +89,55 @@
                   <div class="size-selection">
                     <h4>Boxgröße</h4>
                     <div class="form-check">
-                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeS" value="S" data-max-quantity="5" checked>
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeS" value="S" data-max-quantity="5" checked>
                       <label class="form-check-label" for="sizeS">S (max 5 kg)</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeM" value="M" data-max-quantity="10">
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeM" value="M" data-max-quantity="10">
                       <label class="form-check-label" for="sizeM">M (max 10 kg)</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeL" value="L" data-max-quantity="15">
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeL" value="L" data-max-quantity="15">
                       <label class="form-check-label" for="sizeL">L (max 15 kg)</label>
                     </div>
                   </div>
                 {% endif %} 
                   <h4>Inhalt</h4>
-                {% for product_ingredient in product.ingredients.all %}
-                <div class="row m-0 p-0"> 
-                  
-                  <div class="col-6">
-                      <div class="ingredient-details">
-                        {% if product.customize %}
-                          <input type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
-
-                          {% else %}
-                          <i class="fa-solid fa-square me-2"></i>
-                          <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
-
-                          {% endif %}
-                          {{ product_ingredient.ingredient }}
-                      </div>
-                  </div>
-                  <!-- Hidden input field for ingredient price -->
-                  <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
-                  <div class="col-6 d-flex justify-content-end">
-                      <div class="d-flex gap-3">
-                          {% if product.customize %}
-                              <div class="minus circled minus-icon" >
-                                  <i class="fa-solid fa-minus"></i>
-                              </div>
-                          {% endif %}
-                          <div class="quantity">
-                              <span id="product-quantity_{{ product_ingredient.ingredient.id }}">{{ product_ingredient.quantity }} </span>
+                  {% for product_ingredient in product.ingredients.all %}
+                  <div class="row m-0 p-0"> 
+                      <div class="col-6">
+                          <div class="ingredient-details">
+                              {% if product.customize %}
+                                  <input type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+                              {% else %}
+                                  <i class="fa-solid fa-square me-2"></i>
+                                  <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+                              {% endif %}
+                              {{ product_ingredient.ingredient }}
                           </div>
-                          {% if product.customize %}
-                              <div class="plus circled plus-icon">
-                                  <i class="fa-solid fa-plus"></i>
+                      </div>
+                      <!-- Hidden input field for ingredient price -->
+                      <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
+                      <div class="col-6 d-flex justify-content-end">
+                          <div class="d-flex gap-3 align-items-center">
+                              {% if product.customize %}
+                                  <div class="minus circled minus-icon">
+                                      <i class="fa-solid fa-minus"></i>
+                                  </div>
+                              {% endif %}
+                              <div class="quantity">
+                                  <span id="product-quantity_{{ product_ingredient.ingredient.id }}">{{ product_ingredient.quantity }}</span>
                               </div>
-                          {% endif %}
-                          <span class="fw-bold">{{ product_ingredient.ingredient.unit }}</span>
+                              {% if product.customize %}
+                                  <div class="plus circled plus-icon">
+                                      <i class="fa-solid fa-plus"></i>
+                                  </div>
+                              {% endif %}
+                              <span class="fw-bold unit-span">{{ product_ingredient.ingredient.unit }}</span>
+                          </div>
                       </div>
                   </div>
-              </div>
-                                  
-                {% endfor %}
-                  
+                  {% endfor %}
 
                 
               
@@ -207,7 +210,7 @@
               <div class="bg-white p-4 h-100 position-relative">
                 <div class="product-image-container">
                   <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
-                  <div class="overlay-text">{{product.name}}</div>
+                  <div class="overlay-text fs-2">{{product.name}}</div>
                 </div>
                 <p class="fs-6 fw-semibold">
                   {{product.description}}
@@ -245,59 +248,56 @@
                   <div class="size-selection">
                     <h4>Boxgröße</h4>
                     <div class="form-check">
-                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeS" value="S" data-max-quantity="5" checked>
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeS" value="S" data-max-quantity="5" checked>
                       <label class="form-check-label" for="sizeS">S (max 5 kg)</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeM" value="M" data-max-quantity="10">
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeM" value="M" data-max-quantity="10">
                       <label class="form-check-label" for="sizeM">M (max 10 kg)</label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input size-radio" type="radio" name="size" id="sizeL" value="L" data-max-quantity="15">
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeL" value="L" data-max-quantity="15">
                       <label class="form-check-label" for="sizeL">L (max 15 kg)</label>
                     </div>
                   </div>
                 {% endif %} 
                   <h4>Inhalt</h4>
-                {% for product_ingredient in product.ingredients.all %}
-                <div class="row m-0 p-0"> 
-                  
-                  <div class="col-6">
-                      <div class="ingredient-details">
-                        {% if product.customize %}
-                          <input type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
-
-                          {% else %}
-                          <i class="fa-solid fa-square me-2"></i>
-                          <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
-
-                          {% endif %}
-                          {{ product_ingredient.ingredient }}
-                      </div>
-                  </div>
-                  <!-- Hidden input field for ingredient price -->
-                  <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
-                  <div class="col-6 d-flex justify-content-end">
-                      <div class="d-flex gap-3">
-                          {% if product.customize %}
-                              <div class="minus circled minus-icon" >
-                                  <i class="fa-solid fa-minus"></i>
-                              </div>
-                          {% endif %}
-                          <div class="quantity">
-                              <span id="product-quantity_{{ product_ingredient.ingredient.id }}">{{ product_ingredient.quantity }}</span>
+                  {% for product_ingredient in product.ingredients.all %}
+                  <div class="row m-0 p-0"> 
+                      <div class="col-6">
+                          <div class="ingredient-details">
+                              {% if product.customize %}
+                                  <input type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+                              {% else %}
+                                  <i class="fa-solid fa-square me-2"></i>
+                                  <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+                              {% endif %}
+                              {{ product_ingredient.ingredient }}
                           </div>
-                          {% if product.customize %}
-                              <div class="plus circled plus-icon">
-                                  <i class="fa-solid fa-plus"></i>
+                      </div>
+                      <!-- Hidden input field for ingredient price -->
+                      <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
+                      <div class="col-6 d-flex justify-content-end">
+                          <div class="d-flex gap-3 align-items-center">
+                              {% if product.customize %}
+                                  <div class="minus circled minus-icon">
+                                      <i class="fa-solid fa-minus"></i>
+                                  </div>
+                              {% endif %}
+                              <div class="quantity">
+                                  <span id="product-quantity_{{ product_ingredient.ingredient.id }}">{{ product_ingredient.quantity }}</span>
                               </div>
-                          {% endif %}
-                          <span class="fw-bold">{{ product_ingredient.ingredient.unit }}</span>
+                              {% if product.customize %}
+                                  <div class="plus circled plus-icon">
+                                      <i class="fa-solid fa-plus"></i>
+                                  </div>
+                              {% endif %}
+                              <span class="fw-bold unit-span">{{ product_ingredient.ingredient.unit }}</span>
+                          </div>
                       </div>
                   </div>
-              </div>
-                                  
-                {% endfor %}
+                  {% endfor %}
+
                   
 
                 
