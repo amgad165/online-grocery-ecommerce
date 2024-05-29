@@ -135,7 +135,9 @@ def create_subscription(request):
     data = json.loads(request.body)
     payment_method_id = data.get('paymentMethodId')
     final_price = float(data.get('final_price'))
+    delivery_period = data.get('delivery_period')
 
+    print(delivery_period)
     
     if not payment_method_id:
         return JsonResponse({'error': 'Payment Method ID is required'}, status=400)
@@ -176,6 +178,9 @@ def create_subscription(request):
         order = Order.objects.filter(user=user, ordered=False).first()
         if not order:
             return JsonResponse({'error': 'No active order found'}, status=404)
+        
+        order.delivery_frequency  = delivery_period
+        order.save()
 
         # Calculate the total price based on the order
         total_price = int(final_price * 100)  # Convert to cents
