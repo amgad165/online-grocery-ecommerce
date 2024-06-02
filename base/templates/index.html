@@ -366,17 +366,9 @@ Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptat
                 <p class="fs-6 fw-semibold">
                   {{product.description}}
                 </p>
-                
-                {% if user.is_authenticated %}
 
                 <a href="" class="btn btn-orange d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
 
-                {% else %}
-                <button class="btn btn-orange d-block m-auto mt-3" id="allProdBtn" data-bs-toggle="modal"
-                data-bs-target="#exampleModal">
-                Jetzt Bestellen
-              </button>
-                {% endif %}
 
               </div>
             </div>
@@ -409,10 +401,12 @@ Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptat
                   {% for product_ingredient in product.ingredients.all %}
                   <div class="row m-0 p-0"> 
                       <div class="col-6">
-                          <div class="ingredient-details">
-       
-                              {{ product_ingredient.ingredient }}
-                          </div>
+                        <div class="ingredient-details">
+
+                        <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+
+                          {{ product_ingredient.ingredient }}
+                      </div>
                       </div>
                       <!-- Hidden input field for ingredient price -->
                       <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
@@ -462,8 +456,12 @@ Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptat
                     </div>
                     <div class=" text-center">
 
-                      
-                <a href="{% url 'products' %}" class="btn btn-orange d-block m-auto">Alle Produkte</a>
+                  
+                  {% if user.is_authenticated %}
+                  <button data-item-id="{{ product.id }}" class="btn btn-orange add-to-cart-button">In den Warenkorb</button>
+
+                  {% endif %}
+                        
               </div>
               </div></div>
             </div>
@@ -577,11 +575,13 @@ Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptat
   <script>
     AOS.init();
   </script>
+
+<script src="{% static 'Js/products.js' %}"></script>
+
       <script src="{% static 'Js/index.js' %}"></script>
 
   <script src="{% static 'Js/custom.js' %}"></script>
 
-<script src="{% static 'Js/products.js' %}"></script>
 
 
 
@@ -591,6 +591,60 @@ Lorem ipsum dolor, sit amet consectetur adipisicing elit. Labore dolore voluptat
 
 
 
+  <script>
+     
+    // Add to cart
+    $(document).ready(function() {
+        $('.add-to-cart-button').click(function() {
+          var modal = $(this).closest('.modal');
+          var itemId = $(this).data('item-id');
+          var ingredientQuantities = {};
+    
+          modal.find('.ingredient-checkbox:checked').each(function() {
+              var ingredientId = $(this).data('ingredient-id');
+              var quantity = $(this).closest('.row').find('.quantity span').text().trim();
+              ingredientQuantities[ingredientId] = parseInt(quantity);
+    
+              console.log(ingredientQuantities)
+          });
+    
+    
+            var data = {
+                id: itemId,
+                ingredient_quantities: JSON.stringify(ingredientQuantities), // Send ingredient quantities as JSON
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            };
+    
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'add_to_cart' %}',
+                data: data,
+                success: function(response) {
+                    var totalQuantity = response.cart_items_count;
+                    $('.cart-badge').text(totalQuantity).show().animate({
+                        fontSize: '16px',
+                    }, 200).animate({
+                        fontSize: '12px',
+                    }, 200);
+                    alert('Product added to cart successfully');
+                    location.reload(); // Refresh the page after adding to cart
+                },
+                error: function(xhr) {
+                  var errorResponse = JSON.parse(xhr.responseText);
+                  var errorMessage = errorResponse.error;
+    
+                  var alertContainer = modal.find('#alert-container');
+                  alertContainer.empty(); // Clear previous content
+                  alertContainer.append(errorMessage + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>');
+                  alertContainer.show();
+          }
+            });
+        });
+    
+    });
+    
+    
+        </script>
 
 </body>
 

@@ -194,7 +194,15 @@ class Order(models.Model):
             quantity += order_item.quantity
 
         return quantity
-    
+
+
+
+class SubscriptionOrder(Order):
+    class Meta:
+        proxy = True
+        verbose_name = 'Subscription Order'
+        verbose_name_plural = 'Subscription Orders'
+
 class UserSubscription(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     stripe_customer_id = models.CharField(max_length=255, blank=True, null=True)

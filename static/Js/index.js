@@ -4,9 +4,9 @@ const inputsPriv = document.getElementById("inputs-priv")
 const inputsFirm = document.getElementById("inputs-firm")
 const registerModal = document.getElementById("registerModal")
 const loginModal = document.getElementById('loginModal')
-const sidebar = document.getElementById('sidebar');
-const toggleSideBarExit=document.getElementById('toggle-sideBar');
-const cartIcon = document.getElementById('cartIcon');
+// const sidebar = document.getElementById('sidebar');
+// const toggleSideBarExit=document.getElementById('toggle-sideBar');
+// const cartIcon = document.getElementById('cartIcon');
 const profileDetailsContainer= document.getElementById('profile-details-container');
 
 
@@ -201,10 +201,14 @@ toggleSideBarExit.addEventListener('click',()=>{
 
 })
 // sidebar in
-cartIcon.addEventListener('click',()=>{
-  sidebar.style.right='0';
- 
-})
+if (cartIcon) {
+  cartIcon.addEventListener('click', () => {
+      const sidebar = document.querySelector('.sidebar'); // Replace with the appropriate selector
+      if (sidebar) {
+          sidebar.style.right = '0';
+      }
+  });
+}
 // sidebar close when click outside
 document.addEventListener('click', (event) => {
   const targetElement = event.target;
@@ -311,20 +315,12 @@ function validateNachNamePrivForm(){
 }
 
 
-firmNameInputPriv.addEventListener('input',validateFirmNamePrivForm)
-function validateFirmNamePrivForm(){
-  if(firmNameInputPriv.value == '' ){
-    firmNamePrivError.innerText='firm name is required'
-  }else{
-    firmNamePrivError.innerText='' 
-  }
-  
-}
 
-atuPrivInput.addEventListener('input',validateAtuPrivForm)
+
+phonePrivInput.addEventListener('input',validateAtuPrivForm)
 function validateAtuPrivForm(){
-  if(atuPrivInput.value == ''  ||  +atuPrivInput.value.length >9 ){
-    atuPrivError.innerText='atu is not valid'
+  if(phonePrivInput.value == ''  ||  +phonePrivInput.value.length >9 ){
+    atuPrivError.innerText='phonePrivInput is not valid'
   }else{
     atuPrivError.innerText=''
     
@@ -376,33 +372,6 @@ function validatePassPrivForm(){
     return 1;
   });
 
-  // // Function to update the quantity elements
-  // function updateQuantities() {
-  //   quantityElements.forEach(function(element, index) {
-  //     element.textContent = quantities[index];
-  //   });
-  // }
-
-  // // Event listeners for the plus buttons
-  // plusButtons.forEach(function(button, index) {
-  //   button.addEventListener('click', function() {
-  //     quantities[index]++;
-  //     updateQuantities();
-  //   });
-  // });
-
-  // // Event listeners for the minus buttons
-  // minusButtons.forEach(function(button, index) {
-  //   button.addEventListener('click', function() {
-  //     if (quantities[index] > 1) {
-  //       quantities[index]--;
-  //       updateQuantities();
-  //     }
-  //   });
-  // });
-
-  // // Initial update of the quantity elements
-  // updateQuantities();
 
 
 
