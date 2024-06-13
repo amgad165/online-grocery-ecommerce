@@ -57,11 +57,11 @@ a {
 }
 
 .bg-main-color {
-  background-color: #808035;
+  background-color: #FFCCC5;
 }
 
 .bg-third-color {
-  background-color: #e3eca8 !important;
+  background-color: #FFD766 !important;
 }
 
 .bg-secondary-color {
@@ -90,9 +90,9 @@ a {
   max-width: 200px !important;
 }
 
-#about-us ul {
+/* #about-us ul {
   list-style: "- ";
-}
+} */
 ul{
   list-style: none;
 }
@@ -188,7 +188,9 @@ ul{
   }
 }
 nav {
-  background-color: #808035;
+  background-color: #93BC84;
+  font-family: "Gabarito", sans-serif;
+  font-size: 20px;
 }
 nav i {
   color: #fff !important;
@@ -206,6 +208,16 @@ nav .nav-item {
 nav .orange-bg {
   background-color: #dd8c38;
   border-radius: 10px;
+}
+.custom-color-bg {
+  background-color: #D6EAC1;
+  border-radius: 10px;
+}
+
+.custom-color-bg2 {
+  background-color: #93BC84;
+  border-radius: 10px;
+  color: whitesmoke;
 }
 nav .icon-cart {
   width: 30px !important;
@@ -226,14 +238,14 @@ nav .icon-cart {
   }
 }
 footer {
-  background-color: #808035;
+  background-color: #93BC84;
   text-align: center;
   margin: 0;
   color: #fff;
   padding: 1px;
 }
 footer img {
-  width: 140px;
+  width: 365px;
   display: block;
   margin: auto;
   
@@ -322,14 +334,15 @@ aside.open {
 }
 header {
   min-height: calc(100vh - 91.16px);
-  background-color: #ebefce;
+  background-color: #D6EAC1;
 }
 header .header-heading {
-  font-size: 90px;
+  font-size: 110px;
+  font-family: "Gabarito", sans-serif;
 }
 header .paragraph-width {
   max-width: 400px;
-  text-align: justify;
+  /* text-align: justify; */
 }
 /* @media (max-width: 991.98px) {
   header img {
@@ -338,7 +351,7 @@ header .paragraph-width {
 } */
 
 section#about-us {
-  background-color: #e3eca8;
+  background-color: #FFDBD7;
 }
 section#about-us h2 {
   font-size: 5rem;
@@ -396,7 +409,7 @@ section#our-products {
   padding-bottom: 80px;
 }
 section#our-products .modal-header, section#our-products .modal-body, section#our-products .modal-content {
-  background-color: #808035;
+  background-color: #93BC84;
   border: none !important;
 }
 section#our-products h2 {
@@ -415,7 +428,7 @@ section#our-products h2 {
   }
 }
 section#contact-us {
-  background-color: #ebefce;
+  background-color: #FEEEA9;
 }
 section#contact-us .inputs-container {
   display: flex;
@@ -518,7 +531,7 @@ nav .container {
 }
 
 #cart-badge {
-  background-color: #dd8c38;
+  background-color: #D6EAC1;
   color: white;
   width: 20px;
   height: 20px;
@@ -543,7 +556,11 @@ width: 124% !important;
 }
 
 
-
+.navbar-brand img{
+width: 163px;
+position: absolute ;
+top: 0;
+}
 }
 
 @media (min-width: 1200px) and (max-width: 1400px) {
@@ -579,8 +596,16 @@ section#about-us h3{
   font-size: 1.25rem !important
 
 }
+
+@media (min-width: 1200px) {
+  section#about-us .special-style{
+    white-space: nowrap;
+  
+  }
+}
 section#about-us .special-style{
   font-size: 1rem !important
+
 }
 
 section#about-us ul li{
@@ -638,7 +663,7 @@ nav .nav-item{
 
 
 #cart-badge {
-  background-color: #dd8c38;
+  background-color: #D6EAC1;
   color: white;
   width: 17px;
   height: 17px;

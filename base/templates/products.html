@@ -34,15 +34,15 @@
 
 
 
-    <main>
+    <main style="background-color: #D6EAC1;">
       {% if user.role == "private" %}
 
     
-      <section id="priv-products" class="bg-third-color">
+      <section id="priv-products" >
         <div class="container">
           <div class="row g-5 p-5">
-            <h1 class="text-center text-color-green-dark my-5">Unsere Produkte  <br>
-              <span class="under-heading">  - PRIVAT -</span>
+            <h1 class="text-center text-black my-5">Unsere Produkte  <br>
+              <span class="under-heading text-black">  - PRIVAT -</span>
 
             </h1>
 
@@ -52,7 +52,7 @@
           
               
             <div class="col-md-6 col-lg-4 p-3">
-              <div class="bg-white p-4 h-100 position-relative">
+              <div class="bg-white p-4 h-100 position-relative  d-flex flex-column">
                 <div class="product-image-container ">
                   <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
                   <div class="overlay-text fs-2">{{product.name}}</div>
@@ -60,7 +60,11 @@
                 <p class="fs-6 fw-semibold">
                   {{product.description}}
                 </p>
-                <a href="" class="btn btn-orange d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
+                <div class="mt-auto">
+
+                <a href="" class="btn custom-color-bg2 d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
+              </div>
+
               </div>
             </div>
 
@@ -199,18 +203,18 @@
       </section>
       {% else %}
      
-      <section id="firm-products" class="bg-third-color">
+      <section id="firm-products" >
         <div class="container">
           <div class="row g-5 p-5">
-            <h1 class="text-center  text-color-green-dark my-5">Unsere Produkte  <br>
-              <span class="fs-5">  - BUSINESS -</span>
+            <h1 class="text-center  text-black my-5">Unsere Produkte  <br>
+              <span class="fs-5 text-black">  - BUSINESS -</span>
             </h1>
             
             {% for product in business_products %}
               
             
              <div class="col-md-6 col-lg-4 p-3">
-              <div class="bg-white p-4 h-100 position-relative">
+              <div class="bg-white p-4 h-100 position-relative  d-flex flex-column">
                 <div class="product-image-container">
                   <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
                   <div class="overlay-text fs-2">{{product.name}}</div>
@@ -218,8 +222,10 @@
                 <p class="fs-6 fw-semibold">
                   {{product.description}}
                 </p>
-                <a href="" class="btn btn-orange d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
+                <div class="mt-auto">
+                <a href="" class="btn custom-color-bg2 d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
               </div>
+            </div>
             </div>
 
 
@@ -340,7 +346,9 @@
                     <div class=" text-center">
 
 
-                      <button data-item-id="{{ product.id }}" class="btn btn-orange add-to-cart-button">In den Warenkorb</button>
+                      <!-- <button data-item-id="{{ product.id }}" class="btn btn-orange add-to-cart-button">In den Warenkorb</button> -->
+                      <button data-item-id="{{ product.id }}" class="btn custom-color-bg2 add-to-cart-button">In den Warenkorb</button>
+
                     </div>
               </div></div>
             </div>
