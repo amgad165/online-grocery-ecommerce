@@ -6,10 +6,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="{% static 'Bilder/logo-big2.png' %}">
 
   {% include 'include/links.html' %}
 
-  <title>SM-Handels</title>
+  <title>Frischverliebt</title>
 
 <style>
   @media (min-width: 992px) {
@@ -17,12 +18,19 @@
     height: 197px;
     margin-bottom: 0.25rem;
   }
+ .modal-special-products .modal-content{
+    width: 70%;
+  }
 }
 
 @media (max-width: 992px) {
   .custom-height{
     height: 147px;
     margin-bottom: 0.25rem;
+  }
+
+  #about-us #sub-heading{
+    font-size: 20px !important;
   }
 }
   
@@ -34,6 +42,10 @@
 .quantity{
   width: 16px;
 }
+
+
+
+
 </style>
 
 </head>
@@ -91,7 +103,7 @@
           </div>
           <div class="col-md-7 about-second-part d-flex align-items-center">
             <div style="margin-left: 10px;" data-aos="fade-down ms-3">
-              <h3 class="">Privatpersonen, Restaurants, Büros, Events und mehr</h3>
+              <h3 id="sub-heading" >Privatpersonen, Restaurants, Büros, Events und mehr</h3>
               <ul>
                 <li>
 
@@ -369,10 +381,10 @@
 
 
                 <!-- modal details box -->
-    <div class="modal product-details-modal fade modal-xl" id="exampleModal{{ product.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div  class="modal product-details-modal fade modal-xl modal-special-products" id="exampleModal{{ product.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
-      <div class="modal-dialog">
-        <div   class="modal-content">
+      <div class="modal-dialog ">
+        <div   class="modal-content mx-auto">
 
           <div style="background-color: whitesmoke ;" class="modal-body">
             <div id="alert-container" class="alert alert-danger alert-dismissible " style="display: none;">
@@ -385,42 +397,10 @@
               </div>
 
 
-              <div class="col-12 col-lg-6 mt-4  p-3 p-lg-5 ">
-                <div class="row gap-4"> 
 
-                  <h4>Inhalt</h4>
-                  {% for product_ingredient in product.ingredients.all %}
-                  <div class="row m-0 p-0"> 
-                      <div class="col-6">
-                        <div class="ingredient-details">
-
-                        <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
-
-                          {{ product_ingredient.ingredient }}
-                      </div>
-                      </div>
-                      <!-- Hidden input field for ingredient price -->
-                      <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
-                      <div class="col-6 d-flex justify-content-end">
-                          <div class="d-flex gap-3 align-items-center">
-   
-                              <div class="quantity text-center">
-                                  <span id="product-quantity_{{ product_ingredient.ingredient.id }}">{{ product_ingredient.quantity }}</span>
-                              </div>
- 
-                              <span class="fw-bold unit-span">{{ product_ingredient.ingredient.unit }}</span>
-                          </div>
-                      </div>
-                  </div>
-                  {% endfor %}
-
-                
               
-              </div>
-            </div>
-              
-              <div class="col-12 col-lg-6 mt-4 mt-lg-3  p-3 p-lg-5 border-left"><div>
-                <h2 style="font-size: 32px;" class="mt-4 mt-lg-0 ">Beschreibung:</h2>
+              <div class="col-12 col-lg-12   mt-4 mt-lg-3  p-3 p-lg-5  text-center"><div>
+                <h2 style="font-size: 32px;" class="mt-4 mt-lg-0 text-center">Beschreibung:</h2>
                 <p class="mb-4">
                   {{ product.description }}
                 </p>
@@ -516,7 +496,7 @@
                           <div class=" d-flex align-items-center "><img src="{% static 'Bilder/Ort.png' %}" class="img-icon " alt=""></div>
                           <div class="ps-2 line-h">
                             <h6 class="h5 p-0 m-0 fw-lighter" >Adresse</h6>
-                            <span class="text-black lead">Großmarkt Wien: Laxenburger Str. 367, 1230 Wien</span>
+                            <span class="text-black lead">Großmarkt Wien: Laxenburger Str. 365C/10 Kopf West, 1230 Wien</span>
                           </div>
                            
                         </li>
@@ -533,7 +513,7 @@
                           <div class=" d-flex align-items-center "><img src="{% static 'Bilder/mail.png' %}" class="img-icon " alt=""></div>
                           <div class="ps-2">
                             <h6 class="h5 p-0 m-0 fw-lighter" >Email</h6>
-                            <span class=""><a href="mailto:office@smhandels.com" class="text-black lead">office@smhandels.com</a></span>
+                            <span class=""><a href="mailto:office@frischverliebt.at" class="text-black lead">office@frischverliebt.at</a></span>
                             <br>
                             <!-- <span class=""><a href="mailto:max2@mustermann.com" class="text-white lead">max2@mustermann.com</a></span> -->
                           </div>
@@ -545,8 +525,9 @@
                 </div>
                 <div class="col-6 p-0">
                   <div class="h-100 p-0">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2662.885151005754!2d16.360608391851066!3d48.131738177427685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476da96af8e66d6d%3A0x4248020de889dad9!2sLaxenburger%20Str.%20367%2C%201230%20Wien!5e0!3m2!1sde!2sat!4v1716723444952!5m2!1sde!2sat" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                  </div>
+                    <!-- height: 100%; -->
+                      <!-- width="100%" height="450" -->
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2662.5314522064546!2d16.359139012505945!3d48.13855857112367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476da9125aef1145%3A0x34957964195e5067!2sLaxenburger%20Str.%20365%2C%201230%20Wien!5e0!3m2!1sde!2sat!4v1718404782686!5m2!1sde!2sat" width="100%"    style="border:0;height:100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>                  </div>
                 </div>
               </div>
             </div>

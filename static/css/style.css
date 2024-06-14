@@ -367,7 +367,7 @@ section#about-us ul {
 }
 section#about-us ul li {
   font-weight: 400;
-  font-size: 21px;
+  font-size: 17px !important;
 }
 @media (max-width: 991.98px) {
   section#about-us h2 {
@@ -714,6 +714,13 @@ section#about-us article p {
 #contact-us .h5{
   font-size: 13px;
 }
+
+
+.navbar-brand img{
+  width:80px;
+  position: absolute ;
+  top: 0;
+  }
 
 }
 
