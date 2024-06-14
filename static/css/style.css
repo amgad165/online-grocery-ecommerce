@@ -327,7 +327,7 @@ aside.open {
     width: 75%;
   }
 }
-@media (max-width: 684.98px) {
+@media (max-width: 992px) {
   .navbar-brand  img {
     height: 45px;
   }
@@ -510,6 +510,7 @@ nav .container {
 
   .navbar-brand{
     margin-left: 2%;
+    padding-right: 200px ;
   }
   #cartIcon{
     margin-left: 10px;
@@ -593,7 +594,7 @@ margin: auto;
 
 
 section#about-us h3{
-  font-size: 1.25rem !important
+  font-size: 0.9  rem !important
 
 }
 
@@ -613,7 +614,6 @@ font-size: 18px;
 }
 
 .about-second-part{
-  background-color: #ebefce;
   padding: 35px;
 }
 
