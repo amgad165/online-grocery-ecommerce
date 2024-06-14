@@ -171,7 +171,9 @@ STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 ENDPOINT_SECRET = config('ENDPOINT_SECRET')
 
-BACKEND_DOMAIN = 'sm-handels.com'
+# BACKEND_DOMAIN = 'sm-handels.com'
+BACKEND_DOMAIN = 'frischverliebt.at'
+
 # PAYMENT_SUCCESS_URL = 'http://127.0.0.1:8000/success/'
 # PAYMENT_CANCEL_URL = 'http://127.0.0.1:8000/cancel/'
 
