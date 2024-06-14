@@ -86,6 +86,13 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+    
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=355, blank=True, null=True)
@@ -95,6 +102,7 @@ class Product(models.Model):
     price = models.FloatField()
     customize = models.BooleanField(_('Customize'), default=False)
     view_homepage = models.BooleanField(default=False)
+    inline_category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True,blank=True)
 
     class Meta:
         ordering = ['-customize', 'name']

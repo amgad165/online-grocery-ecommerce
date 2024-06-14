@@ -19,6 +19,27 @@
 .quantity{
   width: 16px;
 }
+
+.category-container {
+    background-color: #93BC84; 
+    padding: 10px 20px; 
+    border-radius: 10px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px; 
+    font-weight: bold; 
+}
+
+.category-link {
+    color: #000; 
+    text-decoration: none; 
+    margin: 0 5px; 
+}
+
+.category-link:hover {
+    text-decoration: underline; /* Underline on hover for better UX */
+}
     </style>
   </head>
   <body>
@@ -41,12 +62,23 @@
       <section id="priv-products" >
         <div class="container">
           <div class="row g-5 p-5">
-            <h1 class="text-center text-black my-5">Unsere Produkte  <br>
+            <h1 class="text-center text-black mt-5">Unsere Produkte  <br>
               <span class="under-heading text-black">  - PRIVAT -</span>
 
             </h1>
+            <div class="category-container my-5">
+              {% for category in categories %}
+                  <a href="#{{ category.name }}" class="category-link">{{ category.name }}</a>
+                  {% if not forloop.last %} - {% endif %}
+              {% endfor %}
+          </div>
 
-            
+            {% for category, privat_products in private_products_by_category.items %}
+            <section id="{{category}}" class="row">
+
+           
+            <h3 class="under-heading text-black text-center fw-bold">  - {{category}} -</h3>
+
             {% for product in privat_products %}
      
           
@@ -191,8 +223,8 @@
     </div>
 
             {% endfor %}
-
-
+          </section>
+            {% endfor %}
               <!-- <div class="col bg-white rounded-5">
                 <div>
                   

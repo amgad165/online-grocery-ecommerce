@@ -16,6 +16,7 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Ingredient)
 
+admin.site.register(Category)
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id','order_summary','get_user_telefon', 'get_user_email','get_user_role',

@@ -66,7 +66,13 @@ def edit_profile(request):
 
 @login_required
 def products(request):
-    privat_products = Product.objects.filter(category='privat')
+    categories = Category.objects.all()
+    private_products_by_category = {}
+
+    for inline_category in categories:
+        private_products_by_category[inline_category.name] = Product.objects.filter(category='privat',inline_category = inline_category)
+
+    # privat_products = Product.objects.filter(category='privat')
     business_products = Product.objects.filter(category='business')
 
     try:
@@ -76,9 +82,10 @@ def products(request):
 
     # Pass the filtered products to the template
     context = {
-        'privat_products': privat_products,
+        'private_products_by_category': private_products_by_category,
         'business_products': business_products,
         'order' : order,
+        'categories': categories
         
     }
     return render(request,"products.html", context)
