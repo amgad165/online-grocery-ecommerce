@@ -475,12 +475,7 @@ section#editProfile li {
     font-size: 20px !important;
   }
 }
-@media (max-width:684px) {
 
-nav .icon-cart{
-  top: 33.73px;
-}
-}
 
 /*# sourceMappingURL=style.css.map */
 
@@ -677,7 +672,7 @@ nav .nav-item{
 
 nav .icon-cart {
   position: absolute;
-  transform: translateY(-101%);
+  transform: translateY(-163%);
 }
 .navbar-brand{
 margin-left: 10px;
