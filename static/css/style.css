@@ -245,7 +245,7 @@ footer {
   padding: 1px;
 }
 footer img {
-  width: 365px;
+  width: 215px;
   display: block;
   margin: auto;
   
@@ -677,7 +677,7 @@ nav .nav-item{
 
 nav .icon-cart {
   position: absolute;
-  transform: translateY(-50%);
+  transform: translateY(-101%);
 }
 .navbar-brand{
 margin-left: 10px;
@@ -735,9 +735,12 @@ section#about-us article p {
   }
   
   #cartIcon{
-    margin-right: -10px;
+    margin-right: 3px;
+    transform: translateY(-137%);
   }
-
+  .navbar-brand img{
+    top: 6px;
+  }
   
   }
 

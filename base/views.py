@@ -397,6 +397,8 @@ def handle_payment_success(invoice):
 
 
         print("Payment succeeded for invoice:", invoice['id'])
+        return JsonResponse({"status": "success"}, status=200)
+
     except Order.DoesNotExist:
         print(f"Order with id {order_id} does not exist.")
 
@@ -448,12 +450,18 @@ def handle_payment_intent_succeeded(payment_intent):
             subscription_type=transaction_type  # Set based on billing_reason
         )
 
+        print("helllooooooooooasdasdasdasdasdssa")
+
         mail(order,settings.EMAIL_HOST_USER, items_lists)
 
 
         print("Payment succeeded for payment intent:", payment_intent['id'])
-    except Order.DoesNotExist:
+        return JsonResponse({"status": "success"}, status=200)
+
+    except Order.DoesNotExist as e:
         print(f"Order with id {order_id} does not exist.")
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
 
 def handle_payment_failure(invoice):
     print("Payment failed for invoice:", invoice['id'])
@@ -470,13 +478,20 @@ def handle_subscription_created(subscription):
 
         # Assuming the initial transaction is handled here, no need to duplicate in handle_payment_success
         print("Subscription created for user:", user.email)
+        return JsonResponse({"status": "success"}, status=200)
 
-    except CustomUser.DoesNotExist:
+    except CustomUser.DoesNotExist as e:
         print(f"No user found with email {user.email}. Subscription not linked.")
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
     except stripe.error.StripeError as e:
         print(f"Stripe API error occurred: {str(e)}")
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
     except Exception as e:
         print(f"An error occurred: {str(e)}")
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
 
 def handle_subscription_updated(subscription):
     customer_id = subscription['customer']
@@ -490,12 +505,13 @@ def handle_subscription_updated(subscription):
     try:
         order = Order.objects.get(id=order_id)
         transaction = Transaction.objects.get(order=order, user=user)
-    except Order.DoesNotExist:
+    except Order.DoesNotExist as e:
         print(f"Order with id {order_id} does not exist.")
-        return
-    except Transaction.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+ 
+    except Transaction.DoesNotExist as e:
         print(f"No transaction found for order ID {order_id} and user {user.email}.")
-        return
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
     if subscription_status == 'canceled':
         transaction.subscription_type = 'non active'
@@ -535,12 +551,13 @@ def handle_subscription_deleted(subscription):
         # Assuming `order_id` is the ID of an Order object
         order = Order.objects.get(id=order_id)
         transaction = Transaction.objects.get(order=order, user=user)
-    except Order.DoesNotExist:
+    except Order.DoesNotExist as e:
         print(f"Order with id {order_id} does not exist.")
-        return
-    except Transaction.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    except Transaction.DoesNotExist as e :
         print(f"No transaction found for order ID {order_id} and user {user.email}.")
-        return
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
     # Update the subscription type based on the subscription status
     if subscription_status == 'canceled':
@@ -551,6 +568,7 @@ def handle_subscription_deleted(subscription):
 
     transaction.save()
     print("Subscription deleted and transaction updated:", subscription['id'])
+    return JsonResponse({'status': 'success', 'message': "Subscription deleted and transaction updated:"}, status=200)
 
 def handle_charge_refunded(charge):
     customer_id = charge['customer']
@@ -574,6 +592,7 @@ def handle_charge_refunded(charge):
     transaction.amount = -charge['amount_refunded'] / 100  # Convert cents to dollars
     transaction.save()
     print("Charge refunded:", charge['id'])
+    return JsonResponse({'status': 'success', 'message': "refunded success"}, status=200)
 
 def handle_charge_failed(charge):
     print("Charge failed:", charge['id'])

@@ -88,10 +88,12 @@ class Ingredient(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
+    display_order = models.PositiveIntegerField(default=0)  # New field for manual ordering
 
     def __str__(self):
         return self.name
-    
+    class Meta:
+        ordering = ['display_order', 'name']  # Order categories by display_order, then by name
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
