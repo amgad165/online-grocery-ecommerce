@@ -82,7 +82,7 @@
               <span class="under-heading text-black">  - PRIVAT -</span>
 
             </h1>
-            <div class="category-container my-5 ">
+            <div class="category-container my-lg-5 mt-2 mb-5 ">
               {% for category in categories %}
                   <a href="#{{ category.name }}" class="category-link">{{ category.name }}</a>
                   {% if not forloop.last %} - {% endif %}
