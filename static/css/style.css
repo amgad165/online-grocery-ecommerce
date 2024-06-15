@@ -421,6 +421,11 @@ section#our-products h2 {
   .resposive-padding {
     padding: 25px !important;
   }
+
+
+  section#contact-us i {
+    font-size: 30px;
+  }
 }
 @media (max-width: 1199.98px) {
   .resposive-padding {
@@ -451,6 +456,7 @@ section#contact-us iframe {
 }
 section#contact-us .img-icon {
   width: 40px;
+
 }
 
 section#editProfile {

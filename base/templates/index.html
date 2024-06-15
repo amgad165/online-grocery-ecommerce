@@ -23,17 +23,10 @@
   }
 }
 
-@media (max-width: 992px) {
-  .custom-height{
-    height: 147px;
-    margin-bottom: 0.25rem;
-  }
 
-  #about-us #sub-heading{
-    font-size: 20px !important;
-  }
+.modal-special-products h2{
+font-size: 32px !important;
 }
-  
 .unit-span {
   display: inline-block;
   width: 50px; 
@@ -43,8 +36,19 @@
   width: 16px;
 }
 
+#about-us #sub-heading{
+    font-size: 28px !important;
+  }
+  @media (max-width: 992px) {
+  .custom-height{
+    height: 147px;
+    margin-bottom: 0.25rem;
+  }
 
-
+  #about-us #sub-heading{
+    font-size: 25px !important;
+  }
+} 
 
 </style>
 
@@ -396,11 +400,70 @@
                 <i class="fa-solid fa-x pointer-cursor" data-bs-dismiss="modal"></i>
               </div>
 
+              <div style="display: none;" class="col-12 col-lg-6 mt-4  p-3 p-lg-5 ">
+                <div class="row gap-4"> 
+                  {% if product.customize %}
+                  <div class="size-selection">
+                    <h4>Boxgröße</h4>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeS" value="S" data-max-quantity="5" checked>
+                      <label class="form-check-label" for="sizeS">S (max 5 kg)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeM" value="M" data-max-quantity="10">
+                      <label class="form-check-label" for="sizeM">M (max 10 kg)</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeL" value="L" data-max-quantity="15">
+                      <label class="form-check-label" for="sizeL">L (max 15 kg)</label>
+                    </div>
+                  </div>
+                {% endif %} 
+                  <h4>Inhalt</h4>
+                  {% for product_ingredient in product.ingredients.all %}
+                  <div class="row m-0 p-0"> 
+                      <div class="col-6">
+                          <div class="ingredient-details">
+                              {% if product.customize %}
+                                  <input type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+                              {% else %}
+                                  <i class="fa-solid fa-square me-2"></i>
+                                  <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+                              {% endif %}
+                              {{ product_ingredient.ingredient }}
+                          </div>
+                      </div>
+                      <!-- Hidden input field for ingredient price -->
+                      <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
+                      <div class="col-6 d-flex justify-content-end">
+                          <div class="d-flex gap-3 align-items-center">
+                              {% if product.customize %}
+                                  <div class="minus circled minus-icon">
+                                      <i class="fa-solid fa-minus"></i>
+                                  </div>
+                              {% endif %}
+                              <div class="quantity text-center">
+                                  <span id="product-quantity_{{ product_ingredient.ingredient.id }}">{{ product_ingredient.quantity }}</span>
+                              </div>
+                              {% if product.customize %}
+                                  <div class="plus circled plus-icon">
+                                      <i class="fa-solid fa-plus"></i>
+                                  </div>
+                              {% endif %}
+                              <span class="fw-bold unit-span">{{ product_ingredient.ingredient.unit }}</span>
+                          </div>
+                      </div>
+                  </div>
+                  {% endfor %}
 
+                
+              
+              </div>
+            </div>
 
               
               <div class="col-12 col-lg-12   mt-4 mt-lg-3  p-3 p-lg-5  text-center"><div>
-                <h2 style="font-size: 32px;" class="mt-4 mt-lg-0 text-center">Beschreibung:</h2>
+                <h2 style="font-size: 32px;" class="mt-4 mt-lg-0 text-center">Beschreibung</h2>
                 <p class="mb-4">
                   {{ product.description }}
                 </p>
@@ -493,7 +556,9 @@
                     <p class="lead fw-lighter ">Bei Fragen oder für weitere Informationen kontaktieren Sie uns gerne über das Formular oder direkt per Telefon und E-Mail. Wir helfen Ihnen schnell und kompetent weiter. </p>
                       <ul>
                         <li class="d-flex my-3">
-                          <div class=" d-flex align-items-center "><img src="{% static 'Bilder/Ort.png' %}" class="img-icon " alt=""></div>
+                          <div class=" d-flex align-items-center p-2 "><i class="fa-solid fa-location-dot"></i></div>
+
+                          <!-- <div class=" d-flex align-items-center "><img src="{% static 'Bilder/Ort.png' %}" class="img-icon " alt=""></div> -->
                           <div class="ps-2 line-h">
                             <h6 class="h5 p-0 m-0 fw-lighter" >Adresse</h6>
                             <span class="text-black lead">Großmarkt Wien: Laxenburger Str. 365C/10 Kopf West, 1230 Wien</span>
@@ -501,7 +566,7 @@
                            
                         </li>
                         <li class="d-flex my-3 line-h">
-                          <div class=" d-flex align-items-center "><img src="{% static 'Bilder/Telefon.png' %}" class="img-icon " alt=""></div>
+                          <div class=" d-flex align-items-center p-2"><i class="fa-solid fa-phone"></i></div>
                           <div class="ps-2">
                             <h6 class="h5 p-0 m-0 fw-lighter" >Telefonnummer</h6>
                             <span class=""><a href="tel:+43 676 6996690" class="text-black lead">+43 676 6996690
@@ -510,7 +575,7 @@
                            
                         </li>
                         <li class="d-flex my-3 line-h">
-                          <div class=" d-flex align-items-center "><img src="{% static 'Bilder/mail.png' %}" class="img-icon " alt=""></div>
+                          <div class=" d-flex align-items-center p-2"><i class="fa-solid fa-envelope"></i></div>
                           <div class="ps-2">
                             <h6 class="h5 p-0 m-0 fw-lighter" >Email</h6>
                             <span class=""><a href="mailto:office@frischverliebt.at" class="text-black lead">office@frischverliebt.at</a></span>
