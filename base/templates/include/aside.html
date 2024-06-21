@@ -59,7 +59,7 @@
         <div class="bg-gray px-5 py-4  add-to-cart ">
           <div class="d-flex  justify-content-between sidebarFooter">
             <span class="fs-2">Zwischensumme</span>
-            <span id="order_total" class="fs-2"> € {{order.get_total}} EUR</span>
+            <span id="order_total" class="fs-2"> € {{order.get_total|floatformat:2}} EUR</span>
           </div>
             <p>*MWST. INBEGRIFFEN.</p>
   

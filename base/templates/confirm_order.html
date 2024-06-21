@@ -294,11 +294,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     
         // Perform initial check after a delay when the page loads
-        setTimeout(checkMinTotalPrice, 100); // Adjust the delay as needed
+        setTimeout(checkMinTotalPrice, 800); // Adjust the delay as needed
     
         // Add event listeners to radio inputs to recheck the total price whenever it changes
         $('input[name="subscription"]').change(checkMinTotalPrice);
     });
+    
     </script>
 </body>
 
