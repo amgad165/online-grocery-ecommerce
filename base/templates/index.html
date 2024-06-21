@@ -74,11 +74,11 @@ font-size: 32px !important;
         <div class="row">
           <div class="col-lg-6 d-flex justify-content-center align-items-center text-center">
             <div class="text-center mt-5">
-              <span class="fw-bold ">Willkommen in unser Shop</span>
+              <span style="font-family: chaparral;" >Willkommen in unser Shop</span>
               <h2 class="header-heading">Frisches Obst & Gemüse</h2>
               <div class="p-contained d-flex justify-content-center align-items-center">
                 
-                <p class="paragraph-width fw-bold">
+                <p style="font-family: chaparral;" class="paragraph-width ">
                   Willkommen bei frischverliebt, Ihrem Lieblingslieferanten für frisches Obst und Gemüse in Wien! Lassen Sie sich von unserer Vielfalt verführen – von strahlend gelben Zitronen über bunten Äpfeln bis hin zu saftig grünen Salaten. Unser Sortiment ist so bunt und abwechslungsreich wie das Leben selbst. Unser Angebot reicht von heimischen Klassikern bis hin zu exotischen Spezialitäten – immer knackig, saftig und voller Geschmack.
                 </p>
               </div>
@@ -100,19 +100,19 @@ font-size: 32px !important;
     </header>
     <!-- About Us Section -->
     <section id="about-us" class="py-5">
-      <h2 class="text-center fw-medium  fs-1">Über Uns</h2>
+      <h2 style="font-family: gabarito;" class="text-center fw-medium  fs-1">Über Uns</h2>
       <div class="container">
         <div class="row">
           <div class="col-md-5">
             <div class="bg-main-color p-4" data-aos="fade-right">
-              <h2 class="text-black text-center">Für jeden Bedarf</h2>
+              <h2 style="font-family: gabarito;" class="text-black text-center">Für jeden Bedarf</h2>
             </div>
           </div>
           <div class="col-md-7 about-second-part d-flex align-items-center">
             <div style="margin-left: 10px;" data-aos="fade-down ms-3">
-              <h3 id="sub-heading" >Privatpersonen, Restaurants, Büros, Events und mehr</h3>
+              <h3 class="fw-bold" style="font-family: chaparral;" id="sub-heading" >Privatpersonen, Restaurants, Büros, Events und mehr</h3>
               <ul>
-                <li>
+                <li style="font-family: chaparral;">
 
                   Egal, ob Sie eine Privatperson sind, ein Restaurant betreiben, ein Büro versorgen oder eine Veranstaltung planen – frischverliebt ist Ihr verlässlicher Partner. Unsere frischen Produkte passen sich flexibel Ihren Bedürfnissen an und sorgen stets für das gewisse Extra an Frische und Qualität. Begeistern Sie Ihre Familie, Gäste oder Mitarbeiter mit knackigen Salaten, fruchtigen Snacks, saisonalen Köstlichkeiten oder Eventplatten, die das Herz höher schlagen lassen.                
                 </li>
@@ -373,9 +373,9 @@ font-size: 32px !important;
       <div class="bg-white p-4 h-100 d-flex flex-column">
         <div class="product-image-container">
           <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
-          <div class="overlay-text fs-2">{{ product.name }}</div>
+          <div class="overlay-text">{{ product.name }}</div>
         </div>
-        <p class="fs-6 fw-semibold">
+        <p style="font-family: chaparral;" class="fs-6 ">
           {{ product.description }}
         </p>
         <div class="mt-auto">
@@ -535,7 +535,7 @@ font-size: 32px !important;
           <!-- inputs right -->
           <div class="col-lg-6 bg-third-color p-4">
             <div class="">
-              <h4>Senden Sie Ihre Anfrage</h4>
+              <h4 style="font-family: gabarito;">Senden Sie Ihre Anfrage</h4>
               <form method="post" action="{% url 'submit_contact' %}">
                 {% csrf_token %}
                 <div class="inputs-container">
@@ -555,7 +555,7 @@ font-size: 32px !important;
               <div class="row">
                 <div style="background-image: url({% static 'Bilder/contact_image.png' %});" class="col-6 py-5 px-3 text-black">
                   <div>
-                    <h2 class="fs-2 letter-spacing">Kontakt</h2>
+                    <h2 class="fs-2 letter-spacing" style="font-family: gabarito;">Kontakt</h2>
                     <p class="lead fw-lighter ">Bei Fragen oder für weitere Informationen kontaktieren Sie uns gerne über das Formular oder direkt per Telefon und E-Mail. Wir helfen Ihnen schnell und kompetent weiter. </p>
                       <ul>
                         <li class="d-flex my-3">
@@ -563,16 +563,16 @@ font-size: 32px !important;
 
                           <!-- <div class=" d-flex align-items-center "><img src="{% static 'Bilder/Ort.png' %}" class="img-icon " alt=""></div> -->
                           <div class="ps-2 line-h">
-                            <h6 class="h5 p-0 m-0 fw-lighter" >Adresse</h6>
-                            <span class="text-black lead">Großmarkt Wien: Laxenburger Str. 365C/10 Kopf West, 1230 Wien</span>
+                            <h6 class="h5 p-0 m-0 fw-lighter" style="font-family: gabarito;" >Adresse</h6>
+                            <span style="font-family: chaparral;" class="text-black lead">Großmarkt Wien: Laxenburger Str. 365C/10 Kopf West, 1230 Wien</span>
                           </div>
                            
                         </li>
                         <li class="d-flex my-3 line-h">
                           <div class=" d-flex align-items-center p-2"><i class="fa-solid fa-phone"></i></div>
                           <div class="ps-2">
-                            <h6 class="h5 p-0 m-0 fw-lighter" >Telefonnummer</h6>
-                            <span class=""><a href="tel:+43 676 6996690" class="text-black lead">+43 676 6996690
+                            <h6 class="h5 p-0 m-0 fw-lighter" style="font-family: gabarito;" >Telefonnummer</h6>
+                            <span style="font-family: chaparral;" class=""><a href="tel:+43 676 6996690" class="text-black lead">+43 676 6996690
                             </a></span>
                           </div>
                            
@@ -580,8 +580,8 @@ font-size: 32px !important;
                         <li class="d-flex my-3 line-h">
                           <div class=" d-flex align-items-center p-2"><i class="fa-solid fa-envelope"></i></div>
                           <div class="ps-2">
-                            <h6 class="h5 p-0 m-0 fw-lighter" >Email</h6>
-                            <span class=""><a href="mailto:office@frischverliebt.at" class="text-black lead">office@frischverliebt.at</a></span>
+                            <h6 class="h5 p-0 m-0 fw-lighter" style="font-family: gabarito;" >Email</h6>
+                            <span style="font-family: chaparral;"><a href="mailto:office@frischverliebt.at" class="text-black lead">office@frischverliebt.at</a></span>
                             <br>
                             <!-- <span class=""><a href="mailto:max2@mustermann.com" class="text-white lead">max2@mustermann.com</a></span> -->
                           </div>

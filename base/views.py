@@ -450,7 +450,6 @@ def handle_payment_intent_succeeded(payment_intent):
             subscription_type=transaction_type  # Set based on billing_reason
         )
 
-        print("helllooooooooooasdasdasdasdasdssa")
 
         mail(order,settings.EMAIL_HOST_USER, items_lists)
 
@@ -829,7 +828,7 @@ def login_view(request):
             login(request, user)
             return JsonResponse({'success': True})  # Redirect or return success JSON response
         else:
-            return JsonResponse({'error': 'Invalid credentials'}, status=400)  # Return errors JSON response with status 400
+            return JsonResponse({'error': 'ungültige Anmeldedaten'}, status=400)  # Return errors JSON response with status 400
         
 
 
@@ -985,7 +984,7 @@ def fail_page(request):
         order = None
 
     context = {'order':order}
-    return render(request, 'fail_page.html', context)
+    return render(request, 'failed_page.html', context)
 
 
 
@@ -1025,6 +1024,28 @@ def success_contact(request):
 
     context = {'order':order}
     return render(request, 'success_contact.html', context)
+
+
+
+def impressum(request):
+    try:
+        order = Order.objects.get(user = request.user, ordered=False)
+    except:
+        order = None
+
+    context = {'order':order}
+
+    return render(request, 'impressum.html', context)
+
+def datenschutzerklarung(request):
+    try:
+        order = Order.objects.get(user = request.user, ordered=False)
+    except:
+        order = None
+
+    context = {'order':order}
+
+    return render(request, 'datenschutzerklarung.html', context)
 
 @login_required
 def logout_view(request):

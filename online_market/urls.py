@@ -50,6 +50,8 @@ urlpatterns = [
     # path('error/', views.error, name='error'),
 
 
+    path('impressum/', views.impressum, name='impressum'),
+    path('datenschutzerklarung /', views.datenschutzerklarung, name='datenschutzerklarung'),
 
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='password_reset/password_reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password_reset/password_reset_done.html'), name='password_reset_done'),

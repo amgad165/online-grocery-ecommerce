@@ -124,21 +124,21 @@ class Product(models.Model):
 # this model shows the ingredient set initially by the admin
 class ProductIngredient(models.Model):
     product = models.ForeignKey(Product, related_name='ingredients', on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.SET_NULL,blank=True, null = True)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE,blank=True, null = True)
     quantity = models.PositiveIntegerField(default=1, verbose_name="quantity")  # Default quantity for the ingredient
 
     def __str__(self):
-        return f"{self.product.name} - {self.ingredient.name} - {self.quantity}"
+        return f"{self.product.name} - {self.ingredient} - {self.quantity}"
     
 
 # this model shows the ingredients customized by the user and this model represents the user orders.
 class IngredientUserCustomize(models.Model):
     product = models.ForeignKey(Product, related_name='ingredients_customized', on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.SET_NULL,blank=True, null = True)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE,blank=True, null = True)
     quantity = models.PositiveIntegerField(default=1, verbose_name="quantity")  # Default quantity for the ingredient
 
     def __str__(self):
-        return f"{self.ingredient.name} - {self.quantity} {self.ingredient.unit}"
+        return f"{self.ingredient} - {self.quantity} {self.ingredient.unit}"
 
 class OrderItem(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

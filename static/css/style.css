@@ -331,13 +331,17 @@ aside.open {
   .navbar-brand  img {
     height: 45px;
   }
+
+  .overlay-text{
+    font-size: 1.25rem;
+  }
 }
 header {
   min-height: calc(100vh - 91.16px);
   background-color: #D6EAC1;
 }
 header .header-heading {
-  font-size: 110px;
+  font-size: 100px;
   font-family: "Gabarito", sans-serif;
 }
 header .paragraph-width {
@@ -361,13 +365,14 @@ section#about-us h2 {
 section#about-us h3 {
   font-weight: 700;
   font-size: 1.6rem !important;
+  font-family: gabarito;
 }
 section#about-us ul {
   padding: 0;
 }
 section#about-us ul li {
   font-weight: 400;
-  font-size: 17px !important;
+  font-size: 22px !important;
 }
 @media (max-width: 991.98px) {
   section#about-us h2 {
@@ -383,6 +388,7 @@ section#about-us article img {
 }
 section#about-us article p {
   font-size: 14px;
+  font-family: chaparral;
 }
 
 /* section#about-us .col-md-3 .about-div {
@@ -796,10 +802,11 @@ header span{
   left: 38%;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 2.2rem;
+  font-size: 1.75rem;
   font-weight: bold;
   text-align: center;
   white-space: nowrap;
+  font-family: gabarito;
 }
 
 .form-check-input:checked{

@@ -67,6 +67,7 @@
                         if (result.error) {
                             var errorElement = document.getElementById('card-errors');
                             errorElement.textContent = result.error.message;
+                            
                         } else {
                                     
                             alert('Ihre Zahlung war erfolgreich');
@@ -77,6 +78,7 @@
             }).catch(function(error) {
                 console.error('Fetch error:', error);
                 alert('Ihre Zahlung war nicht erfolgreich.');
+                window.location.href = '/fail_page/';
             });
         }
 
@@ -121,6 +123,7 @@
             }).catch(function(error) {
                 console.error('Fetch error:', error);
                 alert('Ihr Abonnement ist nicht erfolgreich eingerichtet.');
+                window.location.href = '/fail_page/';
             });
         }
 

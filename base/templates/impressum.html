@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="{% static 'Bilder/logo-big2.png' %}">
+
+  {% include 'include/links.html' %}
+
+  <title>impressum</title>
+
+ <style>
+
+ </style> 
+</head>
+
+
+<body style="background-color: #D6EAC1;">
+<!-- side bar -->
+
+  {% include 'include/aside.html' %}
+
+
+  {% include 'include/nav.html' %}
+
+
+
+
+
+
+
+  <main>
+    <div class="container text-center">
+  
+    <p class="text-black"> <br /><br /><h3>IMPRESSUM</h3><br />
+       
+        <br />
+        <b>Firmeninhaber:</b> <br />
+         Herr Mohammad Haj Mustafa<br />
+         Frau Anna Hrebenova<br />
+        <br />
+        <b>Angaben zum Unternehmen:</b><br />
+        S&M Handels OG </b><br />
+        Laxenburger Str. 365C/10, 1230 Wien<br />
+        Mail: office@sm-handels.com</b><br />
+        Mail: office@frischverliebt.at</b><br />
+        Tel: +43 676 6996690</b><br />
+        <br />
+        Firmenbuch-Nummer: FN 536381 x </b><br />
+        Firmenbuch-Gericht: Handelsgericht Wien </b><br />
+        <br />
+        <b>Geschäftszweige:</b><br />
+        Lebensmittelhandel<br />
+        <br />
+        <b>Kammerzugehörigkeit:</b><br />
+        WKO Wien<br />
+        <br />
+        
+    
+
+        <b>Haftungs- und Schutzrechtshinweise</b> <br />
+        <b>Haftungsausschluss:</b> <br />
+            Die Inhalte dieses Onlineangebotes wurden sorgfältig und nach unserem aktuellen Kenntnisstand erstellt, dienen jedoch nur der Information und entfalten keine rechtlich bindende Wirkung, sofern es sich nicht um gesetzlich verpflichtende Informationen (z.B. das Impressum, die Datenschutzerklärung, AGB oder verpflichtende Belehrungen von Verbrauchern) handelt. 
+            Wir behalten uns vor, die Inhalte vollständig oder teilweise zu ändern oder zu löschen, soweit vertragliche Verpflichtungen unberührt bleiben. Alle Angebote sind freibleibend und unverbindlich.<br />
+        <br />
+        <b>Urheberrechte und Markenrechte:</b><br />
+        Alle auf dieser Website dargestellten Inhalte, wie Texte, Fotografien, Grafiken, Marken und Warenzeichen sind durch die jeweiligen Schutzrechte (Urheberrechte, Markenrechte) geschützt. Die Verwendung, Vervielfältigung usw. unterliegen unseren Rechten oder den Rechten der jeweiligen Urheber bzw. Rechteverwalter.<br />
+        Hinweise auf Rechtsverstöße: Sollten Sie innerhalb unseres Internetauftritts Rechtsverstöße bemerken, bitten wir Sie, uns auf diese hinzuweisen. Wir werden rechtswidrige Inhalte und Links nach Kenntnisnahme unverzüglich entfernen.<br />
+      
+    </p>
+
+</div>
+    
+
+  </main>
+  
+  {% include 'include/footer.html' %}
+
+
+  {% include 'include/scripts.html' %}
+
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+
+<script src="{% static 'Js/products.js' %}"></script>
+
+
+
+  <script src="https://js.stripe.com/v3/"></script>
+    
+  {% include 'include/ajax_functions.html' %}
+
+
+
+
+</body>
+
+</html>
