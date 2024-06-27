@@ -57,11 +57,11 @@ a {
 }
 
 .bg-main-color {
-  background-color: #FFCCC5;
+  background-color: #D6EAC1;
 }
 
 .bg-third-color {
-  background-color: #FFD766 !important;
+  background-color: #D6EAC1 !important;
 }
 
 .bg-secondary-color {
@@ -238,7 +238,7 @@ nav .icon-cart {
   }
 }
 footer {
-  background-color: #93BC84;
+  background-color: #D6EAC1;
   text-align: center;
   margin: 0;
   color: #fff;
@@ -355,7 +355,7 @@ header .paragraph-width {
 } */
 
 section#about-us {
-  background-color: #FFDBD7;
+  background-color: #93BC84;
 }
 section#about-us h2 {
   font-size: 5rem;
@@ -439,7 +439,7 @@ section#our-products h2 {
   }
 }
 section#contact-us {
-  background-color: #FEEEA9;
+  background-color: #93BC84;
 }
 section#contact-us .inputs-container {
   display: flex;
