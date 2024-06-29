@@ -507,12 +507,12 @@ font-size: 32px !important;
       <div class="col-12">
             {% if user.is_authenticated %}
             <a href="{% url 'products' %}">
-            <button class="btn btn-white d-block m-auto mt-3 text-black" id="allProdBtn" >
+            <button style="background-color: #C0DCA3;"   class="btn d-block m-auto mt-3 text-black" id="allProdBtn" >
             Alle Produkte
           </button>
         </a>
               {% else %}
-              <button class="btn btn-white d-block m-auto mt-3 text-black" id="allProdBtn" data-bs-toggle="modal"
+              <button style="background-color: #C0DCA3;" class="btn  d-block m-auto mt-3 text-black" id="allProdBtn" data-bs-toggle="modal"
               data-bs-target="#exampleModal">
               Alle Produkte
             </button>

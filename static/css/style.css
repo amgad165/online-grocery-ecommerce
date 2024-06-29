@@ -57,11 +57,11 @@ a {
 }
 
 .bg-main-color {
-  background-color: #D6EAC1;
+  background-color: #93BC83;
 }
 
 .bg-third-color {
-  background-color: #D6EAC1 !important;
+  background-color: #C1DDA3 !important;
 }
 
 .bg-secondary-color {
@@ -355,7 +355,7 @@ header .paragraph-width {
 } */
 
 section#about-us {
-  background-color: #93BC84;
+  background-color: #C1DDA4;
 }
 section#about-us h2 {
   font-size: 5rem;
@@ -439,7 +439,7 @@ section#our-products h2 {
   }
 }
 section#contact-us {
-  background-color: #93BC84;
+  background-color: #D6EAC1;
 }
 section#contact-us .inputs-container {
   display: flex;
