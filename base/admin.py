@@ -26,7 +26,7 @@ class OrderAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         # Override get_queryset to include only orders where ordered = True
-        return super().get_queryset(request).filter( being_delivered=False)
+        return super().get_queryset(request).filter( ordered=True, being_delivered=False)
 
     def order_summary(self, obj):
         return ", ".join([f"{item.quantity} x {item.product.name}" for item in obj.items.all()])
