@@ -42,12 +42,15 @@ urlpatterns = [
     path('password_change/', views.password_change, name='password_change'),
     path('get_address/', views.get_address, name='get_address'),
     path('address_change/', views.address_change, name='address_change'),
+    path('calculate-price/', views.calculate_price, name='calculate_price'),
 
     path('confirm_order/', views.confirm_order, name='confirm_order'),
     path('confirm_address/', views.confirm_address, name='confirm_address'),
 
     path('logout/', views.logout_view, name='logout'),
     # path('error/', views.error, name='error'),
+
+
 
 
     path('impressum/', views.impressum, name='impressum'),

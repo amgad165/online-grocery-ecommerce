@@ -738,6 +738,104 @@ def confirm_order(request):
 
     return render(request, 'confirm_order.html',context)
     
+
+
+
+def calculate_price(request):
+    if request.method == 'POST':
+        base_price = float(request.POST.get('base_price', 0))  # Base price from the form
+        subscription_type = request.POST.get('subscription', 'one_time')  # Subscription type
+        coupon_code = request.POST.get('coupon_code', '')  # Get the coupon code from the request
+
+        final_price = base_price
+
+        # Apply subscription logic
+        if subscription_type == 'daily':
+            final_price = base_price * 30
+        elif subscription_type == 'weekly':
+            final_price = base_price * 4
+
+        # Get the user's current order
+        try:
+            order = Order.objects.get(user=request.user, ordered=False)
+        except Order.DoesNotExist:
+            return JsonResponse({'error': 'No active order found'}, status=404)
+
+        # Get the products in the current order
+        order_items = order.items.all()
+
+        # Check if any product in the order is excluded from minimum charge
+        excluded_products = ExcludedProduct.objects.filter(product__in=[item.product for item in order_items])
+
+        # Initialize messages
+        coupon_message = ''
+        min_charge_message = ''
+
+        # Check for coupon validity
+        if coupon_code:
+            try:
+                coupon = Coupon.objects.get(code=coupon_code)
+                if coupon.is_valid():  # Check if the coupon is valid
+                    discount = (coupon.percent_off / 100) * final_price
+                    final_price -= discount
+                    coupon.usage_count += 1  # Increment usage count
+                    coupon.save()  # Save changes to coupon
+                    coupon_message = f"Coupon applied: {coupon.percent_off}% off"
+                else:
+                    coupon_message = "Coupon is invalid or expired."
+            except Coupon.DoesNotExist:
+                coupon_message = "Coupon does not exist."
+
+        # Apply minimum charge only if no excluded products are found
+        if not excluded_products.exists() and final_price < 50:
+            original_price = final_price
+            final_price = 50
+            min_charge_message = f"Die Bestellsumme beträgt: €{original_price:.2f}. Mindestgebühr in Höhe von €50 wurde angewendet."
+
+        # Prepare final response message
+        response_message = {
+            'coupon_message': coupon_message,
+            'min_charge_message': min_charge_message,
+        }
+
+        return JsonResponse({
+            'final_price': f"{final_price:.2f}",
+            'messages': response_message
+        })
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+
+# def check_minimum_charge(request):
+#     if request.method == 'POST':
+#         # Get the cart products from the request (assuming product IDs are passed in the request)
+#         product_ids = request.POST.getlist('product_ids[]', [])
+#         total_price = float(request.POST.get('total_price', 0))
+#         original_price = total_price
+        
+#         # Check if any product is in the ExcludedProduct model
+#         excluded_products = ExcludedProduct.objects.filter(product__id__in=product_ids)
+        
+#         # If no excluded products are found, apply minimum charge if needed
+#         if not excluded_products.exists() and total_price < 50:
+#             final_price = 50
+#             min_charge_applied = True
+#         else:
+#             final_price = total_price
+#             min_charge_applied = False
+
+#         # Return a JSON response with the updated price and other details
+#         return JsonResponse({
+#             'final_price': final_price,
+#             'original_price': original_price,
+#             'min_charge_applied': min_charge_applied,
+#             'excluded_products': [product.product.name for product in excluded_products],
+#         })
+
+#     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
 @login_required
 def confirm_address(request):
     delivery_address = None

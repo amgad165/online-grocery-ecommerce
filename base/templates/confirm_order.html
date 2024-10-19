@@ -105,7 +105,8 @@ margin-bottom: 150px;
             </div>
               {% endif %}
               <div class="fs-4">
-              
+                <div class="row">
+                  <div class="col-12 col-md-6">
                 {% if user.role == "company" %}
                 <div class="form-check payment-option">
                     <input class="form-check-input" type="radio" name="paymentMethod" id="cashPayment" value="cash">
@@ -117,11 +118,26 @@ margin-bottom: 150px;
                 <input checked class="form-check-input" type="radio" name="paymentMethod" id="cardPayment" value="card">
                 <label class="form-check-label" for="cardPayment">Kartenzahlung</label>
             </div>
-            
+          </div>
+            <div class="col-12  col-md-6 mt-3 mt-lg-0">
+              <label for="couponCode" class="form-label">Coupon Code</label>
+              <input type="text" id="couponCode" class="form-control" placeholder="Enter your coupon code">
+              <button id="applyCoupon" class="btn btn-primary mt-2">Apply Coupon</button>
+              <div id="couponMessage" class="mt-2"></div>
+          </div>
+          </div>
+         
+            <div class="mb-3 mt-3 col-6"  id="total-price"></div>
 
-            <div class="mb-3 mt-3"  id="total-price"></div>
+                        
+
+     
+            <div>
+                
+            </div>
               <div style="display: none;" id="min-charge-message" class="alert alert-danger fs-5" >Der Mindestbetrag beträgt €50</div>
-            
+
+
             <!-- div for checkout -->
             <div class="checkout-container" id="checkout-container">
               <div class="col-lg-3 col-12 mt-5 mb-3">
@@ -180,7 +196,7 @@ margin-bottom: 150px;
 
 
 
-  <script>
+  <!-- <script>
    
     // Function to update the total price based on subscription type
     function updateTotalPrice() {
@@ -212,7 +228,106 @@ margin-bottom: 150px;
         radio.addEventListener('change', updateTotalPrice);
     });
 
+</script> -->
+
+<script>
+  $(document).ready(function() {
+      $('#applyCoupon').click(function() {
+          const couponCode = $('#couponCode').val();
+          const subscriptionType = $('input[name="subscription"]:checked').val();
+          const basePrice = parseFloat($('#total-price').attr('data-total-price'));
+
+          $.ajax({
+              url: "{% url 'calculate_price' %}",  // Adjust with your URL
+              method: "POST",
+              data: {
+                  'subscription': subscriptionType,
+                  'base_price': basePrice,
+                  'coupon_code': couponCode,
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+              },
+              success: function(response) {
+                  // Update the total price
+                  $('#total-price').text(`Gesamtsumme: €${response.final_price}`);
+                  $('#total-price').attr('data-final-price', response.final_price);
+
+                  // Show coupon message if present
+                  if (response.messages.coupon_message) {
+                      $('#couponMessage').text(response.messages.coupon_message).show();
+                  } else {
+                      $('#couponMessage').hide(); // Hide if there's no coupon message
+                  }
+                  // Show minimum charge message if present
+                  if (response.messages.min_charge_message) {
+                      $('#min-charge-message').text(response.messages.min_charge_message).show();
+                  } else {
+                      $('#min-charge-message').hide(); // Hide if there's no minimum charge message
+                  }
+
+                              },
+              error: function(xhr, status, error) {
+                  console.log('Error:', error);
+              }
+          });
+      });
+  });
 </script>
+
+<script>
+  $(document).ready(function() {
+      // Function to send AJAX request when subscription changes
+      function updateTotalPrice() {
+          const subscriptionType = $('input[name="subscription"]:checked').val();
+          const basePrice = parseFloat($('#total-price').attr('data-total-price'));
+  
+          $.ajax({
+              url: "{% url 'calculate_price' %}",  // Django view for price calculation
+              method: "POST",
+              data: {
+                  'subscription': subscriptionType,
+                  'base_price': basePrice,
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',  // CSRF token
+              },
+              success: function(response) {
+                  // Update the total price in the UI
+                  $('#total-price').text(`Gesamtsumme: €${response.final_price}`);
+                  $('#total-price').attr('data-final-price', response.final_price);
+  
+                  // Show minimum charge message if present
+                  if (response.messages.min_charge_message) {
+                      $('#min-charge-message').text(response.messages.min_charge_message).show();
+                  } else {
+                      $('#min-charge-message').hide(); // Hide if there's no minimum charge message
+                  }
+
+                  // Show coupon message if present 
+                    if (response.messages.coupon_message) {
+                      $('#couponMessage').text(response.messages.coupon_message).show();
+                  } else {
+                      $('#couponMessage').hide(); // Hide if there's no coupon message
+                  }
+              },
+              error: function(xhr, status, error) {
+                  console.log('Error:', error);
+              }
+          });
+      }
+  
+      // Event listener for subscription type change
+      $('input[name="subscription"]').change(function() {
+          updateTotalPrice();
+      });
+
+
+
+      setTimeout(updateTotalPrice, 800); // Adjust the delay as needed
+
+      setTimeout(updateTotalPrice, 1500); // Adjust the delay as needed
+
+  });
+  </script>
+
+
 
 
 <script>
@@ -267,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   <!-- minimum charge function -->
-  <script>
+  <!-- <script>
     $(document).ready(function() {
         const totalPriceDiv = $('#total-price');
         const minChargeMessage = $('#min-charge-message');
@@ -302,6 +417,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     </script>
+
+ -->
+
+
+
+
+</script>
+
+
 </body>
 
 </html>

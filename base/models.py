@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -243,3 +244,31 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class ExcludedProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='excluded_products')
+    exclusion_reason = models.CharField(max_length=255, blank=True, null=True)
+    date_excluded = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Excluded: {self.product.name} - Reason: {self.exclusion_reason if self.exclusion_reason else 'N/A'}"
+
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=15, unique=True)
+    percent_off = models.PositiveIntegerField(null=True, blank=True)
+    expiry_date = models.DateField(null=True, blank=True)
+    max_usage = models.PositiveIntegerField(default=1)
+    usage_count = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.code
+
+    def is_valid(self):
+        # Check if the coupon is active, within usage limits, and not expired
+        return (self.active and
+                (self.usage_count < self.max_usage) and
+                (not self.expiry_date or self.expiry_date >= timezone.now().date()))

@@ -146,8 +146,10 @@ admin.site.register(Transaction)
 admin.site.register(DeliveryAddress)
 
 admin.site.register(Contact)
+admin.site.register(ExcludedProduct)
 
 
+admin.site.register(Coupon)
 
 # Custom admin for Inactive Company Users# Custom admin for Inactive Company Users
 class InactiveCompanyUserAdmin(admin.ModelAdmin):
