@@ -104,8 +104,8 @@ margin-bottom: 150px;
                 <label class="form-check-label" for="one_time">Einmalzahlung </label>
             </div>
               {% endif %}
-              <div class="fs-4">
-                <div class="row">
+              <div class="fs-4 row">
+               
                   <div class="col-12 col-md-6">
                 {% if user.role == "company" %}
                 <div class="form-check payment-option">
@@ -118,19 +118,21 @@ margin-bottom: 150px;
                 <input checked class="form-check-input" type="radio" name="paymentMethod" id="cardPayment" value="card">
                 <label class="form-check-label" for="cardPayment">Kartenzahlung</label>
             </div>
-          </div>
-            <div class="col-12  col-md-6 mt-3 mt-lg-0">
-              <label for="couponCode" class="form-label">Coupon Code</label>
-              <input type="text" id="couponCode" class="form-control" placeholder="Enter your coupon code">
-              <button id="applyCoupon" class="btn btn-primary mt-2">Apply Coupon</button>
-              <div id="couponMessage" class="mt-2"></div>
-          </div>
-          </div>
-         
+
             <div class="mb-3 mt-3 col-6"  id="total-price"></div>
 
-                        
+          </div>
+    
+         
 
+                        
+            <div class="col-12  col-md-6 mt-3 mt-lg-0">
+                <label for="couponCode" class="form-label">Rabattcode anwenden</label>
+                <input type="text" id="couponCode" class="form-control" >
+                <button id="applyCoupon" class="btn btn-black mt-2">Anwenden</button>
+                <div id="couponMessage" class="mt-2"></div>
+            </div>
+           
      
             <div>
                 
@@ -140,7 +142,7 @@ margin-bottom: 150px;
 
             <!-- div for checkout -->
             <div class="checkout-container" id="checkout-container">
-              <div class="col-lg-3 col-12 mt-5 mb-3">
+              <div class="col-lg-6 col-12 mt-5 mb-3">
                 <img class="img-fluid w-100" src="{% static 'Bilder/pay_icons.png' %}" alt="">
             </div>
                 <div class="col-lg-6 col-12">
@@ -174,6 +176,7 @@ margin-bottom: 150px;
             </div>
 
     </div>
+    
           </div>
           
               

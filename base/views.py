@@ -780,11 +780,11 @@ def calculate_price(request):
                     final_price -= discount
                     coupon.usage_count += 1  # Increment usage count
                     coupon.save()  # Save changes to coupon
-                    coupon_message = f"Coupon applied: {coupon.percent_off}% off"
+                    coupon_message = f"abattcode angewendet: {coupon.percent_off}%"
                 else:
-                    coupon_message = "Coupon is invalid or expired."
+                    coupon_message = "Rabattcode ungültig oder abgelaufen."
             except Coupon.DoesNotExist:
-                coupon_message = "Coupon does not exist."
+                coupon_message = "bitte gib einen gültigen Rabattcode ein ."
 
         # Apply minimum charge only if no excluded products are found
         if not excluded_products.exists() and final_price < 50:

@@ -616,7 +616,7 @@ section#about-us .special-style{
 }
 
 section#about-us ul li{
-font-size: 18px;
+font-size: 18px !important;
 }
 
 .about-second-part{
