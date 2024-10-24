@@ -64,6 +64,9 @@ margin-bottom: 150px;
    
             <h4 class="fw-bold mb-4">Zahlungsart</h4>
             
+
+
+
             {% if user.role == "private" %}
             <div class="col-md-12">
               <hr>
@@ -114,6 +117,10 @@ margin-bottom: 150px;
                 </div>
             {% endif %}
             
+
+            <!-- commented -->
+
+<!-- 
             <div class="form-check payment-option">
                 <input checked class="form-check-input" type="radio" name="paymentMethod" id="cardPayment" value="card">
                 <label class="form-check-label" for="cardPayment">Kartenzahlung</label>
@@ -137,10 +144,12 @@ margin-bottom: 150px;
             <div>
                 
             </div>
-              <div style="display: none;" id="min-charge-message" class="alert alert-danger fs-5" >Der Mindestbetrag beträgt €50</div>
+              <div style="display: none;" id="min-charge-message" class="alert alert-danger fs-5" >Der Mindestbetrag beträgt €50</div> -->
 
 
             <!-- div for checkout -->
+<!-- 
+
             <div class="checkout-container" id="checkout-container">
               <div class="col-lg-4 col-12 mt-5 mb-3">
                 <img class="img-fluid w-100" src="{% static 'Bilder/pay_icons.png' %}" alt="">
@@ -173,8 +182,9 @@ margin-bottom: 150px;
             
             <div class="checkout-cash-container text-center text-md-start" id="checkout-cash-container" style="display: none;">
                               <a class="btn btn-black mt-4 loading_gif" href="{% url 'submit_cash_payment' %}">Barzahlung bei Lieferung </a>
-            </div>
+            </div> -->
 
+            <!-- commented -->
     </div>
     
           </div>

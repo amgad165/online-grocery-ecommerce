@@ -744,6 +744,7 @@ def confirm_order(request):
 def calculate_price(request):
     if request.method == 'POST':
         base_price = float(request.POST.get('base_price', 0))  # Base price from the form
+        print(base_price)
         subscription_type = request.POST.get('subscription', 'one_time')  # Subscription type
         coupon_code = request.POST.get('coupon_code', '')  # Get the coupon code from the request
 
