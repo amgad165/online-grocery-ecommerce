@@ -332,18 +332,30 @@
                                      <td class="right-t">{{product_ingredient.quantity}} {{ product_ingredient.ingredient.unit }}</td>
                                    </tr>
                                    {% endfor %}
-  
+                                   
+                                   {% if  not order.has_hidden_price_product %}
 
-   
+                                   <tr class="mt-2">
+
+                                    <td></i> Preis für Produkt</td>
+                                    <td class="right-t">€ {{item.get_total_item_price}} EUR</td>
+                        
+                                  </tr>
+                                  {% endif %}
+
                                  </table>
 
                                  {% endfor %}
+                                 {% if  not order.has_hidden_price_product %}
+
                                  <table class="mt-3">
-                                 <tr class="br-top">
-                                  <td>Bezahlte Summe</td>
-                                  <td class="right-t">€ {{order.get_total}} EUR</td>
+                                 <tr class="br-top ">
+                                  <td class="fs-5 font-weight-bold">Bezahlte Summe</td>
+                                  <td class="right-t">€ {{order.get_final_total}} EUR</td>
                                 </tr>
                               </table>
+                              {% endif %}
+
                               </div>
                             </div>
 

@@ -28,12 +28,15 @@
     <!-- confirm order section -->
     <section id="confirm_order" class="d-flex justify-content-center mt-5">
       <div class="container " data-aos="fade-down">
+
+        {% if not order.has_hidden_price_product %}
+
         <ol class="progress-tracker">
             <li class="step active"><a href="#" class="step-name">Daten</a></li>
             <li class="step "><a href="#" class="step-name">Zahlung</a></li>
             <li class="step"><span class="step-name">Prüfen</span></li>
           </ol>
-        
+          {% endif %}
           <div class="row mt-5 mb-5">
             <h4 class="fw-bold mb-4">Rechnungsadresse</h4>
             <div class="col-md-12 mb-3">

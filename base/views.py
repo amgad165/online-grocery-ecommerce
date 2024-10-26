@@ -125,7 +125,7 @@ def submit_cash_payment(request):
         # Record the transaction
         Transaction.objects.create(
             user=order.user,
-            amount=order.get_total(),  # Convert cents to euros
+            amount=order.get_final_total(),  # Convert cents to euros
             order=order,
             subscription_type="cash"  # Set based on billing_reason
         )
@@ -137,11 +137,58 @@ def submit_cash_payment(request):
     except:
         return redirect('fail_page')
 
+
+# if the order has products with no price , the user will be redirected to this view , the client and the owner should organize the money things
+@login_required
+def submit_order_without_price(request):
+    # Determine the type of transaction based on billing_reason
+    
+    try:
+        order = Order.objects.filter(user=request.user, ordered=False).first()
+        order.ordered = True
+        order.save()
+
+
+        order_items = order.items.all()
+        order_items.update(ordered=True)
+        items_lists = []
+        index = 1
+        for item in order_items:
+            item.save()
+            # Start with the order item's string representation
+            item_details = f"{index}- {item}"
+            # Fetch and format all related IngredientUserCustomize objects
+            customized_ingredients = item.ingredients_customized.all()
+            ingredient_details = []
+            for ingredient in customized_ingredients:
+                ingredient_details.append(f"    - {ingredient}")
+            # Join all ingredient details and append to the item details
+            if ingredient_details:
+                item_details += "<br>    " + "<br>    ".join(ingredient_details)
+            items_lists.append(item_details)
+            index += 1
+
+        items_lists = '<br> '.join(items_lists)
+    
+        # Record the transaction
+        Transaction.objects.create(
+            user=order.user,
+            amount=order.get_final_total(),  # Convert cents to euros
+            order=order,
+            subscription_type="order without price"  # Set based on billing_reason
+        )
+
+        mail(order=order,sender = settings.EMAIL_HOST_USER,items_lists= items_lists, kind='order_without_price')
+
+
+        return redirect('success_page')
+    except:
+        return redirect('fail_page')
+
 @login_required
 def create_subscription(request):
     data = json.loads(request.body)
     payment_method_id = data.get('paymentMethodId')
-    final_price = float(data.get('final_price'))
     delivery_period = data.get('delivery_period')
 
     print(delivery_period)
@@ -190,7 +237,7 @@ def create_subscription(request):
         order.save()
 
         # Calculate the total price based on the order
-        total_price = int(final_price * 100)  # Convert to cents
+        total_price = order.get_final_total()
 
         # Create a price object dynamically
         price = stripe.Price.create(
@@ -216,10 +263,7 @@ def create_subscription(request):
 @login_required
 def create_one_time_payment(request):
     data = json.loads(request.body)
-    amount = float(data.get('amount'))  
 
-    if not amount:
-        return JsonResponse({'error': 'Amount is required'}, status=400)
 
     user = request.user
     profile, created = UserSubscription.objects.get_or_create(user=user)
@@ -250,6 +294,7 @@ def create_one_time_payment(request):
         if not order:
             return JsonResponse({'error': 'No active order found'}, status=404)
 
+        amount = order.get_final_total()
 
         # Create a PaymentIntent with the order amount and currency
         intent = stripe.PaymentIntent.create(
@@ -266,17 +311,17 @@ def create_one_time_payment(request):
 
 
 
-def load_modal_data(request):
-    order = Order.objects.filter(user=request.user, ordered=False).first()
-    if not order:
-        return JsonResponse({'error': 'No active order found'}, status=404)
+# def load_modal_data(request):
+#     order = Order.objects.filter(user=request.user, ordered=False).first()
+#     if not order:
+#         return JsonResponse({'error': 'No active order found'}, status=404)
 
-    total_price = order.get_total()  # Assuming get_total() returns the total as a float
-    print(total_price)
-    return JsonResponse({
-        'total_price': total_price,
+#     total_price = order.get_total()  # Assuming get_total() returns the total as a float
+#     print(total_price)
+#     return JsonResponse({
+#         'total_price': total_price,
     
-    })
+#     })
 
 
 
@@ -743,18 +788,8 @@ def confirm_order(request):
 
 def calculate_price(request):
     if request.method == 'POST':
-        base_price = float(request.POST.get('base_price', 0))  # Base price from the form
-        print(base_price)
-        subscription_type = request.POST.get('subscription', 'one_time')  # Subscription type
-        coupon_code = request.POST.get('coupon_code', '')  # Get the coupon code from the request
-
-        final_price = base_price
-
-        # Apply subscription logic
-        if subscription_type == 'daily':
-            final_price = base_price * 30
-        elif subscription_type == 'weekly':
-            final_price = base_price * 4
+        subscription_type = request.POST.get('subscription', 'one_time')
+        coupon_code = request.POST.get('coupon_code', '')
 
         # Get the user's current order
         try:
@@ -762,42 +797,46 @@ def calculate_price(request):
         except Order.DoesNotExist:
             return JsonResponse({'error': 'No active order found'}, status=404)
 
-        # Get the products in the current order
-        order_items = order.items.all()
+        # Set the delivery frequency in the order
+        order.delivery_frequency = subscription_type
+        order.save()
 
-        # Check if any product in the order is excluded from minimum charge
-        excluded_products = ExcludedProduct.objects.filter(product__in=[item.product for item in order_items])
-
-        # Initialize messages
+        # Attach coupon if provided
         coupon_message = ''
-        min_charge_message = ''
 
-        # Check for coupon validity
+        if order.coupon :
+            if order.coupon.is_valid():
+                coupon_message = f"abattcode angewendet: {order.coupon.percent_off}%"
+
         if coupon_code:
             try:
                 coupon = Coupon.objects.get(code=coupon_code)
-                if coupon.is_valid():  # Check if the coupon is valid
-                    discount = (coupon.percent_off / 100) * final_price
-                    final_price -= discount
-                    coupon.usage_count += 1  # Increment usage count
-                    coupon.save()  # Save changes to coupon
-                    coupon_message = f"abattcode angewendet: {coupon.percent_off}%"
+                if coupon.is_valid():
+                    order.coupon = coupon
+                    coupon.usage_count += 1
+                    coupon.save()
+                    order.save()
+                    coupon_message = f"neu abattcode angewendet: {coupon.percent_off}%"
                 else:
                     coupon_message = "Rabattcode ungültig oder abgelaufen."
             except Coupon.DoesNotExist:
                 coupon_message = "bitte gib einen gültigen Rabattcode ein ."
 
-        # Apply minimum charge only if no excluded products are found
-        if not excluded_products.exists() and final_price < 50:
-            original_price = final_price
-            final_price = 50
-            min_charge_message = f"Die Bestellsumme beträgt: €{original_price:.2f}. Mindestgebühr in Höhe von €50 wurde angewendet."
 
-        # Prepare final response message
+        # Calculate the final price with the new `get_final_total` method
+        final_price = order.get_final_total()
+        
+        # Minimum charge message, if applied
+        min_charge_message = ''
+        if final_price == 50:
+            min_charge_message =  f"Die Bestellsumme beträgt: €{order.get_total_with_coupon():.2f}. Mindestgebühr in Höhe von €50 wurde angewendet."
+
+        # Response messages for clarity
         response_message = {
             'coupon_message': coupon_message,
             'min_charge_message': min_charge_message,
         }
+
 
         return JsonResponse({
             'final_price': f"{final_price:.2f}",
@@ -808,33 +847,7 @@ def calculate_price(request):
 
 
 
-# def check_minimum_charge(request):
-#     if request.method == 'POST':
-#         # Get the cart products from the request (assuming product IDs are passed in the request)
-#         product_ids = request.POST.getlist('product_ids[]', [])
-#         total_price = float(request.POST.get('total_price', 0))
-#         original_price = total_price
-        
-#         # Check if any product is in the ExcludedProduct model
-#         excluded_products = ExcludedProduct.objects.filter(product__id__in=product_ids)
-        
-#         # If no excluded products are found, apply minimum charge if needed
-#         if not excluded_products.exists() and total_price < 50:
-#             final_price = 50
-#             min_charge_applied = True
-#         else:
-#             final_price = total_price
-#             min_charge_applied = False
 
-#         # Return a JSON response with the updated price and other details
-#         return JsonResponse({
-#             'final_price': final_price,
-#             'original_price': original_price,
-#             'min_charge_applied': min_charge_applied,
-#             'excluded_products': [product.product.name for product in excluded_products],
-#         })
-
-#     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
 
 @login_required

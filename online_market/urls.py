@@ -28,8 +28,9 @@ urlpatterns = [
     path('create_subscription/', views.create_subscription, name='create_subscription'),
     path('create_one_time_payment/', views.create_one_time_payment, name='create_one_time_payment'),
     path('submit_cash_payment/', views.submit_cash_payment, name='submit_cash_payment'),
+    path('submit_order_without_price/', views.submit_order_without_price, name='submit_order_without_price'),
 
-    path('load_modal_data/', views.load_modal_data, name='load_modal_data'),
+    # path('load_modal_data/', views.load_modal_data, name='load_modal_data'),
     path('stripe_webhook/', views.stripe_webhook, name='stripe_webhook'),
     path('success_page/', views.success_page, name='success_page'),
     path('fail_page/', views.fail_page, name='fail_page'),

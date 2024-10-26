@@ -23,7 +23,17 @@
                 <h3>{{ item.product.name }}</h3>
                 <!-- <span id="product_price_{{ item.id }}">{{ item.get_total_item_price }} €</span> -->
                 <p>{{ item.product.description }}</p>
-                <span><span id="product_price_{{ item.id }}">{{ item.get_total_item_price }} € </span>/<span id="item_weight_{{ item.id }}"> {{item.get_total_order_quantity}} kg</span></span>
+                <span>
+                  
+                  {% if not order.has_hidden_price_product %}
+                    
+                
+                    
+                  <span id="product_price_{{ item.id }}">
+                  {{ item.get_total_item_price }} € 
+                </span>
+                {% endif %}
+                <!-- / <span id="item_weight_{{ item.id }}"> {{item.get_total_order_quantity}} kg</span></span> -->
               </div>
             </div>
             <div class="row m-0">
@@ -57,12 +67,15 @@
           
           
         <div class="bg-gray px-5 py-4  add-to-cart ">
+
+          {% if not order.has_hidden_price_product %}
+
           <div class="d-flex  justify-content-between sidebarFooter">
             <span class="fs-2">Zwischensumme</span>
             <span id="order_total" class="fs-2"> € {{order.get_total|floatformat:2}} EUR</span>
           </div>
             <p>*MWST. INBEGRIFFEN.</p>
-  
+          {% endif %}
             <a  class="btn btn-black w-100" href="{% url 'confirm_address' %}">ZUR KASSE</a>
             
             <!-- <a id="checkout-button" class="btn btn-black w-100" data-bs-toggle="modal" data-bs-target="#stripeModal">ZUR KASSE</a> -->

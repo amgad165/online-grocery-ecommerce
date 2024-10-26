@@ -105,6 +105,7 @@ class Product(models.Model):
     price = models.FloatField()
     customize = models.BooleanField(_('Customize'), default=False)
     view_homepage = models.BooleanField(default=False)
+    hide_price = models.BooleanField(default=False)
     inline_category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True,blank=True)
 
     class Meta:
@@ -171,27 +172,79 @@ class OrderItem(models.Model):
                 total_quantity += customized_ingredient.quantity * int(self.quantity)
             return total_quantity
 
+
+
+class Coupon(models.Model):
+    code = models.CharField(max_length=15, unique=True)
+    percent_off = models.PositiveIntegerField(null=True, blank=True)
+    expiry_date = models.DateField(null=True, blank=True)
+    max_usage = models.PositiveIntegerField(default=1)
+    usage_count = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.code
+
+    def is_valid(self):
+        # Check if the coupon is active, within usage limits, and not expired
+        return (self.active and
+                (self.usage_count < self.max_usage) and
+                (not self.expiry_date or self.expiry_date >= timezone.now().date()))
+    
+
+
+
+
 class Order(models.Model):
-    user = models.ForeignKey(CustomUser,
-                             on_delete=models.CASCADE)
-    items = models.ManyToManyField(OrderItem,related_name='order')
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    items = models.ManyToManyField(OrderItem, related_name='order')
     ordered = models.BooleanField(default=False)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     ordered_date = models.DateTimeField(null=True)
-    delivery_frequency  = models.CharField(max_length=255, blank=True, null=True)
+    delivery_frequency = models.CharField(max_length=255, blank=True, null=True)  # daily, weekly, or one_time
+    coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, blank=True, null=True, related_name='orders')
 
     def __str__(self):
         return f"Order {self.pk}"
 
     def get_total(self):
-        total = 0
-        for order_item in self.items.all():
-            total += order_item.get_total_item_price()
- 
+        total = sum(item.get_total_item_price() for item in self.items.all())
+        return total
+
+    def get_final_total(self):
+        total = self.get_total()
+
+        # Adjust based on delivery frequency
+        if self.delivery_frequency == 'daily':
+            total *= 30
+        elif self.delivery_frequency == 'weekly':
+            total *= 4
+
+        # Apply coupon if available
+        if self.coupon and self.coupon.is_valid():
+            discount = (self.coupon.percent_off / 100) * total
+            total -= discount
+
+        # Minimum charge rule if applicable
+        excluded_products = ExcludedProduct.objects.filter(product__in=[item.product for item in self.items.all()])
+        if not excluded_products.exists() and total < 50:
+            total = 50
+
         return total
     
+    def get_total_with_coupon(self):
+        total = self.get_total()
 
+        # Apply coupon if available
+        if self.coupon and self.coupon.is_valid():
+            discount = (self.coupon.percent_off / 100) * total
+            total -= discount
+
+
+        return total
+    
+    
     def get_sub_total(self):
         total = 0
         for order_item in self.items.all():
@@ -205,8 +258,17 @@ class Order(models.Model):
             quantity += order_item.quantity
 
         return quantity
+    
 
 
+    def has_hidden_price_product(self):
+        """
+        Check if any product in the order has hide_price set to True.
+        """
+        for item in self.items.all():
+            if item.product.hide_price:
+                return True
+        return False
 
 class SubscriptionOrder(Order):
     class Meta:
@@ -227,7 +289,7 @@ class Transaction(models.Model):
     amount = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True,related_name='transaction_order')
-    subscription_type = models.CharField(max_length=255, choices=[('active', 'Active'), ('non active', 'Non Active'),('one time purchase', 'One Time Purchase'),('cash', 'Cash')])
+    subscription_type = models.CharField(max_length=255, choices=[('active', 'Active'), ('non active', 'Non Active'),('one time purchase', 'One Time Purchase'),('cash', 'Cash'),('order without price', 'Order Without Price')], default='one time purchase')
 
 
     def __str__(self):
@@ -255,20 +317,3 @@ class ExcludedProduct(models.Model):
         return f"Excluded: {self.product.name} - Reason: {self.exclusion_reason if self.exclusion_reason else 'N/A'}"
 
 
-
-class Coupon(models.Model):
-    code = models.CharField(max_length=15, unique=True)
-    percent_off = models.PositiveIntegerField(null=True, blank=True)
-    expiry_date = models.DateField(null=True, blank=True)
-    max_usage = models.PositiveIntegerField(default=1)
-    usage_count = models.PositiveIntegerField(default=0)
-    active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.code
-
-    def is_valid(self):
-        # Check if the coupon is active, within usage limits, and not expired
-        return (self.active and
-                (self.usage_count < self.max_usage) and
-                (not self.expiry_date or self.expiry_date >= timezone.now().date()))

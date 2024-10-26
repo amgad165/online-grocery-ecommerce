@@ -214,6 +214,8 @@
                     </p>
                     {% endif %}
 
+
+                    {% if not product.hide_price %}
                     <div class="mb-4 d-flex justify-content-between">
                       <span class="h5">Summe</span>
                       {% if product.customize %}
@@ -225,6 +227,8 @@
                       {% endif %}
                         
                     </div>
+
+                    {% endif %}
                     <div class=" text-center">
 
 
@@ -380,6 +384,8 @@
                     
                   </p>
                   {% endif %}
+                  {% if not product.hide_price %}
+
                     <div class="mb-4 d-flex justify-content-between">
                       <span class="h5">Summe</span>
                       {% if product.customize %}
@@ -391,6 +397,8 @@
                       {% endif %}
                         
                     </div>
+                      
+                      {% endif %}
                     <div class=" text-center">
 
 

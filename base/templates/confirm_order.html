@@ -35,6 +35,10 @@ margin-bottom: 150px;
   }
 }
 
+
+
+
+
 </style>
 
 </head>
@@ -51,6 +55,45 @@ margin-bottom: 150px;
   <div id="loadingGif" style="display: none;">
     <img src="{% static 'Bilder/loading.gif' %}" alt="Loading...">
 </div>
+
+
+<!-- if there is any product in the order has hidden price , that will be probably with bussinness section but we will generalize ,
+so if the price is hidden we will send a mail to the user with the product details  -->
+{% if  order.has_hidden_price_product %}
+<section id="confirm_order" class="d-flex flex-column align-items-center mt-5 " style="margin-bottom: 300px;">
+    <!-- Order Summary Header -->
+    <h2 class="mb-4">Bestellübersicht</h2>
+
+    <!-- Iterate through each item in the order -->
+    {% for item in order.items.all %}
+    <div class="card mb-4 shadow-sm" style="width: 100%; max-width: 600px;">
+        <div class="card-body">
+            <!-- Product title -->
+            <h5 class="card-title bil-title">{{ item }}</h5>
+
+            <!-- Ingredients list -->
+            <ul class="list-group list-group-flush mt-3">
+                {% for product_ingredient in item.ingredients_customized.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <i class="fa-solid fa-basket-shopping me-2"></i>
+                        {{ product_ingredient.ingredient }}
+                    </span>
+                    <span class="right-t">{{ product_ingredient.quantity }} {{ product_ingredient.ingredient.unit }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+
+    <a class="btn btn-black mt-4 loading_gif " href="{% url 'submit_order_without_price' %}">Bestellung abschicken </a>
+
+</section>
+
+
+{% else %}
+
     <!-- confirm order section -->
     <section id="confirm_order" class="d-flex justify-content-center mt-5">
       <div class="container " data-aos="fade-down">
@@ -118,15 +161,14 @@ margin-bottom: 150px;
             {% endif %}
             
 
-            <!-- commented -->
 
-<!-- 
+
             <div class="form-check payment-option">
                 <input checked class="form-check-input" type="radio" name="paymentMethod" id="cardPayment" value="card">
                 <label class="form-check-label" for="cardPayment">Kartenzahlung</label>
             </div>
 
-            <div class="mb-3 mt-3 col-6"  id="total-price"></div>
+            <div class="mb-3 mt-3 col-6"  id="total-price"> Gesamtsumme: € {{ order.get_final_total }}</div>
 
           </div>
     
@@ -144,12 +186,12 @@ margin-bottom: 150px;
             <div>
                 
             </div>
-              <div style="display: none;" id="min-charge-message" class="alert alert-danger fs-5" >Der Mindestbetrag beträgt €50</div> -->
+              <div style="display: none;" id="min-charge-message" class="alert alert-danger fs-5" >Der Mindestbetrag beträgt €50</div>
 
 
             <!-- div for checkout -->
-<!-- 
 
+            
             <div class="checkout-container" id="checkout-container">
               <div class="col-lg-4 col-12 mt-5 mb-3">
                 <img class="img-fluid w-100" src="{% static 'Bilder/pay_icons.png' %}" alt="">
@@ -182,9 +224,8 @@ margin-bottom: 150px;
             
             <div class="checkout-cash-container text-center text-md-start" id="checkout-cash-container" style="display: none;">
                               <a class="btn btn-black mt-4 loading_gif" href="{% url 'submit_cash_payment' %}">Barzahlung bei Lieferung </a>
-            </div> -->
+            </div> 
 
-            <!-- commented -->
     </div>
     
           </div>
@@ -198,7 +239,7 @@ margin-bottom: 150px;
 </div>
     </section>
   
-
+    {%   endif %}
 
   {% include 'include/footer.html' %}
 
@@ -248,21 +289,21 @@ margin-bottom: 150px;
       $('#applyCoupon').click(function() {
           const couponCode = $('#couponCode').val();
           const subscriptionType = $('input[name="subscription"]:checked').val();
-          const basePrice = parseFloat($('#total-price').attr('data-total-price'));
+        //   const basePrice = parseFloat($('#total-price').attr('data-total-price'));
 
           $.ajax({
               url: "{% url 'calculate_price' %}",  // Adjust with your URL
               method: "POST",
               data: {
                   'subscription': subscriptionType,
-                  'base_price': basePrice,
                   'coupon_code': couponCode,
                   'csrfmiddlewaretoken': '{{ csrf_token }}',
               },
               success: function(response) {
                   // Update the total price
                   $('#total-price').text(`Gesamtsumme: €${response.final_price}`);
-                  $('#total-price').attr('data-final-price', response.final_price);
+
+                console.log(response.final_price);
 
                   // Show coupon message if present
                   if (response.messages.coupon_message) {
@@ -304,7 +345,6 @@ margin-bottom: 150px;
               success: function(response) {
                   // Update the total price in the UI
                   $('#total-price').text(`Gesamtsumme: €${response.final_price}`);
-                  $('#total-price').attr('data-final-price', response.final_price);
   
                   // Show minimum charge message if present
                   if (response.messages.min_charge_message) {
@@ -331,11 +371,12 @@ margin-bottom: 150px;
           updateTotalPrice();
       });
 
+      updateTotalPrice();
 
 
-      setTimeout(updateTotalPrice, 800); // Adjust the delay as needed
+    //   setTimeout(updateTotalPrice, 800); // Adjust the delay as needed
 
-      setTimeout(updateTotalPrice, 1500); // Adjust the delay as needed
+    //   setTimeout(updateTotalPrice, 1500); // Adjust the delay as needed
 
   });
   </script>
