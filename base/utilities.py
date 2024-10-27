@@ -41,19 +41,51 @@ def mail(order,sender, items_lists,user=None, kind=None):
 
     elif kind == 'order_without_price':
 
+        if order.user.address_type == "billing":
+            user_address = f"{order.user.street_address} {order.user.hausnummer}, {order.user.plz_zip} {order.user.bezirk}"
+        else:
+            user_address = str(order.user.delivery_addresses)
+        # Create the rest of the message content
         message = format_html(
-            f"Sehr geehrte/r {order.user.first_name}. <br><br>"
-            f"wir freuen uns, Ihnen mitteilen zu können, dass Ihre Bestellung mit der Bestellnummer <strong>{order.id}</strong> erfolgreich eingegangen ist. Hier sind die Details Ihrer Bestellung:<br><br>"
+            f"Sehr geehrte/r {order.user.first_name} {order.user.last_name}. <br><br>"
+            f"<strong>Datum:</strong><br> {order.ordered_date.strftime('%d.%m.%Y')}<br><hr>"
 
-            f"{items_lists}<br><br>"
+            # Single Table for Alignment
+            f"<table style='width: 100%; margin-top: 10px; border-collapse: collapse;'>"
             
+            # Bestellnummer and Kundennummer Row
+            f"<tr>"
+            f"    <td style='font-weight: bold; width: 50%;'>Bestellnummer:</td>"
+            f"    <td style='font-weight: bold;'>Kundennummer:</td>"
+            f"</tr>"
+            f"<tr>"
+            f"    <td>{order.order_code}</td>"
+            f"    <td>Nicht vorhanden</td>"
+            f"</tr>"
+            
+            # Divider Row
+            f"<tr><td colspan='2'><hr></td></tr>"
+            
+            # Bestellt von and Lieferadresse Row
+            f"<tr>"
+            f"    <td style='font-weight: bold;'>Bestellt von:</td>"
+            f"    <td style='font-weight: bold;'>Lieferadresse:</td>"
+            f"</tr>"
+            f"<tr>"
+            f"    <td>{order.user.first_name} ({order.user.atu_number})</td>"
+            f"    <td>{user_address}</td>"
+            f"</tr>"
+            
+            f"</table><hr>"
+
+            f"<h3>Bestellübersicht:</h3><br>"
+            f"{items_lists}<br><br>"
+
             f"Wir bearbeiten Ihre Bestellung umgehend. Bei Fragen zu Ihrer Bestellung stehen wir Ihnen gerne zur Verfügung.<br><br>"
             f"Vielen Dank für Ihre Bestellung!<br><br>"
             f"Mit freundlichen Grüßen,<br>"
             f"Team S&M Handels"
-
         )
-
         client_email = [order.user.email]
 
         send_mail(
@@ -95,20 +127,48 @@ def mail(order,sender, items_lists,user=None, kind=None):
     else:
         
 
+        
 
         message = format_html(
-            f"Sehr geehrte/r {order.user.first_name}. <br><br>"
-            f"wir freuen uns, Ihnen mitteilen zu können, dass Ihre Bestellung mit der Bestellnummer <strong>{order.id}</strong> erfolgreich eingegangen ist. Hier sind die Details Ihrer Bestellung:<br><br>"
+            f"Sehr geehrte/r {order.user.first_name} {order.user.last_name}. <br><br>"
+            f"<strong>Datum:</strong><br> {order.ordered_date.strftime('%d.%m.%Y')}<br><hr>"
 
-            f"{items_lists}<br><br>"
+            # Single Table for Alignment
+            f"<table style='width: 100%; margin-top: 10px; border-collapse: collapse;'>"
             
+            # Bestellnummer and Kundennummer Row
+            f"<tr>"
+            f"    <td style='font-weight: bold; width: 50%;'>Bestellnummer:</td>"
+            f"    <td style='font-weight: bold;'>Kundennummer:</td>"
+            f"</tr>"
+            f"<tr>"
+            f"    <td>{order.order_code}</td>"
+            f"    <td>Nicht vorhanden</td>"
+            f"</tr>"
+            
+            # Divider Row
+            f"<tr><td colspan='2'><hr></td></tr>"
+            
+            # Bestellt von and Lieferadresse Row
+            f"<tr>"
+            f"    <td style='font-weight: bold;'>Bestellt von:</td>"
+            f"    <td style='font-weight: bold;'>Lieferadresse:</td>"
+            f"</tr>"
+            f"<tr>"
+            f"    <td>{order.user.first_name} ({order.user.atu_number})</td>"
+            f"    <td>{user_address}</td>"
+            f"</tr>"
+            
+            f"</table><hr>"
+
+            f"<h3>Bestellübersicht:</h3><br>"
+            f"{items_lists}<br><br>"
             f"Gesamtbetrag: {order.get_final_total()}€<br><br>"
 
             f"Wir bearbeiten Ihre Bestellung umgehend. Bei Fragen zu Ihrer Bestellung stehen wir Ihnen gerne zur Verfügung.<br><br>"
             f"Vielen Dank für Ihre Bestellung!<br><br>"
             f"Mit freundlichen Grüßen,<br>"
             f"Team S&M Handels"
-
         )
 
         client_email = [order.user.email]
@@ -136,7 +196,7 @@ def mail(order,sender, items_lists,user=None, kind=None):
 
         )
 
-        # Send email to bazroz mail
+        # Send email to frischverliebt mail
         send_mail(
             'Neue Bestellung',
             message,

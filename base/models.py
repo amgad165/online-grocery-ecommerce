@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+import uuid
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -204,6 +205,12 @@ class Order(models.Model):
     ordered_date = models.DateTimeField(null=True)
     delivery_frequency = models.CharField(max_length=255, blank=True, null=True)  # daily, weekly, or one_time
     coupon = models.ForeignKey(Coupon, on_delete=models.SET_NULL, blank=True, null=True, related_name='orders')
+    order_code = models.CharField(max_length=12, unique=True, editable=False, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.order_code:
+            self.order_code = str(uuid.uuid4().hex[:12]).upper()  # Generate a unique 12-character code
+        super(Order, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"Order {self.pk}"

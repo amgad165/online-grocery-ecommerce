@@ -103,25 +103,48 @@ def submit_cash_payment(request):
 
         order_items = order.items.all()
         order_items.update(ordered=True)
-        items_lists = []
-        index = 1
-        for item in order_items:
-            item.save()
-            # Start with the order item's string representation
-            item_details = f"{index}- {item}"
-            # Fetch and format all related IngredientUserCustomize objects
-            customized_ingredients = item.ingredients_customized.all()
-            ingredient_details = []
-            for ingredient in customized_ingredients:
-                ingredient_details.append(f"    - {ingredient}")
-            # Join all ingredient details and append to the item details
-            if ingredient_details:
-                item_details += "<br>    " + "<br>    ".join(ingredient_details)
-            items_lists.append(item_details)
-            index += 1
+        # Start building items_lists as an HTML table
+        items_lists = """
+        <table style="width:100%; border-collapse: collapse; margin-top:20px;">
+            <thead>
+                <tr style="background-color:#f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 8px;">Nummer</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Titel</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Artkilname</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Einheit</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Anz</th>
+                </tr>
+            </thead>
+            <tbody>
+        """
+        
+        # Populate each item and its ingredients in the table
+        for index, item in enumerate(order_items, start=1):
+            # Row for the item itself
+            item_nummer = order.id + 10000
+            items_lists += f"""
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item_nummer}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                </tr>
+            """
+            
+            # Rows for each ingredient within the item
+            for ingredient in item.ingredients_customized.all():
+                items_lists += f"""
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient.unit}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.quantity}</td>
+                    </tr>
+                """
 
-        items_lists = '<br> '.join(items_lists)
-    
+        items_lists += "</tbody></table>"
         # Record the transaction
         Transaction.objects.create(
             user=order.user,
@@ -145,31 +168,52 @@ def submit_order_without_price(request):
     
     try:
         order = Order.objects.filter(user=request.user, ordered=False).first()
-        order.ordered = True
-        order.save()
 
 
         order_items = order.items.all()
-        order_items.update(ordered=True)
-        items_lists = []
-        index = 1
-        for item in order_items:
-            item.save()
-            # Start with the order item's string representation
-            item_details = f"{index}- {item}"
-            # Fetch and format all related IngredientUserCustomize objects
-            customized_ingredients = item.ingredients_customized.all()
-            ingredient_details = []
-            for ingredient in customized_ingredients:
-                ingredient_details.append(f"    - {ingredient}")
-            # Join all ingredient details and append to the item details
-            if ingredient_details:
-                item_details += "<br>    " + "<br>    ".join(ingredient_details)
-            items_lists.append(item_details)
-            index += 1
 
-        items_lists = '<br> '.join(items_lists)
-    
+        # Start building items_lists as an HTML table
+        items_lists = """
+        <table style="width:100%; border-collapse: collapse; margin-top:20px;">
+            <thead>
+                <tr style="background-color:#f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 8px;">Nummer</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Titel</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Artkilname</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Einheit</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Anz</th>
+                </tr>
+            </thead>
+            <tbody>
+        """
+        
+        # Populate each item and its ingredients in the table
+        for index, item in enumerate(order_items, start=1):
+            # Row for the item itself
+            item_nummer = order.id + 10000
+            items_lists += f"""
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item_nummer}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                </tr>
+            """
+            
+            # Rows for each ingredient within the item
+            for ingredient in item.ingredients_customized.all():
+                items_lists += f"""
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient.unit}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.quantity}</td>
+                    </tr>
+                """
+
+        items_lists += "</tbody></table>"
         # Record the transaction
         Transaction.objects.create(
             user=order.user,
@@ -180,7 +224,9 @@ def submit_order_without_price(request):
 
         mail(order=order,sender = settings.EMAIL_HOST_USER,items_lists= items_lists, kind='order_without_price')
 
-
+        order.ordered = True
+        order.save()
+        order_items.update(ordered=True)
         return redirect('success_page')
     except:
         return redirect('fail_page')
@@ -411,24 +457,47 @@ def handle_payment_success(invoice):
 
         order_items = order.items.all()
         order_items.update(ordered=True)
-        items_lists = []
-        index = 1
-        for item in order_items:
-            item.save()
-            # Start with the order item's string representation
-            item_details = f"{index}- {item}"
-            # Fetch and format all related IngredientUserCustomize objects
-            customized_ingredients = item.ingredients_customized.all()
-            ingredient_details = []
-            for ingredient in customized_ingredients:
-                ingredient_details.append(f"    - {ingredient}")
-            # Join all ingredient details and append to the item details
-            if ingredient_details:
-                item_details += "<br>    " + "<br>    ".join(ingredient_details)
-            items_lists.append(item_details)
-            index += 1
+        items_lists = """
+        <table style="width:100%; border-collapse: collapse; margin-top:20px;">
+            <thead>
+                <tr style="background-color:#f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 8px;">Nummer</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Titel</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Artkilname</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Einheit</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Anz</th>
+                </tr>
+            </thead>
+            <tbody>
+        """
+        
+        # Populate each item and its ingredients in the table
+        for index, item in enumerate(order_items, start=1):
+            # Row for the item itself
+            item_nummer = order.id + 10000
+            items_lists += f"""
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item_nummer}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                </tr>
+            """
+            
+            # Rows for each ingredient within the item
+            for ingredient in item.ingredients_customized.all():
+                items_lists += f"""
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient.unit}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.quantity}</td>
+                    </tr>
+                """
 
-        items_lists = '<br> '.join(items_lists)
+        items_lists += "</tbody></table>"
     
         # Record the transaction
         Transaction.objects.create(
@@ -468,24 +537,47 @@ def handle_payment_intent_succeeded(payment_intent):
 
         order_items = order.items.all()
         order_items.update(ordered=True)
-        items_lists = []
-        index = 1
-        for item in order_items:
-            item.save()
-            # Start with the order item's string representation
-            item_details = f"{index}- {item}"
-            # Fetch and format all related IngredientUserCustomize objects
-            customized_ingredients = item.ingredients_customized.all()
-            ingredient_details = []
-            for ingredient in customized_ingredients:
-                ingredient_details.append(f"    - {ingredient}")
-            # Join all ingredient details and append to the item details
-            if ingredient_details:
-                item_details += "<br>    " + "<br>    ".join(ingredient_details)
-            items_lists.append(item_details)
-            index += 1
+        items_lists = """
+        <table style="width:100%; border-collapse: collapse; margin-top:20px;">
+            <thead>
+                <tr style="background-color:#f2f2f2;">
+                    <th style="border: 1px solid #ddd; padding: 8px;">Nummer</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Titel</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Artkilname</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Einheit</th>
+                    <th style="border: 1px solid #ddd; padding: 8px;">Anz</th>
+                </tr>
+            </thead>
+            <tbody>
+        """
+        
+        # Populate each item and its ingredients in the table
+        for index, item in enumerate(order_items, start=1):
+            # Row for the item itself
+            item_nummer = order.id + 10000
+            items_lists += f"""
+                <tr>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item_nummer}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;">{item}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                </tr>
+            """
+            
+            # Rows for each ingredient within the item
+            for ingredient in item.ingredients_customized.all():
+                items_lists += f"""
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient.unit}</td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.quantity}</td>
+                    </tr>
+                """
 
-        items_lists = '<br> '.join(items_lists)
+        items_lists += "</tbody></table>"
     
         # Record the transaction
         Transaction.objects.create(
