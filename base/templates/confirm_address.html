@@ -182,7 +182,14 @@
                   </div>
               </div>
               <div class="text-center mt-5">
-              <button class="btn btn-black" type="submit">Weiter zur Zahlung</button>
+                
+                {% if  order.has_hidden_price_product %}
+                <button class="btn btn-black" type="submit">Weiter zur Bestellung</button>
+            {% else %}
+            <button class="btn btn-black" type="submit">Weiter zur Zahlung</button>
+
+                {% endif %}
+                  
             </div>
           </form>
             </div>

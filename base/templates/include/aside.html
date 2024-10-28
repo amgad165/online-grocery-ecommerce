@@ -22,8 +22,22 @@
               <div>
                 <h3>{{ item.product.name }}</h3>
                 <!-- <span id="product_price_{{ item.id }}">{{ item.get_total_item_price }} €</span> -->
-                <p>{{ item.product.description }}</p>
+
+
+                {% for product_ingredient in item.ingredients_customized.all %}
+                <li style="font-size: 0.8rem" class="list-group-item d-flex justify-content-between align-items-center ">
+                    <span>
+                        <i class="fa-solid fa-basket-shopping me-2"></i>
+                        {{ product_ingredient.ingredient }}
+                    </span>
+                    <span class="right-t">{{ product_ingredient.quantity }} {{ product_ingredient.ingredient.unit }}</span>
+                </li>
+                {% endfor %}
+
+                <p class="mt-2">{{ item.product.description }}</p>
                 <span>
+
+
                   
                   {% if not order.has_hidden_price_product %}
                     

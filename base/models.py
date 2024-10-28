@@ -76,7 +76,7 @@ class DeliveryAddress(models.Model):
     additional_info = models.CharField(_('additional info'), max_length=255, blank=True, null=True)
     
     def __str__(self):
-        return f'{self.street_address}, {self.bezirk}, {self.plz_zip}'
+        return f'{self.street_address} {self.hausnummer}, {self.plz_zip} {self.bezirk}'
 
 
     
@@ -89,7 +89,7 @@ class Ingredient(models.Model):
         return self.name
 
 class Category(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255,unique=True)
     display_order = models.PositiveIntegerField(default=0)  # New field for manual ordering
 
     def __str__(self):

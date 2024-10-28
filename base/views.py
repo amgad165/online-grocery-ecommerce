@@ -66,14 +66,40 @@ def edit_profile(request):
 
 @login_required
 def products(request):
+
+    # for inline_category in categories:
+    #     private_products_by_category[inline_category.name] = Product.objects.filter(category='privat', inline_category=inline_category)
+    #     business_products_by_category[inline_category.name] = Product.objects.filter(category='business', inline_category=inline_category)
+
+    # # Get categories for private and business products
+    # private_categories = [Category.get(name=category) for category, products in private_products_by_category.items() if products.exists()]
+    # business_categories = [Category.get(name=category)  for category, products in business_products_by_category.items() if products.exists()]
+
     categories = Category.objects.all()
+
+    products = Product.objects.select_related('inline_category').all()
+
     private_products_by_category = {}
+    business_products_by_category = {}
 
+    # Filter products by category and store them in dictionaries
     for inline_category in categories:
-        private_products_by_category[inline_category.name] = Product.objects.filter(category='privat',inline_category = inline_category)
+        private_products = products.filter(category='privat', inline_category=inline_category)
+        business_products = products.filter(category='business', inline_category=inline_category)
+        
+        if private_products.exists():
+            private_products_by_category[inline_category.name] = private_products
+        if business_products.exists():
+            business_products_by_category[inline_category.name] = business_products
 
+    # Get categories for private and business products
+    private_categories = [inline_category for inline_category in categories if inline_category.name in private_products_by_category]
+    business_categories = [inline_category for inline_category in categories if inline_category.name in business_products_by_category]
+
+    print(type(private_categories[0]))
     # privat_products = Product.objects.filter(category='privat')
     business_products = Product.objects.filter(category='business')
+
 
     try:
         order = Order.objects.get(user = request.user, ordered=False)
@@ -83,7 +109,10 @@ def products(request):
     # Pass the filtered products to the template
     context = {
         'private_products_by_category': private_products_by_category,
-        'business_products': business_products,
+        'business_products_by_category': business_products_by_category,
+        'private_categories': private_categories,
+        'business_categories': business_categories,
+
         'order' : order,
         'categories': categories
         
@@ -124,7 +153,7 @@ def submit_cash_payment(request):
             item_nummer = order.id + 10000
             items_lists += f"""
                 <tr>
-                    <td style="border: 1px solid #ddd; padding: 8px;">{item_nummer}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
                     <td style="border: 1px solid #ddd; padding: 8px;">{item}</td>
                     <td style="border: 1px solid #ddd; padding: 8px;"></td>
                     <td style="border: 1px solid #ddd; padding: 8px;"></td>
@@ -134,9 +163,10 @@ def submit_cash_payment(request):
             
             # Rows for each ingredient within the item
             for ingredient in item.ingredients_customized.all():
+                ingredient_nummer = ingredient.id + 10000
                 items_lists += f"""
                     <tr>
-                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient_nummer}</td>
                         <td style="border: 1px solid #ddd; padding: 8px;"></td>
                         <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient}</td>
                         <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient.unit}</td>
@@ -190,10 +220,9 @@ def submit_order_without_price(request):
         # Populate each item and its ingredients in the table
         for index, item in enumerate(order_items, start=1):
             # Row for the item itself
-            item_nummer = order.id + 10000
             items_lists += f"""
                 <tr>
-                    <td style="border: 1px solid #ddd; padding: 8px;">{item_nummer}</td>
+                    <td style="border: 1px solid #ddd; padding: 8px;"></td>
                     <td style="border: 1px solid #ddd; padding: 8px;">{item}</td>
                     <td style="border: 1px solid #ddd; padding: 8px;"></td>
                     <td style="border: 1px solid #ddd; padding: 8px;"></td>
@@ -203,9 +232,10 @@ def submit_order_without_price(request):
             
             # Rows for each ingredient within the item
             for ingredient in item.ingredients_customized.all():
+                ingredient_nummer = ingredient.id + 10000
                 items_lists += f"""
                     <tr>
-                        <td style="border: 1px solid #ddd; padding: 8px;"></td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">{ingredient_nummer}</td>
                         <td style="border: 1px solid #ddd; padding: 8px;"></td>
                         <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient}</td>
                         <td style="border: 1px solid #ddd; padding: 8px;">{ingredient.ingredient.unit}</td>
@@ -1046,10 +1076,17 @@ def add_to_cart(request):
         ingredient_quantities = request.POST.get('ingredient_quantities')
         ingredient_quantities = json.loads(ingredient_quantities) if ingredient_quantities else {}
 
-        print(ingredient_quantities)
+        # Filter out items with a quantity of 0
+        ingredient_quantities = {k: v for k, v in ingredient_quantities.items() if v != 0}
+
+        # Check if all values were zero (dictionary is empty after filtering)
+        if not ingredient_quantities:
+            return JsonResponse({'error': 'Die Mengen aller Zutaten dürfen nicht Null sein.'}, status=400)
+
+        # Continue processing ingredient_quantities here if not empty
+        print("Filtered ingredient quantities:", ingredient_quantities)
+
         if ingredient_quantities:
-
-
 
             current_user = request.user
             product = get_object_or_404(Product, id=product_id)
@@ -1173,7 +1210,7 @@ def remove_item(request):
 
 def success_page(request):
     try:
-        order = Order.objects.get(user = request.user, ordered=False)
+        order = Order.objects.filter(user=request.user).order_by('-ordered_date').first()
     except:
         order = None
 

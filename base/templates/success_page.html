@@ -38,20 +38,43 @@
     <section style="margin-bottom: 320px; margin-top: 140px;" class="d-flex justify-content-center">
       <div  class="container" data-aos="fade-down">
 
+        
+        {% if  order.has_hidden_price_product %}
         <ol class="progress-tracker ms-4">
           <li class="step completed"><a href="#" class="step-name">Daten</a></li>
-          <li class="step completed"><a href="#" class="step-name">Zahlung</a></li>
+          
+          <li class="step completed"><a href="#" class="step-name">Übersicht</a></li>
           <li class="step active"><span class="step-name">Prüfen</span></li>
         </ol>
  
         <div class="row mt-5">
         <div class="col-12 text-center">
           <h1 class="display-4">Vielen Dank für deine Bestellung !</h1>
-          <p >Vielen Dank für Ihren Einkauf. Ihre Transaktion wurde abgeschlossen, und eine Quittung für Ihren Einkauf wurde Ihnen per E-Mail zugesandt.</p>
+          <p >Vielen Dank für Ihre Bestellung. Die Bestellung ist bei uns eingegangen. Eine Rechnung wird in Kürze per Mail an Sie gesendet.</p>
           <a href="{% url 'home' %}" class="btn btn-black mt-3">Startseite</a>
         </div>
 
         </div>
+          {% else %}
+
+          <ol class="progress-tracker ms-4">
+            <li class="step completed"><a href="#" class="step-name">Daten</a></li>
+            
+            <li class="step completed"><a href="#" class="step-name">Zahlung</a></li>
+            <li class="step active"><span class="step-name">Prüfen</span></li>
+          </ol>
+   
+          <div class="row mt-5">
+          <div class="col-12 text-center">
+            <h1 class="display-4">Vielen Dank für deine Bestellung !</h1>
+            <p >Vielen Dank für Ihren Einkauf. Ihre Transaktion wurde abgeschlossen, und eine Quittung für Ihren Einkauf wurde Ihnen per E-Mail zugesandt.</p>
+            <a href="{% url 'home' %}" class="btn btn-black mt-3">Startseite</a>
+          </div>
+  
+          </div>
+        {% endif %}
+          
+
       </div>
     </section>
 

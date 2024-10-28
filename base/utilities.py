@@ -8,7 +8,11 @@ import locale
 
 def mail(order,sender, items_lists,user=None, kind=None):
     
-
+    if order.user.address_type == "billing":
+        user_address = f"{order.user.street_address} {order.user.hausnummer}, {order.user.plz_zip} {order.user.bezirk}"
+    else:
+        user_address = str(order.user.delivery_addresses)
+        
     if kind == 'company_confirmation':
         message = format_html(
             f"Hallo sm-handels,<br><br>"
@@ -41,10 +45,7 @@ def mail(order,sender, items_lists,user=None, kind=None):
 
     elif kind == 'order_without_price':
 
-        if order.user.address_type == "billing":
-            user_address = f"{order.user.street_address} {order.user.hausnummer}, {order.user.plz_zip} {order.user.bezirk}"
-        else:
-            user_address = str(order.user.delivery_addresses)
+
         # Create the rest of the message content
         message = format_html(
             f"Sehr geehrte/r {order.user.first_name} {order.user.last_name}. <br><br>"

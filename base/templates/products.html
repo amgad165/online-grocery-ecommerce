@@ -83,7 +83,7 @@
 
             </h1>
             <div class="category-container my-lg-5 mt-2 mb-5 ">
-              {% for category in categories %}
+              {% for category in private_categories %}
                   <a href="#{{ category.name }}" class="category-link">{{ category.name }}</a>
                   {% if not forloop.last %} - {% endif %}
               {% endfor %}
@@ -140,9 +140,15 @@
 
               <div class="col-12 col-lg-6 mt-4  p-3 p-lg-5 ">
                 <div class="row gap-4"> 
+
                   {% if product.customize %}
+
+
+                  {% if not product.hide_price %}                
                   <div class="size-selection">
                     <h4>Boxgröße</h4>
+
+
                     <div class="form-check">
                       <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeS" value="S" data-max-quantity="5" checked>
                       <label class="form-check-label" for="sizeS">S (max 5 kg)</label>
@@ -156,13 +162,18 @@
                       <label class="form-check-label" for="sizeL">L (max 15 kg)</label>
                     </div>
                   </div>
+                  {%endif %}
                 {% endif %} 
                   <h4>Inhalt</h4>
                   {% for product_ingredient in product.ingredients.all %}
                   <div class="row m-0 p-0"> 
                       <div class="col-6">
+
                           <div class="ingredient-details">
-                              {% if product.customize %}
+                                 {% if product.hide_price %}
+                            <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+
+                              {% elif product.customize %}
                                   <input type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
                               {% else %}
                                   <i class="fa-solid fa-square me-2"></i>
@@ -262,6 +273,22 @@
               <span class="fs-5 text-black">  - BUSINESS -</span>
             </h1>
             
+
+            <div class="category-container my-lg-5 mt-2 mb-5 ">
+              {% for category in business_categories %}
+                  <a href="#{{ category.name }}" class="category-link">{{ category.name }}</a>
+                  {% if not forloop.last %} - {% endif %}
+              {% endfor %}
+          </div>
+
+
+          {% for category, business_products in business_products_by_category.items %}
+
+          <section id="{{category}}" class="row">
+
+           
+            <h3 class="under-heading text-black text-center fw-bold">  - {{category}} -</h3>
+
             {% for product in business_products %}
               
             
@@ -305,9 +332,15 @@
 
               <div class="col-12 col-lg-6 mt-4  p-3 p-lg-5 ">
                 <div class="row gap-4"> 
+
                   {% if product.customize %}
+
+
+                  {% if not product.hide_price %}                
                   <div class="size-selection">
                     <h4>Boxgröße</h4>
+
+
                     <div class="form-check">
                       <input class="form-check-input size-radio" type="radio" name="size_{{ product.id }}" id="sizeS" value="S" data-max-quantity="5" checked>
                       <label class="form-check-label" for="sizeS">S (max 5 kg)</label>
@@ -321,13 +354,21 @@
                       <label class="form-check-label" for="sizeL">L (max 15 kg)</label>
                     </div>
                   </div>
+                  {%endif %}
                 {% endif %} 
                   <h4>Inhalt</h4>
                   {% for product_ingredient in product.ingredients.all %}
                   <div class="row m-0 p-0"> 
                       <div class="col-6">
                           <div class="ingredient-details">
-                              {% if product.customize %}
+
+                              
+
+                                
+                            {% if product.hide_price %}
+                            <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
+
+                              {% elif product.customize %}
                                   <input type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
                               {% else %}
                                   <i class="fa-solid fa-square me-2"></i>
@@ -413,8 +454,10 @@
         </div>
       </div>
     </div>
-            {% endfor %}
 
+          {% endfor %}
+        </section>
+          {% endfor %}
 
           </div>
         </div>

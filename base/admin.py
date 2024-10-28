@@ -9,17 +9,23 @@ admin.site.register(CustomUser)
 class ProductIngredientInline(admin.TabularInline):
     model = ProductIngredient
     extra = 1
+    autocomplete_fields = ['ingredient']  # Enable search functionality
 
 class ProductAdmin(admin.ModelAdmin):
     inlines = [ProductIngredientInline]
+    list_filter = ('category',)
+
 
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Ingredient)
+
+@admin.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    search_fields = ('name',)  # Make sure the name field is searchable
 
 admin.site.register(Category)
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id','order_summary','get_user_telefon', 'get_user_email','get_user_role',
+    list_display = ('order_code','order_summary','get_user_telefon', 'get_user_email','get_user_role',
                     'get_bezirk', 'get_street_address', 'get_hausnummer', 'get_plz_zip','get_subscription_type' , 'delivery_frequency' , 'being_delivered',
                     'get_total','ordered_date')
     list_editable = ('being_delivered',)  # Add this line to make 'being_delivered' editable
