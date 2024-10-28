@@ -87,7 +87,11 @@ def mail(order,sender, items_lists,user=None, kind=None):
             f"Wir bearbeiten Ihre Bestellung umgehend. Bei Fragen zu Ihrer Bestellung stehen wir Ihnen gerne zur Verfügung.<br><br>"
             f"Vielen Dank für Ihre Bestellung!<br><br>"
             f"Mit freundlichen Grüßen,<br>"
-            f"Team S&M Handels"
+            f"Frischverliebt by S&M Handels OGGroßmarkt Wien, Laxenburger Str.<br>"
+            f"365C/10, Kopf West, 1230 Wien.<br>"
+            f"Tel.: +43 676 6996690<br>"
+            f"E-Mail: office@frischverliebt.at.<br>"
+
         )
         client_email = [order.user.email]
 
@@ -170,7 +174,10 @@ def mail(order,sender, items_lists,user=None, kind=None):
             f"Wir bearbeiten Ihre Bestellung umgehend. Bei Fragen zu Ihrer Bestellung stehen wir Ihnen gerne zur Verfügung.<br><br>"
             f"Vielen Dank für Ihre Bestellung!<br><br>"
             f"Mit freundlichen Grüßen,<br>"
-            f"Team S&M Handels"
+            f"Frischverliebt by S&M Handels OGGroßmarkt Wien, Laxenburger Str.<br>"
+            f"365C/10, Kopf West, 1230 Wien.<br>"
+            f"Tel.: +43 676 6996690<br>"
+            f"E-Mail: office@frischverliebt.at.<br>"
         )
 
         client_email = [order.user.email]
