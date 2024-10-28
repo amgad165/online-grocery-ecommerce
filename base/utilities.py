@@ -10,9 +10,11 @@ def mail(order,sender, items_lists,user=None, kind=None):
     
     if order.user.address_type == "billing":
         user_address = f"{order.user.street_address} {order.user.hausnummer}, {order.user.plz_zip} {order.user.bezirk}"
+        phone_number = order.user.atu_number
     else:
         user_address = str(order.user.delivery_addresses)
-        
+        phone_number = order.user.delivery_addresses.phone_number
+
     if kind == 'company_confirmation':
         message = format_html(
             f"Hallo sm-handels,<br><br>"
@@ -73,7 +75,7 @@ def mail(order,sender, items_lists,user=None, kind=None):
             f"    <td style='font-weight: bold;'>Lieferadresse:</td>"
             f"</tr>"
             f"<tr>"
-            f"    <td>{order.user.first_name} ({order.user.atu_number})</td>"
+            f"    <td>{order.user.first_name} ({phone_number})</td>"
             f"    <td>{user_address}</td>"
             f"</tr>"
             
@@ -100,15 +102,14 @@ def mail(order,sender, items_lists,user=None, kind=None):
         
 
         message = format_html(
-            f"Bestellnummer: {order.id},<br><br>"
+            f"Bestellnummer: {order.order_code},<br><br>"
             f"<strong>Bestellte Gerichte:</strong> <br><br>"
             f"{items_lists} <br><br>"
             f"Kunden-E-Mail: {order.user.email}<br><br>"
-            f"Telefonnummer des Kunden: {order.user.atu_number} <br><br>"
-            f"Ort: {order.user.bezirk}<br>"
-            f"Adresse: {order.user.street_address}<br>"
-            f"Hausnummer: {order.user.hausnummer}<br>"
-            f"Postleitzahl: {order.user.plz_zip}<br><br>"
+            f"Telefonnummer des Kunden: {phone_number} <br><br>"
+
+            f"Adresse: {user_address}<br>"
+
 
             f"Gesamtbestellung basierend auf dem System: {order.get_final_total()}€<br><br>"
             f"Anmerkung: Diese Bestellung ist eine Geschäftsbestellung ohne Preise, die an den Benutzer gesendet wird."
@@ -156,7 +157,7 @@ def mail(order,sender, items_lists,user=None, kind=None):
             f"    <td style='font-weight: bold;'>Lieferadresse:</td>"
             f"</tr>"
             f"<tr>"
-            f"    <td>{order.user.first_name} ({order.user.atu_number})</td>"
+            f"    <td>{order.user.first_name} ({phone_number})</td>"
             f"    <td>{user_address}</td>"
             f"</tr>"
             
@@ -185,15 +186,13 @@ def mail(order,sender, items_lists,user=None, kind=None):
         
 
         message = format_html(
-            f"Bestellnummer: {order.id},<br><br>"
+            f"Bestellnummer: {order.order_code},<br><br>"
             f"<strong>Bestellte Gerichte:</strong> <br><br>"
             f"{items_lists} <br><br>"
             f"Kunden-E-Mail: {order.user.email}<br><br>"
-            f"Telefonnummer des Kunden: {order.user.atu_number} <br><br>"
-            f"Ort: {order.user.bezirk}<br>"
-            f"Adresse: {order.user.street_address}<br>"
-            f"Hausnummer: {order.user.hausnummer}<br>"
-            f"Postleitzahl: {order.user.plz_zip}<br>"
+            f"Telefonnummer des Kunden: {phone_number} <br><br>"
+            f"Adresse: {user_address}<br>"
+
 
         )
 

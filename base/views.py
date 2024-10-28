@@ -985,7 +985,7 @@ def confirm_address(request):
             hausnummer = request.POST.get('input8_shipping')
             plz_zip = request.POST.get('input6_shipping')
             additional_info = request.POST.get('input5_shipping')
-            
+            phone = request.POST.get('input9_shipping')
             # Check if the user already has a delivery address
             delivery_address, created = DeliveryAddress.objects.get_or_create(user=request.user)
             
@@ -995,6 +995,7 @@ def confirm_address(request):
             delivery_address.hausnummer = hausnummer
             delivery_address.plz_zip = plz_zip
             delivery_address.additional_info = additional_info
+            delivery_address.phone_number = phone
             delivery_address.save()
 
             current_user = request.user
