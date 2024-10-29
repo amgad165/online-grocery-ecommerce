@@ -87,7 +87,8 @@ def mail(order,sender, items_lists,user=None, kind=None):
             f"Wir bearbeiten Ihre Bestellung umgehend. Bei Fragen zu Ihrer Bestellung stehen wir Ihnen gerne zur Verfügung.<br><br>"
             f"Vielen Dank für Ihre Bestellung!<br><br>"
             f"Mit freundlichen Grüßen,<br>"
-            f"Frischverliebt by S&M Handels OGGroßmarkt Wien, Laxenburger Str.<br>"
+            f"Frischverliebt by S&M Handels OG <br>"
+            f"Großmarkt Wien, Laxenburger Str.<br>"
             f"365C/10, Kopf West, 1230 Wien.<br>"
             f"Tel.: +43 676 6996690<br>"
             f"E-Mail: office@frischverliebt.at.<br>"
@@ -105,20 +106,52 @@ def mail(order,sender, items_lists,user=None, kind=None):
         )
         
 
+        # Create the rest of the message content
         message = format_html(
-            f"Bestellnummer: {order.order_code},<br><br>"
-            f"<strong>Bestellte Gerichte:</strong> <br><br>"
-            f"{items_lists} <br><br>"
-            f"Kunden-E-Mail: {order.user.email}<br><br>"
-            f"Telefonnummer des Kunden: {phone_number} <br><br>"
+            f"Sehr geehrte/r {order.user.first_name} {order.user.last_name}. <br><br>"
+            f"<strong>Datum:</strong><br> {order.ordered_date.strftime('%d.%m.%Y')}<br><hr>"
 
-            f"Adresse: {user_address}<br>"
+            # Single Table for Alignment
+            f"<table style='width: 100%; margin-top: 10px; border-collapse: collapse;'>"
+            
+            # Bestellnummer and Kundennummer Row
+            f"<tr>"
+            f"    <td style='font-weight: bold; width: 50%;'>Bestellnummer:</td>"
+            f"    <td style='font-weight: bold;'>Kundennummer:</td>"
+            f"</tr>"
+            f"<tr>"
+            f"    <td>{order.order_code}</td>"
+            f"    <td>Nicht vorhanden</td>"
+            f"</tr>"
+            
+            # Divider Row
+            f"<tr><td colspan='2'><hr></td></tr>"
+            
+            # Bestellt von and Lieferadresse Row
+            f"<tr>"
+            f"    <td style='font-weight: bold;'>Bestellt von:</td>"
+            f"    <td style='font-weight: bold;'>Lieferadresse:</td>"
+            f"</tr>"
+            f"<tr>"
+            f"    <td>{order.user.first_name} ({phone_number})</td>"
+            f"    <td>{user_address}</td>"
+            f"</tr>"
+            
+            f"</table><hr>"
 
+            f"<h3>Bestellübersicht:</h3><br>"
+            f"{items_lists}<br><br>"
 
-            f"Gesamtbestellung basierend auf dem System: {order.get_final_total()}€<br><br>"
-            f"Anmerkung: Diese Bestellung ist eine Geschäftsbestellung ohne Preise, die an den Benutzer gesendet wird."
+            f"Wir bearbeiten Ihre Bestellung umgehend. Bei Fragen zu Ihrer Bestellung stehen wir Ihnen gerne zur Verfügung.<br><br>"
+            f"Vielen Dank für Ihre Bestellung!<br><br>"
+            f"Mit freundlichen Grüßen,<br>"
+            f"Frischverliebt by S&M Handels OG <br>"
+            f"Großmarkt Wien, Laxenburger Str.<br>"
+            f"365C/10, Kopf West, 1230 Wien.<br>"
+            f"Tel.: +43 676 6996690<br>"
+            f"E-Mail: office@frischverliebt.at.<br>"
+
         )
-
         # Send email to bazroz mail
         send_mail(
             'Neue Bestellung',
@@ -169,12 +202,13 @@ def mail(order,sender, items_lists,user=None, kind=None):
 
             f"<h3>Bestellübersicht:</h3><br>"
             f"{items_lists}<br><br>"
-            f"Gesamtbetrag: {order.get_final_total()}€<br><br>"
+            f"Gesamtbetrag: {round(order.get_final_total(), 2)}€<br><br>"
 
             f"Wir bearbeiten Ihre Bestellung umgehend. Bei Fragen zu Ihrer Bestellung stehen wir Ihnen gerne zur Verfügung.<br><br>"
             f"Vielen Dank für Ihre Bestellung!<br><br>"
             f"Mit freundlichen Grüßen,<br>"
-            f"Frischverliebt by S&M Handels OGGroßmarkt Wien, Laxenburger Str.<br>"
+            f"Frischverliebt by S&M Handels OG <br>"
+            f"Großmarkt Wien, Laxenburger Str.<br>"
             f"365C/10, Kopf West, 1230 Wien.<br>"
             f"Tel.: +43 676 6996690<br>"
             f"E-Mail: office@frischverliebt.at.<br>"
@@ -193,16 +227,50 @@ def mail(order,sender, items_lists,user=None, kind=None):
         
 
         message = format_html(
-            f"Bestellnummer: {order.order_code},<br><br>"
-            f"<strong>Bestellte Gerichte:</strong> <br><br>"
-            f"{items_lists} <br><br>"
-            f"Kunden-E-Mail: {order.user.email}<br><br>"
-            f"Telefonnummer des Kunden: {phone_number} <br><br>"
-            f"Adresse: {user_address}<br>"
+            f"Sehr geehrte/r {order.user.first_name} {order.user.last_name}. <br><br>"
+            f"<strong>Datum:</strong><br> {order.ordered_date.strftime('%d.%m.%Y')}<br><hr>"
 
+            # Single Table for Alignment
+            f"<table style='width: 100%; margin-top: 10px; border-collapse: collapse;'>"
+            
+            # Bestellnummer and Kundennummer Row
+            f"<tr>"
+            f"    <td style='font-weight: bold; width: 50%;'>Bestellnummer:</td>"
+            f"    <td style='font-weight: bold;'>Kundennummer:</td>"
+            f"</tr>"
+            f"<tr>"
+            f"    <td>{order.order_code}</td>"
+            f"    <td>Nicht vorhanden</td>"
+            f"</tr>"
+            
+            # Divider Row
+            f"<tr><td colspan='2'><hr></td></tr>"
+            
+            # Bestellt von and Lieferadresse Row
+            f"<tr>"
+            f"    <td style='font-weight: bold;'>Bestellt von:</td>"
+            f"    <td style='font-weight: bold;'>Lieferadresse:</td>"
+            f"</tr>"
+            f"<tr>"
+            f"    <td>{order.user.first_name} ({phone_number})</td>"
+            f"    <td>{user_address}</td>"
+            f"</tr>"
+            
+            f"</table><hr>"
 
+            f"<h3>Bestellübersicht:</h3><br>"
+            f"{items_lists}<br><br>"
+            f"Gesamtbetrag: {round(order.get_final_total(), 2)}€<br><br>"
+
+            f"Wir bearbeiten Ihre Bestellung umgehend. Bei Fragen zu Ihrer Bestellung stehen wir Ihnen gerne zur Verfügung.<br><br>"
+            f"Vielen Dank für Ihre Bestellung!<br><br>"
+            f"Mit freundlichen Grüßen,<br>"
+            f"Frischverliebt by S&M Handels OG <br>"
+            f"Großmarkt Wien, Laxenburger Str.<br>"
+            f"365C/10, Kopf West, 1230 Wien.<br>"
+            f"Tel.: +43 676 6996690<br>"
+            f"E-Mail: office@frischverliebt.at.<br>"
         )
-
         # Send email to frischverliebt mail
         send_mail(
             'Neue Bestellung',
