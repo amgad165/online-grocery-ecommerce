@@ -215,6 +215,8 @@ $(document).ready(function() {
         if ($(this).val() === 'delivery') {
             $('#shippingAddressFields').fadeIn();
             $('#shippingAddressFields input').prop('required', true);
+            $('#input5_shipping').prop('required', false);
+
         } else {
             $('#shippingAddressFields').fadeOut();
             $('#shippingAddressFields input').prop('required', false);

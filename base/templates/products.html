@@ -51,8 +51,26 @@
     .category-link {
         margin: 5px 2px; /* Adjust margin for small screens */
     }
-}
 
+
+    .product_description{
+      font-size: 10px !important;
+    }
+    .overlay-text{
+      font-size: 15px !important;
+      top: -16%;
+    left: 24%;
+    }
+    .translated-img {
+        transform: translate(-27%, -27%);
+        width: 130px !important;
+    }
+
+}
+@media (max-width: 1200px) {
+
+
+}
 .category-link:hover {
     text-decoration: underline; /* Underline on hover for better UX */
 }
@@ -77,7 +95,7 @@
     
       <section id="priv-products" >
         <div class="container">
-          <div class="row g-5 p-5">
+          <div class="row ">
             <h1 class="text-center text-black mt-5">Unsere Produkte  <br>
               <span class="under-heading text-black">  - PRIVAT -</span>
 
@@ -99,13 +117,13 @@
      
           
               
-            <div class="col-md-6 col-lg-4 p-3">
-              <div class="bg-white p-4 h-100 position-relative  d-flex flex-column">
+            <div class="col-6 col-lg-4 p-3">
+              <div class="bg-white p-4 h-90 position-relative  d-flex flex-column">
                 <div class="product-image-container ">
                   <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
                   <div class="overlay-text fs-5 fs-lg-3">{{product.name}}</div>
                 </div>
-                <p style="font-family: chaparral;" class="fs-6 fw-semibold">
+                <p style="font-family: chaparral;" class="fs-6 fw-semibold product_description">
                   {{product.description}}
                 </p>
                 <div class="mt-auto">
@@ -167,7 +185,7 @@
                   <h4>Inhalt</h4>
                   {% for product_ingredient in product.ingredients.all %}
                   <div class="row m-0 p-0"> 
-                      <div class="col-6">
+                      <div class="col-4 col-lg-6">
 
                           <div class="ingredient-details">
                                  {% if product.hide_price %}
@@ -179,12 +197,12 @@
                                   <i class="fa-solid fa-square me-2"></i>
                                   <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
                               {% endif %}
-                              {{ product_ingredient.ingredient }}
+                             {{ product_ingredient.ingredient }}
                           </div>
                       </div>
                       <!-- Hidden input field for ingredient price -->
                       <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
-                      <div class="col-6 d-flex justify-content-end">
+                      <div class="col-8 col-lg-6 d-flex justify-content-end">
                           <div class="d-flex gap-3 align-items-center">
                               {% if product.customize %}
                                   <div class="minus circled minus-icon">
@@ -268,7 +286,7 @@
      
       <section id="firm-products" >
         <div class="container">
-          <div class="row g-5 p-5">
+          <div class="row ">
             <h1 class="text-center  text-black my-5">Unsere Produkte  <br>
               <span class="fs-5 text-black">  - BUSINESS -</span>
             </h1>
@@ -293,7 +311,7 @@
               
             
              <div class="col-md-6 col-lg-4 p-3">
-              <div class="bg-white p-4 h-100 position-relative  d-flex flex-column">
+              <div class="bg-white p-4 h-90 position-relative  d-flex flex-column">
                 <div class="product-image-container">
                   <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
                   <div class="overlay-text fs-5 fs-lg-3">{{product.name}}</div>
@@ -359,7 +377,7 @@
                   <h4>Inhalt</h4>
                   {% for product_ingredient in product.ingredients.all %}
                   <div class="row m-0 p-0"> 
-                      <div class="col-6">
+                      <div class="col-4 col-lg-6">
                           <div class="ingredient-details">
 
                               
@@ -379,7 +397,7 @@
                       </div>
                       <!-- Hidden input field for ingredient price -->
                       <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
-                      <div class="col-6 d-flex justify-content-end">
+                      <div class="col-8 col-lg-6 d-flex justify-content-end">
                           <div class="d-flex gap-3 align-items-center">
                               {% if product.customize %}
                                   <div class="minus circled minus-icon">

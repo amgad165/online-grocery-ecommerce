@@ -29,6 +29,7 @@ class OrderAdmin(admin.ModelAdmin):
                     'get_bezirk', 'get_street_address', 'get_hausnummer', 'get_plz_zip','get_subscription_type' , 'delivery_frequency' , 'being_delivered',
                     'get_total','ordered_date')
     list_editable = ('being_delivered',)  # Add this line to make 'being_delivered' editable
+    search_fields = ('order_code',)  # Add this line to enable search by order_code
 
     def get_queryset(self, request):
         # Override get_queryset to include only orders where ordered = True
