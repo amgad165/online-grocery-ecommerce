@@ -56,8 +56,11 @@
     .product_description{
       font-size: 10px !important;
     }
+    .product_button{
+      font-size: 10px !important;
+    }
     .overlay-text{
-      font-size: 15px !important;
+      font-size: 12px !important;
       top: -16%;
     left: 24%;
     }
@@ -117,18 +120,19 @@
      
           
               
-            <div class="col-6 col-lg-4 p-3">
+            <div class="col-6 col-md-4 p-3">
               <div class="bg-white p-4 h-90 position-relative  d-flex flex-column">
                 <div class="product-image-container ">
                   <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
                   <div class="overlay-text fs-5 fs-lg-3">{{product.name}}</div>
                 </div>
-                <p style="font-family: chaparral;" class="fs-6 fw-semibold product_description">
+                <p style="font-family: chaparral;" class="fs-6 fw-semibold product_description d-none d-md-block ">
                   {{product.description}}
+
                 </p>
                 <div class="mt-auto">
 
-                <a href="" class="btn custom-color-bg2 d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
+                <a href="" class="btn custom-color-bg2 d-block m-auto product_button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
               </div>
 
               </div>
@@ -310,17 +314,17 @@
             {% for product in business_products %}
               
             
-             <div class="col-md-6 col-lg-4 p-3">
+             <div class="col-6 col-md-4 p-3">
               <div class="bg-white p-4 h-90 position-relative  d-flex flex-column">
                 <div class="product-image-container">
                   <img src="{{ product.image.url }}" class="w-100 translated-img" alt="" />
                   <div class="overlay-text fs-5 fs-lg-3">{{product.name}}</div>
                 </div>
-                <p class="fs-6 fw-semibold">
+                <p style="font-family: chaparral;" class="fs-6 fw-semibold product_description d-none d-md-block ">
                   {{product.description}}
                 </p>
                 <div class="mt-auto">
-                <a href="" class="btn custom-color-bg2 d-block m-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
+                <a href="" class="btn custom-color-bg2 d-block m-auto product_button" data-bs-toggle="modal" data-bs-target="#exampleModal{{ product.id }}">Jetzt Bestellen</a>
               </div>
             </div>
             </div>
