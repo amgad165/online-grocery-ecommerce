@@ -69,6 +69,10 @@
         width: 130px !important;
     }
 
+    .unit-span{
+      width: 15px;
+        }
+
 }
 @media (max-width: 1200px) {
 
@@ -189,8 +193,13 @@
                   <h4>Inhalt</h4>
                   {% for product_ingredient in product.ingredients.all %}
                   <div class="row m-0 p-0"> 
-                      <div class="col-4 col-lg-6">
+                    {% if product.customize %}
+                      <div class="col-6 col-lg-6">
+                        {% else %}
+                        <div class="col-8 col-lg-6">
 
+                        {% endif %}
+                        
                           <div class="ingredient-details">
                                  {% if product.hide_price %}
                             <input hidden checked type="checkbox" class="ingredient-checkbox" data-ingredient-id="{{ product_ingredient.ingredient.id }}">
@@ -206,7 +215,14 @@
                       </div>
                       <!-- Hidden input field for ingredient price -->
                       <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
-                      <div class="col-8 col-lg-6 d-flex justify-content-end">
+                     
+                      {% if product.customize %}
+
+                      <div class="col-6 col-lg-6 d-flex justify-content-end">
+                        {% else %}
+                        <div class="col-4 col-lg-6 d-flex justify-content-end">
+                          {% endif %}
+                          
                           <div class="d-flex gap-3 align-items-center">
                               {% if product.customize %}
                                   <div class="minus circled minus-icon">
@@ -381,7 +397,13 @@
                   <h4>Inhalt</h4>
                   {% for product_ingredient in product.ingredients.all %}
                   <div class="row m-0 p-0"> 
-                      <div class="col-4 col-lg-6">
+                    {% if product.customize %}
+                      <div class="col-6 col-lg-6">
+                        {% else %}
+                        <div class="col-8 col-lg-6">
+
+                        {% endif %}
+
                           <div class="ingredient-details">
 
                               
@@ -401,7 +423,14 @@
                       </div>
                       <!-- Hidden input field for ingredient price -->
                       <input type="hidden" class="ingredient-price" value="{{ product_ingredient.ingredient.price }}">
-                      <div class="col-8 col-lg-6 d-flex justify-content-end">
+                     
+                      {% if product.customize %}
+
+                      <div class="col-6 col-lg-6 d-flex justify-content-end">
+                        {% else %}
+                        <div class="col-4 col-lg-6 d-flex justify-content-end">
+                          {% endif %}
+
                           <div class="d-flex gap-3 align-items-center">
                               {% if product.customize %}
                                   <div class="minus circled minus-icon">
