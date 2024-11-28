@@ -928,7 +928,7 @@ def calculate_price(request):
 
         if order.coupon :
             if order.coupon.is_valid():
-                coupon_message = f"abattcode angewendet: {order.coupon.percent_off}%"
+                coupon_message = f"Rabattcode angewendet: {order.coupon.percent_off}%"
 
         if coupon_code:
             try:
@@ -938,7 +938,7 @@ def calculate_price(request):
                     coupon.usage_count += 1
                     coupon.save()
                     order.save()
-                    coupon_message = f"neu abattcode angewendet: {coupon.percent_off}%"
+                    coupon_message = f"neu Rabattcode angewendet: {coupon.percent_off}%"
                 else:
                     coupon_message = "Rabattcode ungültig oder abgelaufen."
             except Coupon.DoesNotExist:
